@@ -1,0 +1,35 @@
+#!/bin/bash
+
+
+CLIENT1='192.168.1.193'
+CLIENT2='192.168.1.194'
+
+
+function APACHE2-START () {
+echo
+echo -e "\nWe are installing apache2 on all your nodes, please wait ...\n"
+ssh root@$1 "apt-get install -y apache2;service apache2 start" &> /dev/null
+ssh root@$1 "service apache2 status;df -hT;free -h"
+
+}
+
+function APACHE2-STOP () {
+echo
+echo -e "\nWe are uninstalling apache2 from all of your nodes, please wait ...\n"
+ssh root@$1 "service apache2 stop;apt --purge -y remove apache2;apt -y autoremove" &> /dev/null
+ssh root@$1 "service apache2 status;df -hT;free -h"
+}
+
+
+APACHE2-START $CLIENT1 
+APACHE2-START $CLIENT2 
+
+
+#APACHE2-STOP $CLIENT1
+#APACHE2-STOP $CLIENT2
+
+
+
+
+
+#END

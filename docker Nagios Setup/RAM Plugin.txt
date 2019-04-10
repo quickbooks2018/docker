@@ -1,0 +1,58 @@
+#!/bin/bash
+#Aurthor:Muhammad Asim
+#Date:14-Mar-18
+
+
+
+TOTALRAM=`free -h | awk '{print $2}' | sed -n 2p | cut -c1-3`
+TR=`free -h | awk '{print $2}' | sed -n 2p | cut -c1-2`
+
+AVAILABLERAM=`free -h | awk '{print $7}' | cut -c1-3`
+AR=`free -h | awk '{print $4}' | sed -n 2p | cut -c 1-3 | awk '{print int($1)}'`
+
+#USEDRAM=`echo $TOTALRAM - $AVAILABLERAM | bc`   In Ubuntu you might need this
+
+USEDRAM=`free -h | awk '{print $3}' | cut -c1-2 | sed -n 2p | awk '{print int($1)}'`
+
+#USEDRAMNODEC=`free -h | awk '{print $3}' | cut -c1 | sed -n 2p`
+GIGA="G"
+MB="MB"
+
+#echo -e "\nTotal RAM is $TOTALRAM$GIGA\n"
+
+#echo -e "\nAvailable RAM is"$AVAILABLERAM$GIGA"\n"
+
+#echo -e "\nUsed RAM is $USEDRAM$MB\n"
+
+if [ "$AR" -lt "1" ]
+then
+echo "Critical - Available RAM is "$AR""MB" out of Total "$TOTALRAM""$GIGA""
+    exit 2
+
+elif [ "$AR" -gt "5" ]
+then
+    echo "Critical - Available RAM is "$AR""MB" out of Total "$TOTALRAM""$GIGA""
+    exit 2
+
+
+elif [ "$AR" -le "2" ]
+then
+    echo "WARNING - Available RAM is "$AR""G" out of Total "$TOTALRAM""$GIGA""
+    exit 1
+
+
+
+elif [ "$AR" -ge "3" ]
+then
+
+    echo "OK -  Available RAM is "$AR""G" out of Total "$TOTALRAM""$GIGA""
+
+
+    exit 0
+
+else
+    echo "UNKNOWN"
+    exit 3
+fi
+
+#END

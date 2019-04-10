@@ -1,0 +1,22 @@
+#!/bin/bash
+
+
+#MYSQL SETUP
+mkdir /home/asim/Desktop/local
+docker run --name MYSQL -e MYSQL_ROOT_PASSWORD=abc -v /home/asim/Desktop/local:/var/lib/mysql --network="ASIM-86-A" -d mysql
+
+#PHPMYADMIN SETUP
+docker run --name PHPMYADMIN --network="ASIM-86-A" --link MYSQL:db -td phpmyadmin/phpmyadmin
+
+
+#BUSYBOX FOR DATA ONLY CONTAINERS
+docker create -v /home/asim/Desktop/web:/var/www/html --name BUSYBOX busybox
+
+#Installtion of WHMCS locally
+docker run --name WHMCS --network="ASIM-86-A" -p=80:80 --volumes-from=BUSYBOX --link=MYSQL:db_saqi -itd solution360/apache2-php7-ioncube
+
+#Note: Make sure instead of giving localhost ===> give the ip address of MYSQL
+
+#END
+~                                                                                                                                               
+~                 

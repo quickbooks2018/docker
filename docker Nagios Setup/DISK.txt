@@ -1,0 +1,34 @@
+#!/bin/bash
+
+TOTALDISK=`vgdisplay | sed -n 15p | awk '{print $3}' | cut -c 2-5`
+
+ALLOCATEDISK=`vgdisplay | sed -n 18p | awk '{print $7}' | cut -c 2-5`
+
+REMAININGDISK=`vgdisplay | sed -n 19p | awk '{print $7}' | cut -c 2-4`
+
+#BC=`echo "$ALLOCATEDISK" \* 1024 | bc | cut -f1 -d "." | cut -c 1-4`
+TB=TB
+GB=GB
+TOTALDISKUNIT=`vgdisplay | sed -n 18p | awk '{print $8}'`
+#ALLOCATEUNIT=`vgdisplay | sed -n 18p | awk '{print $8}'`
+#REMAININGDISKUNIT=`vgdisplay | sed -n 19p | awk '{print $8}'`
+
+
+
+
+if [ "$REMAININGDISK" -ge "1024" ]
+then
+    echo "OK - Free Disk "$REMAININGDISK""$GB" Total "$TOTALDISK""$TB" Allocated "$ALLOCATEDISK""$TB""
+    exit 0
+elif [ "$REMAININGDISK" -le "1023" ]
+then
+    echo "WARNING - Free Disk "$REMAININGDISK""$GB" Total "$TOTALDISK""$TB" Allocated "$ALLOCATEDISK""$TB""
+    exit 1
+elif [ "$REMAININGDISK" -le "500" ]
+then
+    echo "CRITICAL - Free Disk "$REMAININGDISK""$GB" Total "$TOTALDISK""$TB" Allocated "$ALLOCATEDISK""$TB""
+    exit 2
+else
+    echo "UNKNOWN - Free Disk "$REMAININGDISK""$GB" Total "$TOTALDISK""$TB" Allocated "$ALLOCATEDISK""$TB""
+    exit 3
+fi

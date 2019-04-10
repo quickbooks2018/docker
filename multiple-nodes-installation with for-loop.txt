@@ -1,0 +1,27 @@
+!/bin/bash
+
+CLIENT1="root@192.168.1.193"
+CLIENT2="root@192.168.1.194"
+
+
+for i in $CLIENT1 $CLIENT2
+do
+
+echo 
+
+#echo "We are installing all packages in to, all your nodes"
+
+#ssh $i "apt install -y apache2;service apache2 start;service apache2 status"
+
+
+echo "We are Uninstalling all packages in to, all your nodes"
+
+ssh $i "apt --purge remove -y apache2;apt -y autoremove;service apache2 status"
+
+done
+
+
+
+
+#END
+

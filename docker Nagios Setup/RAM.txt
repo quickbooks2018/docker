@@ -1,0 +1,31 @@
+#!/bin/bash
+#Aurthor: Muhammad Asim
+
+TOPFILE=`top | head -n8  | tail -n2 > /usr/lib64/nagios/plugins/top.txt`
+
+
+CPU=`cat /usr/lib64/nagios/plugins/top.txt | sed -n 2p | awk '{print $9}' | awk '{print int($1)}'`
+#COMMAND=`cat top.txt | awk '{print $12}' | sed -n 2p`
+
+
+if [ "$CPU" -le "60" ]
+then
+echo "OK -$TOPFILE Highest Process Load on CPU is "$CPU""%""
+exit 0
+
+elif [ "$CPU" -le "69" ]
+then
+echo "Warning -$TOPFILE Highest Process Load on CPU is "$CPU""%""
+exit 1
+
+elif [ "$CPU" -ge "70" ]
+then
+echo "Critical -$TOPFILE Highest Process Load on CPU is "$CPU""%""
+exit 2
+
+else
+echo "Unknown"
+exit 3
+
+fi
+#END

@@ -1,0 +1,22 @@
+version: "2"
+
+services:
+
+  wordpress:
+    image: wordpress
+    networks:
+      - ASIM-86-A
+    environment:
+      WORDPRESS_DB_PASSWORD: example
+
+  mysql:
+    image: mysql
+    networks:
+      - ASIM-86-A
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+
+networks:
+  ASIM-86-A:
+   external: true
+

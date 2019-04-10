@@ -1,0 +1,11 @@
+ROM solution360/apache2-php7-ioncube:latest
+
+MAINTAINER Muhammad Asim quickbooks2018@gmail.com
+
+
+COPY whmcs /var/www/html
+
+RUN rm -rf /var/www/html/index.html &&  rm -rf  /ioncube_loaders_lin_x86-64.tar.gz
+
+CMD service apache2 restart && bash
+

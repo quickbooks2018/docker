@@ -1,0 +1,16 @@
+1.DOCKER LOCAL AREA CONNECTIONS
+docker network create -d macvlan --subnet=192.168.1.0/24 --ip-range=192.168.1.255/24 --gateway 192.168.1.1 -o macvlan_mode=bridge -o parent=ens33 MAC-V-LAN
+467c103a782ca4ca562abd8b78b93de469cf1fb98f4e686096d4e2f1fb030ce3
+root@ubuntu:/home/asim/Documents/Apache# docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE
+467c103a782c        MAC-V-LAN           macvlan             local
+5cc7d07e4146        bridge              bridge              local
+67c39b007cea        host                host                local
+6f56f933779d        none                null                local
+
+<Note: We first create a Network, than we attach it, with New Cotainers>
+
+2.DOCKER LOCAL AREA CONNECTIONS TO AVOID OVERLAPING
+
+docker network create -d macvlan --subnet=192.168.1.0/24 --ip-range=192.168.1.255/26 --gateway 192.168.1.1 -o macvlan_mode=bridge -o parent=ens33 MAC-V-LAN
+

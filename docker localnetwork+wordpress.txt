@@ -1,0 +1,52 @@
+#!/bin/bash
+
+
+function NETWORK () {
+
+echo
+NETWORK=`ip addr show | grep -iE "dynamic|static" | awk '{print $2}' | head -c 9`
+NETWORKNAME=` docker network ls | grep -i ASIM | awk '{print $2}'`
+#echo $NETWORK
+
+if [ "$NETWORK" = "192.168.1" ]
+	then
+
+	echo -e "Your Network is  $NETWORK"
+
+
+echo 
+
+DOCKERNETWORK=`docker network create -d macvlan --subnet=192.168.1.0/24 --ip-range=192.168.1.255/26 --gateway 192.168.1.1 -o macvlan_mode=bridge -o parent=ens33 ASIM-86-A`
+
+echo $DOCKERNETWORK
+
+echo $? > /dev/null
+
+if [ "$?" = "0" ]
+then
+
+echo -e "\nYour docker local area network $NETWORKNAME is created\n"
+
+fi
+
+fi
+
+}
+
+NETWORK
+
+#MYSQL
+docker run --name MYSQL -e MYSQL_ROOT_PASSWORD=abc --network="ASIM-86-A" -d mysql
+
+
+
+#PHPMYADMIN
+docker run --name PHPMYADMIN --network="ASIM-86-A" --link MYSQL:db -td phpmyadmin/phpmyadmin
+
+
+#WORDPRESS
+docker run --name WORDPRESS --network="ASIM-86-A" --link MYSQL:db -v /home/asim/Desktop/web:/var/www/html -d wordpress
+
+
+
+#END

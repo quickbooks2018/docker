@@ -1,0 +1,28 @@
+#!/bin/bash
+#Purpose: Creation of two hosts to learn Ansible
+
+PASSWD=`openssl passwd -crypt 1`
+
+
+function ANSIBLE () {
+docker run --name $1 -td chasim1982/apache2.v1  
+docker network connect ASIM-86-A  $1
+#Creating a user along with encrypted password
+docker exec $1 /bin/bash -c "apt-get update && apt-get -y upgrade;apt install -y ansible;apt install -y net-tools;apt install -y vim;apt install -y iputils-ping;apt install -y sshpass;useradd -p $PASSWD asim;echo "root:1"  | chpasswd &> /dev/null"
+
+}
+
+ANSIBLE ANSIBLE-SERVER
+ANSIBLE ANSIBLE-CLIENT-1
+ANSIBLE ANSIBLE-CLIENT-2
+
+
+
+
+
+
+
+
+
+
+#END
