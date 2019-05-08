@@ -1,0 +1,33 @@
+#1 mkdir -p /root/ssl/private && mkdir -p /root/ssl/certs
+
+#2 mkdir -p /root/nginx/conf.d
+
+#3 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /root/ssl/private/nginx-selfsigned.key -out /root/ssl/certs/nginx-selfsigned.crt
+
+#4 openssl dhparam -out /root/ssl/certs/dhparam.pem 2048
+
+#5 cd /root/nginx/conf.d
+
+#6 apt update -y && apt install -y vim
+
+#7 vim ssl.conf 
+
+server {
+    listen 443 http2 ssl;
+    listen [::]:443 http2 ssl;
+
+    server_name 192.168.0.22;
+
+     location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+    }
+
+    ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
+    ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
+    ssl_dhparam /etc/ssl/certs/dhparam.pem;
+}
+
+#8 docker run --name nginx -v /root/ssl/private:/etc/ssl/private -v /root/ssl/certs:/etc/ssl/certs -v /root/nginx/conf.d:/etc/nginx/conf.d -p 443:443 -d nginx
+
+#Source https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-nginx-on-centos-7
