@@ -1,0 +1,53 @@
+#1 mkdir -p /root/ssl/private && mkdir -p /root/ssl/certs
+
+#2 mkdir -p /root/nginx/conf.d
+
+#3 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /root/ssl/private/nginx-selfsigned.key -out /root/ssl/certs/nginx-selfsigned.crt
+
+#4 openssl dhparam -out /root/ssl/certs/dhparam.pem 2048
+
+#5 cd /root/nginx/conf.d
+
+#6 apt update -y && apt install -y vim
+
+#7 vim ssl.conf 
+
+server {
+    listen 80;
+    server_name jira.saqlainmushtaq.com;
+    root /usr/share/nginx/html;
+    index index.php index.htm index.html;
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+  server_name jira.saqlainmushtaq.com;
+  listen 443 ssl;
+  ssl_certificate /etc/nginx/ssl/cloudelligent.crt;
+  ssl_certificate_key /etc/nginx/ssl/cloudelligent.key;
+
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+       }
+}
+
+#8 docker run --name nginx -v /root/ssl/private:/etc/ssl/private -v /root/ssl/certs:/etc/ssl/certs -v /root/nginx/conf.d:/etc/nginx/conf.d -p 443:443 -d nginx
+
+#Note:  You can also make an entry in /etc/hosts 
+
+#10.11.5.8 jira.saqlainmushtaq.com
+
+# ping jira.saqlainmushtaq.com
+
+###Configuration Location###
+
+#Note: for Amazon Linux or Centos
+
+#vim /etc/nginx/conf.d/server1.conf
+
+#Note:for Ubuntu 
+
+#vim /etc/sites-available/server1.conf
+#ln -s /etc/sites-available/server1.conf /etc/nginx/sites-enabled/server1.conf
+
+###End###
