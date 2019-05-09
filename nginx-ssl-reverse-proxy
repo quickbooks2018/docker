@@ -36,7 +36,7 @@ server {
   ssl_dhparam /etc/ssl/certs/dhparam.pem;
 
     location / {
-        proxy_pass http://172.17.0.2:8080;
+        proxy_pass http://application-container-name:8080;
        }
 }
 
