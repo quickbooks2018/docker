@@ -1,0 +1,4 @@
+https://hub.docker.com/r/atlassian/confluence-server/
+docker run -v /home/ec2-user/confluence:/var/atlassian/application-data/confluence --name="confluence" --env CATALINA_CONNECTOR_PROXYNAME='confluence.waterforpeople.org' --env CATALINA_CONNECTOR_PROXYPORT='443' --env CATALINA_CONNECTOR_SCHEME='https' --env CATALINA_CONNECTOR_SECURE='true' -d -p 8090:8090 -p 8091:8091 --restart unless-stopped atlassian/confluence-server
+
+docker run -v /home/ec2-user/confluence:/var/atlassian/application-data/confluence --name="confluence" -e CATALINA_CONNECTOR_PROXYNAME='confluence.waterforpeople.org' -e CATALINA_CONNECTOR_PROXYPORT='443' -e CATALINA_CONNECTOR_SCHEME='https' -e CATALINA_CONNECTOR_SECURE='true' --restart unless-stopped -d -p 8090:8090 -p 8091:8091  atlassian/confluence-server
