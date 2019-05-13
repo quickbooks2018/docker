@@ -11,7 +11,7 @@ docker run --name jenkins -d -v /home/ubuntu/jenkins:/var/jenkins_home -p 8080:8
 
 
 
-docker run --name jenkins --network=cloudelligent -d -v /home/ubuntu/jenkins:/var/jenkins_home -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts
+docker run --name jenkins --network=cloudelligent -d -v /home/ubuntu/jenkins:/var/jenkins_home --restart unless-stopped -p 50000:50000 jenkins/jenkins:lts
 
 
 
@@ -75,7 +75,7 @@ location / {
 #Note Proxy pass will be the container IP
 #Example: docker inspect --format '{{ .NetworkSettings.IPAddress }}' fdeabb276a76
 
-#8 docker run --name nginx --network=cloudelligent -v /root/ssl/private:/etc/ssl/private -v /root/ssl/certs:/etc/ssl/certs -v /root/nginx/conf.d:/etc/nginx/conf.d -p 443:443 -d nginx
+#8 docker run --name nginx --network=cloudelligent --restart unless-stopped -v /root/ssl/private:/etc/ssl/private -v /root/ssl/certs:/etc/ssl/certs -v /root/nginx/conf.d:/etc/nginx/conf.d -p 443:443 -d nginx
 
 #Note:  You can also make an entry in /etc/hosts 
 
