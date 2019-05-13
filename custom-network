@@ -1,0 +1,5 @@
+# Docker Custom Bridge Network is recommended in order to communicate containers with container name.
+
+docker network ls
+
+docker network create --driver=bridge cloudelligent
