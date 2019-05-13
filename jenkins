@@ -43,7 +43,7 @@ upstream jenkins {
 
 server {
   listen 80;
-  server_name jenkins.domain.tld;
+  server_name jenkins.cloudelligent.com;
   return 301 https://$host$request_uri;
 }
 
