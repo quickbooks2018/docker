@@ -11,7 +11,7 @@ docker run --name jenkins -d -v /home/ubuntu/jenkins:/var/jenkins_home -p 8080:8
 
 
 
-docker run --name jenkins --network=cloudelligent -d -v /home/ubuntu/jenkins:/var/jenkins_home --restart unless-stopped -p 50000:50000 jenkins/jenkins:lts
+docker run --name jenkins --network=cloudelligent -d -v /home/ubuntu/jenkins:/var/jenkins_home --restart unless-stopped -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts
 
 
 
