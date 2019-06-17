@@ -1,12 +1,17 @@
 # Docker Custom Bridge Network is recommended in order to communicate containers with container name.
 
+https://hub.docker.com/r/jenkins/jenkins/tags
+
+STABLE Version:2.176.1
+Note: In case permissions issue use ---> --user=root
+
 docker network ls
 
 docker network create --driver=bridge cloudelligent
 
 #####################################################################################################################
 https://github.com/jenkinsci/docker/blob/master/README.md
-docker run --name jenkins -d -v /home/ubuntu/jenkins:/var/jenkins_home -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts
+docker run --name jenkins -d -v /home/ubuntu/jenkins:/var/jenkins_home -p 8080:8080 -p 50000:50000 jenkins/jenkins:2.176.1
 ######################################################################################################################
 
 
