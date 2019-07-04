@@ -22,17 +22,17 @@ docker network create --driver=bridge cloudelligent
 
 server {
   listen 80;
-  server_name jenkins.cloudelligent.com;
+  server_name jira.cloudelligent.com;
   return 301 https://$host$request_uri;
 }
 
 
 server {
-  server_name jenkins.cloudelligent.com;
+  server_name jira.cloudelligent.com;
   listen 443 ssl;
   ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
-  ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
-  ssl_dhparam /etc/ssl/certs/dhparam.pem;
+  ssl_certificate_key /etc/ssl/certs/nginx-selfsigned.key;
+  
 location / {
     proxy_set_header        Host $host:$server_port;
     proxy_set_header        X-Real-IP $remote_addr;
