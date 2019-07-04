@@ -51,7 +51,7 @@ location / {
 #Note Proxy pass will be the container IP
 #Example: docker inspect --format '{{ .NetworkSettings.IPAddress }}' fdeabb276a76
 
-#8 docker run --name nginx --network=cloudelligent -v ~/nginx/ssl/certs:/etc/ssl/certs -v ~/nginx/ssl/certs:/etc/ssl/certs -v ~/nginx/conf.d:/etc/nginx/conf.d -p 443:443 -p 80:80 -d nginx
+#8 docker run --name nginx --network=cloudelligent -v ~/nginx/ssl/certs:/etc/ssl/certs -v ~/nginx/ssl/certs:/etc/ssl/certs -v ~/nginx/conf.d:/etc/nginx/conf.d -p 443:443 -p 80:80 --restart unless-stopped -d nginx
 
 #Note:  You can also make an entry in /etc/hosts 
 
