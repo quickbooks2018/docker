@@ -32,7 +32,7 @@ server {
   server_name jira.saqlainmushtaq.com;
   listen 443 ssl;
   ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
-  ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
+  ssl_certificate_key /etc/ssl/certs/nginx-selfsigned.key;
   ssl_dhparam /etc/ssl/certs/dhparam.pem;
 
     location / {
@@ -44,7 +44,7 @@ server {
 #Note Proxy pass will be the container IP
 #Example: docker inspect --format '{{ .NetworkSettings.IPAddress }}' fdeabb276a76
 
-#8 docker run --name nginx --network=cloudelligent -v /root/ssl/private:/etc/ssl/private -v /root/ssl/certs:/etc/ssl/certs -v /root/nginx/conf.d:/etc/nginx/conf.d -p 443:443 -p 80:80 -d nginx
+#8 docker run --name nginx --network=cloudelligent -v ~/nginx/ssl/certs:/etc/ssl/certs -v ~/nginx/ssl/certs:/etc/ssl/certs -v ~/nginx/conf.d:/etc/nginx/conf.d -p 443:443 -p 80:80 -d nginx
 
 #Note:  You can also make an entry in /etc/hosts 
 
