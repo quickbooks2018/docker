@@ -1,5 +1,5 @@
 https://hub.docker.com/r/atlassian/confluence-server/
-docker run -v /home/ec2-user/confluence:/var/atlassian/application-data/confluence --name="confluence" --env CATALINA_CONNECTOR_PROXYNAME='confluence.cloudelligent.com' --env CATALINA_CONNECTOR_PROXYPORT='443' --env CATALINA_CONNECTOR_SCHEME='https' --env CATALINA_CONNECTOR_SECURE='true' -d -p 9000:8090 --restart unless-stopped atlassian/confluence-server
+docker run -v /confluence:/var/atlassian/application-data/confluence --name="confluence" --env CATALINA_CONNECTOR_PROXYNAME='confluence.cloudelligent.com' --env CATALINA_CONNECTOR_PROXYPORT='443' --env CATALINA_CONNECTOR_SCHEME='https' --env CATALINA_CONNECTOR_SECURE='true' -d -p 9000:8090 --restart unless-stopped atlassian/confluence-server
 
 
 
