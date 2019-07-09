@@ -14,6 +14,8 @@ https://github.com/jenkinsci/docker/blob/master/README.md
 docker run --name jenkins -d -v /home/ubuntu/jenkins:/var/jenkins_home -p 8080:8080 -p 50000:50000 jenkins/jenkins:2.176.1
 ######################################################################################################################
 
+docker run --name jenkins -d --user=root -v /root/jenkins:/var/jenkins_home -p 8080:8080 jenkins/jenkins:2.176.1
+
 
 
 docker run --name jenkins --network=cloudelligent -d -v /home/ubuntu/jenkins:/var/jenkins_home --restart unless-stopped -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts
