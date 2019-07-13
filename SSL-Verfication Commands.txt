@@ -1,0 +1,10 @@
+1. curl -IL domainname.com
+
+2. openssl s_client -connect thawte.com:443
+#https://serverfault.com/questions/755248/curl-unable-to-get-local-issuer-certificate-how-to-debug
+
+3. https://www.sslshopper.com  ---> google for SSL Verify
+
+4. https://ssl-ccp.godaddy.com/repository?origin=CALLISTO
+
+5. https://www.sslshopper.com/ssl-checker.html#hostname=jira.cloudelligent.com
