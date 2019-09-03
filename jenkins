@@ -24,8 +24,8 @@ openssl dhparam -out ~/ssl/certs/dhparam.pem 2048
 cd ~/nginx/conf.d
 
 #6 
-apt update -y && apt install -y vim > /dev/null
-yum update -y && yum install -y vim > /dev/null
+apt update -y  > /dev/null && apt install -y vim > /dev/null
+yum update -y  > /dev/null && yum install -y vim > /dev/null
 
 #7
 echo "upstream jenkins {
