@@ -32,10 +32,7 @@ yum update -y  2> /dev/null
 yum install -y vim 2> /dev/null
 
 #7
-echo "upstream jenkins {
-  server jenkins:8080 fail_timeout=0;
-}
-
+echo "
 server {
   listen 80;
   server_name jenkins.cloudelligent.com;
