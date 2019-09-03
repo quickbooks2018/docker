@@ -1,6 +1,77 @@
 #!/bin/bash
 
-WIP
+curl -fsSL https://get.docker.com -o get-docker.sh
+sh get-docker.sh
+
+docker network ls
+
+docker network create --driver=bridge cloudelligent
+
+
+#1 
+mkdir -p ~/ssl/certs
+
+#2 
+mkdir -p ~/nginx/conf.d
+
+#3 
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ~/ssl/certs/nginx-selfsigned.key -out ~/ssl/certs/nginx-selfsigned.crt
+
+#4 
+openssl dhparam -out ~/ssl/certs/dhparam.pem 2048
+
+#5 
+cd ~/nginx/conf.d
+
+#6 
+apt update -y && apt install -y vim > /dev/null
+yum update -y && yum install -y vim > /dev/null
+
+#7
+echo "upstream jenkins {
+  server jenkins:8080 fail_timeout=0;
+}
+
+server {
+  listen 80;
+  server_name jenkins.cloudelligent.com;
+  return 301 https://$host$request_uri;
+}
+
+
+server {
+  server_name jenkins.cloudelligent.com;
+  listen 443 ssl;
+  ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
+  ssl_certificate_key /etc/ssl/certs/nginx-selfsigned.key;
+  ssl_dhparam /etc/ssl/certs/dhparam.pem;
+  
+  
+  ssl_protocols TLSv1.2 TLSv1.3;
+  ssl_prefer_server ciphers on;
+  ssl_ciphers 'TLS-CHACHA20-POLY1305-SHA256:TLS-AES-256-GCM-SHA384:TLS-AES-128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256';
+  
+  
+  
+location / {
+    proxy_set_header        Host $host:$server_port;
+    proxy_set_header        X-Real-IP $remote_addr;
+    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header        X-Forwarded-Proto $scheme;
+    proxy_redirect http:// https://;
+    proxy_pass              http://jenkins;
+    # Required for new HTTP-based CLI
+    proxy_http_version 1.1;
+    proxy_request_buffering off;
+    proxy_buffering off; # Required for HTTP-based CLI to work over SSL
+    # workaround for https://issues.jenkins-ci.org/browse/JENKINS-45651
+    add_header 'X-SSH-Endpoint' 'jenkins.cloudelligent.com:50022' always;
+       }
+}" >  ~/nginx/conf.d/server.conf
+
+#8
+docker run --name nginx --network=cloudelligent --restart unless-stopped -v ~/ssl/certs:/etc/ssl/certs -v ~/nginx/conf.d:/etc/nginx/conf.d -p 443:443 -d nginx
+
 
 
 
@@ -63,19 +134,20 @@ docker network create --driver=bridge cloudelligent
 
 
 
-#1 mkdir -p /root/ssl/certs
+#1 mkdir -p ~/ssl/certs
 
-#2 mkdir -p /root/nginx/conf.d
+#2 mkdir -p ~/nginx/conf.d
 
-#3 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /root/ssl/certs/nginx-selfsigned.key -out /root/ssl/certs/nginx-selfsigned.crt
+#3 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ~/ssl/certs/nginx-selfsigned.key -out ~/ssl/certs/nginx-selfsigned.crt
 
-#4 openssl dhparam -out /root/ssl/certs/dhparam.pem 2048
+#4 openssl dhparam -out ~/ssl/certs/dhparam.pem 2048
 
 #5 cd /root/nginx/conf.d
 
-#6 apt update -y && apt install -y vim
+#6 apt update -y && apt install -y vim > /dev/null
+   yum update -y && yum install -y vim > /dev/null
 
-#7 vim jenkins.cloudelligent.conf 
+#7 vim server.cloudelligent.conf 
 
 upstream jenkins {
   server jenkins:8080 fail_timeout=0;
