@@ -36,11 +36,11 @@ docker network create --driver=bridge cloudelligent
 
 
 
-#1 mkdir -p /root/ssl/private && mkdir -p /root/ssl/certs
+#1 mkdir -p /root/ssl/certs
 
 #2 mkdir -p /root/nginx/conf.d
 
-#3 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /root/ssl/private/nginx-selfsigned.key -out /root/ssl/certs/nginx-selfsigned.crt
+#3 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /root/ssl/certs/nginx-selfsigned.key -out /root/ssl/certs/nginx-selfsigned.crt
 
 #4 openssl dhparam -out /root/ssl/certs/dhparam.pem 2048
 
@@ -65,7 +65,7 @@ server {
   server_name jenkins.cloudelligent.com;
   listen 443 ssl;
   ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
-  ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
+  ssl_certificate_key /etc/ssl/certs/nginx-selfsigned.key;
   ssl_dhparam /etc/ssl/certs/dhparam.pem;
 location / {
     proxy_set_header        Host $host:$server_port;
