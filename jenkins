@@ -7,7 +7,7 @@ docker network ls
 
 docker network create --driver=bridge cloudelligent
 
-docker run --name jenkins -d --user=root -v ~/jenkins:/var/jenkins_home -p 8080:8080 --restart unless-stopped jenkins/jenkins:2.176.1
+docker run --name jenkins --network=cloudelligent -d --user=root -v ~/jenkins:/var/jenkins_home -p 8080:8080 --restart unless-stopped jenkins/jenkins:2.176.1
 
 
 #1 
