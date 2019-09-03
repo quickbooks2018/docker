@@ -7,6 +7,8 @@ docker network ls
 
 docker network create --driver=bridge cloudelligent
 
+docker run --name jenkins -d --user=root -v ~/jenkins:/var/jenkins_home -p 80:8080 --restart unless-stopped jenkins/jenkins:2.176.1
+
 
 #1 
 mkdir -p ~/ssl/certs
@@ -24,8 +26,10 @@ openssl dhparam -out ~/ssl/certs/dhparam.pem 2048
 cd ~/nginx/conf.d
 
 #6 
-apt update -y  > /dev/null && apt install -y vim > /dev/null
-yum update -y  > /dev/null && yum install -y vim > /dev/null
+apt update -y  > /dev/null 
+apt install -y vim > /dev/null
+yum update -y  > /dev/null 
+yum install -y vim > /dev/null
 
 #7
 echo "upstream jenkins {
@@ -61,9 +65,7 @@ location / {
     # Required for new HTTP-based CLI
     proxy_http_version 1.1;
     proxy_request_buffering off;
-    proxy_buffering off; # Required for HTTP-based CLI to work over SSL
-    # workaround for https://issues.jenkins-ci.org/browse/JENKINS-45651
-    add_header 'X-SSH-Endpoint' 'jenkins.cloudelligent.com:50022' always;
+  
        }
 }" >  ~/nginx/conf.d/server.conf
 
