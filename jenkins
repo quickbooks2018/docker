@@ -32,7 +32,7 @@ yum update -y  2> /dev/null
 yum install -y vim 2> /dev/null
 
 #7
-echo "
+echo '
 server {
   listen 80;
   server_name jenkins.cloudelligent.com;
@@ -64,7 +64,7 @@ location / {
     proxy_request_buffering off;
   
        }
-}" >  ~/nginx/conf.d/server.conf
+}' >  ~/nginx/conf.d/server.conf
 
 #8
 docker run --name nginx --network=cloudelligent --restart unless-stopped -v ~/ssl/certs:/etc/ssl/certs -v ~/nginx/conf.d:/etc/nginx/conf.d -p 443:443 -p 80:80 -d nginx
