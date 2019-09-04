@@ -1,6 +1,7 @@
 ##############################################################################################
 #NOTE:Manually do these steps First
-#curl -# -LO https://github.com/quickbooks2018/bash-scipts/blob/master/aws-self-signed-acm.sh
+#curl -# -LO https://raw.githubusercontent.com/quickbooks2018/bash-scipts/master/aws-self-signed-acm.sh
+
 #chmod +x aws-self-signed-acm.sh
 ###############################################################################################
 
@@ -36,7 +37,7 @@ mkdir -p ~/nginx/conf.d
 
 ##############################################################################################
 #NOTE:Manually do these steps First
-#curl -# -LO https://github.com/quickbooks2018/bash-scipts/blob/master/aws-self-signed-acm.sh
+#curl -# -LO https://raw.githubusercontent.com/quickbooks2018/bash-scipts/master/aws-self-signed-acm.sh
 #chmod +x aws-self-signed-acm.sh
 ###############################################################################################
 
