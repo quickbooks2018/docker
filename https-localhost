@@ -33,11 +33,12 @@ DNS.1 = localhost
 DNS.2 = 192.168.1.10
 ' > v3.ext
 
-sleep 20
+sleep 5
 openssl req -new -sha256 -nodes -out server.csr -newkey rsa:2048 -keyout server.key
 openssl x509 -req -in server.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -out server.crt -days 500 -sha256 -extfile v3.ext
 
 #Importing CA in Ubuntu
+apt-get install ca-certificates -y
 cp server.crt /usr/local/share/ca-certificates/
 update-ca-certificates
 
