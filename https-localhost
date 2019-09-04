@@ -45,9 +45,9 @@ openssl x509 -req -in server.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateseria
 
 #Importing CA in Ubuntu
 apt-get install ca-certificates -y
-cp server.crt /usr/local/share/ca-certificates/
-dpkg-reconfigure ca-certificates
-#update-ca-certificates
+cp server.crt /usr/share/ca-certificates
+#dpkg-reconfigure ca-certificates
+update-ca-certificates
 
 mv server.key ~/ssl/certs
 mv server.crt ~/ssl/certs
