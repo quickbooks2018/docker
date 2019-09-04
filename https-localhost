@@ -28,16 +28,14 @@ openssl genrsa -des3 -out rootCA.key 2048
 openssl req -x509 -new -nodes -key rootCA.key -sha256 -days 1024 -out rootCA.pem
 
 sleep 5
-echo '
-authorityKeyIdentifier=keyid,issuer
+echo 'authorityKeyIdentifier=keyid,issuer
 basicConstraints=CA:FALSE
 keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
 subjectAltName = @alt_names
 
 [alt_names]
 DNS.1 = localhost
-DNS.2 = 192.168.1.10
-' > v3.ext
+DNS.2 = 192.168.1.10' > v3.ext
 
 sleep 5
 openssl req -new -sha256 -nodes -out server.csr -newkey rsa:2048 -keyout server.key
