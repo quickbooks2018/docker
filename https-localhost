@@ -43,6 +43,13 @@ update-ca-certificates
 
 mv server.key ~/ssl/certs
 mv server.crt ~/ssl/certs
+mv rootCA.pem ~/ssl/certs
+mv rootCA.key ~/ssl/certs
+mv rootCA.srl ~/ssl/certs
+mv v3.ext ~/ssl/certs
+
+rm -rf ~/get-docker.sh
+
 
 #4
 cd ~/nginx/conf.d
