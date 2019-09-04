@@ -1,6 +1,9 @@
 #!/bin/bash
 #OS: Ubuntu-16-18-LTS
 
+apt update -y
+apt install -y curl
+
 curl -fsSL https://get.docker.com -o get-docker.sh
 sh get-docker.sh
 
