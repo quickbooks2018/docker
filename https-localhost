@@ -1,4 +1,5 @@
 #!/bin/bash
+#OS: Ubuntu-16-18-LTS
 
 curl -fsSL https://get.docker.com -o get-docker.sh
 sh get-docker.sh
@@ -17,8 +18,31 @@ mkdir -p ~/ssl/certs
 mkdir -p ~/nginx/conf.d
 
 #3 
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ~/ssl/certs/nginx-selfsigned.key -out ~/ssl/certs/nginx-selfsigned.crt
+openssl genrsa -des3 -out rootCA.key 2048
+openssl req -x509 -new -nodes -key rootCA.key -sha256 -days 1024 -out rootCA.pem
 
+sleep 5
+echo '
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = localhost
+DNS.2 = 192.168.1.10
+' > v3.ext
+
+sleep 20
+openssl req -new -sha256 -nodes -out server.csr -newkey rsa:2048 -keyout server.key
+openssl x509 -req -in server.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -out server.crt -days 500 -sha256 -extfile v3.ext
+
+#Importing CA in Ubuntu
+cp server.crt /usr/local/share/ca-certificates/
+update-ca-certificates
+
+mv server.key ~/ssl/certs
+mv server.crt ~/ssl/certs
 
 #4
 cd ~/nginx/conf.d
@@ -33,15 +57,15 @@ yum install -y vim 2> /dev/null
 echo '
 server {
   listen 80;
-  server_name jenkins.cloudelligent.com;
+  server_name 192.168.1.10;
   return 301 https://$host$request_uri;
 }
 server {
-  server_name jenkins.cloudelligent.com;
+  server_name 192.168.1.10;
   listen 443 ssl;
-  ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
-  ssl_certificate_key /etc/ssl/certs/nginx-selfsigned.key;
-  ssl_dhparam /etc/ssl/certs/dhparam.pem;
+  ssl_certificate /etc/ssl/certs/server.crt;
+  ssl_certificate_key /etc/ssl/certs/server.key;
+  
   
     ssl_protocols       TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
     ssl_ciphers    TLS-CHACHA20-POLY1305-SHA256:TLS-AES-256-GCM-SHA384:TLS-AES-128-GCM-SHA256:HIGH:!aNULL:!MD5; 
