@@ -1,147 +1,20 @@
-#https://networklessons.com/uncategorized/openssl-certification-authority-ca-ubuntu-server/?utm_source=youtube&utm_medium=social&utm_campaign=OpenSSL%20Certification%20Authority%20(CA)%20on%20Ubuntu%20Ser...
-#https://www.youtube.com/watch?v=oCl0gzLPPMI&feature=youtu.be
+# Download my bash script, open it, put your domain details here, it will create CA Certificate authority, signed your your domain cert with this CA.
 
+#######################################################################################################
+ curl -# -LO https://raw.githubusercontent.com/quickbooks2018/bash-scipts/master/aws-self-signed-acm.sh
+#######################################################################################################
+# Time to test Green Pad Lock with localhost, IP, DNS
 
-# cp /usr/lib/ssl/openssl.cnf /usr/lib/ssl/openssl.cnf.backup
+# Note: Put your domain.cert & domain.key file in ~/ssl/certs & also tell nginx about it.
 
-#Our server is now configured correctly.
+#####################################################################
+# Best practice is to APPEND >> the CA.crt ---> in to your domain.crt
+#####################################################################
 
-#OpenSSL Configuration
-#OpenSSL uses a configuration file that is easy to read. There are a couple of things that we will change in it:
-
-# vim /usr/lib/ssl/openssl.cnf
-#Look for the following section:
-
-#[ CA_default ]
-
-#dir		= ./demoCA
-#And change it, so it looks like this:
-
-#[ CA_default ]                                                                                 
-                                                                                               
-#dir             = /root/ca
-#The “/root/ca” folder is where we will store our private keys and certificates.
-
-#You might also want to take a look at the default policy:
-
-#[ policy_match ]
-#countryName		= match
-#stateOrProvinceName	= match
-#organizationName	= match
-#organizationalUnitName	= optional
-#commonName		= supplied
-#emailAddress		= optional
-#Some fields like country, state/province, and organization have to match. If you are building your CA for a lab environment like I am then you might want to change some of these values:
-
-#[ policy_match ]
-#countryName             = match
-#stateOrProvinceName     = optional
-#organizationName        = optional
-#organizationalUnitName  = optional
-#commonName              = supplied
-#emailAddress            = optional
-#I’ve changed it so that only the country name has to match.
-
-###########################################################################
-
- # Maunally update the /etc/hosts
- #127.0.1.1       ca.cloudelligent.local ca
- 
-
-
-
-
-
-#Note: Before running the script, do the mentioned above changes first
-
-
-
-
-#Note Setup Docker & than
-
-docker run -d -p 123:123 --restart unless-stopped cloudwattfr/ntpserver:latest
-
-apt install ntp  -y
-
-ntpq -p
-
- hostnamectl set-hostname ca
- hostname
- 
- # Maunally update the /etc/hosts
- #127.0.1.1       ca.cloudelligent.local ca
- hostname -f
- 
-mkdir /root/ca
-mkdir -p /root/ca/newcerts
-mkdir -p /root/ca/certs
-mkdir -p /root/ca/crl
-mkdir -p /root/ca/private
-mkdir -p /root/ca/requests
-touch /root/ca/index.txt
-echo '1234' > /root/ca/serial
-
-openssl genrsa -aes256 -out /root/ca/private/cakey.pem 4096
-openssl req -new -x509 -key /root/ca/private/cakey.pem -out /root/ca/private/cacert.pem -days 3650
-
-#Country Name (2 letter code) [AU]:PK
-#State or Province Name (full name) [Some-State]:Punjab
-#Locality Name (eg, city) []:Lahore
-#Organization Name (eg, company) [Internet Widgits Pty Ltd]:cloudelligent
-#Organizational Unit Name (eg, section) []:IT
-#Common Name (e.g. server FQDN or YOUR name) []:ca.cloudelligent.local
-#Email Address []:muhammad.asim@cloudelligent.com
-
-
-chmod 600 -R /root/ca
-cp /usr/lib/ssl/openssl.cnf /usr/lib/ssl/openssl.cnf.backup
-
-cd /root/ca/requests/
-
-openssl genrsa -aes256 -out webserver.pem 2048
-
-openssl req -new -key webserver.pem -out webserver.csr
-
-cp /root/ca/private/cacert.pem ..
-
-openssl ca -in webserver.csr -out webserver.crt
-
-cp webserver.crt /root/ca/certs
-
-rm -rf webserver.crt
-
-mv webserver.pem /root/ca/private/
-
-cd /root/ca/certs/
-
-mkdir /root/certificates
-cp webserver.crt /root/certificates
-cd /root/ca/
-cp cacert.pem /root/certificates/
-
-cd /root/certificates/
-ls -lh
-
-mv cacert.pem cacert.crt
-chmod 777 *.crt
-
-
-
-#######################################################################################
-
-# Jenkins Setup
 #!/bin/bash
-
-#OS: Ubuntu-16-18-LTS
-
-apt update -y
-apt install -y curl
 
 curl -fsSL https://get.docker.com -o get-docker.sh
 sh get-docker.sh
-
- systemctl start docker
- systemctl enable docker
 
 docker network ls
 
@@ -156,20 +29,34 @@ mkdir -p ~/ssl/certs
 #2 
 mkdir -p ~/nginx/conf.d
 
+#3 
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ~/ssl/certs/nginx-selfsigned.key -out ~/ssl/certs/nginx-selfsigned.crt
 
+#4 
+openssl dhparam -out ~/ssl/certs/dhparam.pem 2048
 
+#5 
+cd ~/nginx/conf.d
+
+#6 
+apt update -y  2> /dev/null 
+apt install -y vim 2> /dev/null
+yum update -y  2> /dev/null 
+yum install -y vim 2> /dev/null
+
+#7
 echo '
 server {
   listen 80;
-  server_name ca.cloudelligent.local;
+  server_name jenkins.cloudelligent.com;
   return 301 https://$host$request_uri;
 }
 server {
-  server_name ca.cloudelligent.local;
+  server_name jenkins.cloudelligent.com;
   listen 443 ssl;
-  ssl_certificate /etc/ssl/certs/webserver.crt;
-  ssl_certificate_key /etc/ssl/certs/webserver.key;
-  
+  ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
+  ssl_certificate_key /etc/ssl/certs/nginx-selfsigned.key;
+  ssl_dhparam /etc/ssl/certs/dhparam.pem;
   
     ssl_protocols       TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
     ssl_ciphers    TLS-CHACHA20-POLY1305-SHA256:TLS-AES-256-GCM-SHA384:TLS-AES-128-GCM-SHA256:HIGH:!aNULL:!MD5; 
@@ -190,7 +77,7 @@ location / {
        }
 }' >  ~/nginx/conf.d/server.conf
 
-#7
+#8
 docker run --name nginx --network=cloudelligent --restart unless-stopped -v ~/ssl/certs:/etc/ssl/certs -v ~/nginx/conf.d:/etc/nginx/conf.d -p 443:443 -p 80:80 -d nginx
 
 
