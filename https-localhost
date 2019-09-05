@@ -1,6 +1,9 @@
 #https://networklessons.com/uncategorized/openssl-certification-authority-ca-ubuntu-server/?utm_source=youtube&utm_medium=social&utm_campaign=OpenSSL%20Certification%20Authority%20(CA)%20on%20Ubuntu%20Ser...
 #https://www.youtube.com/watch?v=oCl0gzLPPMI&feature=youtu.be
 
+
+# cp /usr/lib/ssl/openssl.cnf /usr/lib/ssl/openssl.cnf.backup
+
 #Our server is now configured correctly.
 
 #OpenSSL Configuration
@@ -98,6 +101,61 @@ mkdir -p /root/ca/private
 mkdir -p /root/ca/requests
 touch /root/ca/index.txt
 echo '1234' > /root/ca/serial
+
+openssl genrsa -aes256 -out /root/ca/private/cakey.pem 4096
+openssl req -new -x509 -key /root/ca/private/cakey.pem -out /root/ca/private/cacert.pem -days 3650
+
+#Country Name (2 letter code) [AU]:PK
+#State or Province Name (full name) [Some-State]:Punjab
+#Locality Name (eg, city) []:Lahore
+#Organization Name (eg, company) [Internet Widgits Pty Ltd]:cloudelligent
+#Organizational Unit Name (eg, section) []:IT
+#Common Name (e.g. server FQDN or YOUR name) []:ca.cloudelligent.local
+#Email Address []:muhammad.asim@cloudelligent.com
+
+
+chmod 600 -R /root/ca
+cp /usr/lib/ssl/openssl.cnf /usr/lib/ssl/openssl.cnf.backup
+
+cd /root/ca/requests/
+
+openssl genrsa -aes256 -out webserver.pem 2048
+
+openssl req -new -key webserver.pem -out webserver.csr
+
+cp /root/ca/private/cacert.pem ..
+
+openssl ca -in webserver.csr -out webserver.crt
+
+cp webserver.crt /root/ca/certs
+
+rm -rf webserver.crt
+
+mv webserver.pem /root/ca/private/
+
+cd /root/ca/certs/
+
+mkdir /root/certificates
+cp webserver.crt /root/certificates
+cd /root/ca/
+cp cacert.pem /root/certificates/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  
  
  
