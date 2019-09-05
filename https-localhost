@@ -24,10 +24,37 @@ mkdir -p ~/ssl/certs
 mkdir -p ~/nginx/conf.d
 
 #3 
-WIP
+docker run -d -p 123:123 --restart unless-stopped cloudwattfr/ntpserver:latest
 
-#
-WIP
+apt install ntp  -y
+
+ntpq -p
+
+ hostnamectl set-hostname ca
+ hostname
+ 
+ # Maunally update the /etc/hosts
+ #127.0.1.1       ca.cloudelligent.local ca
+ hostname -f
+ 
+mkdir /root/ca
+mkdir -p /root/ca/newcerts
+mkdir -p /root/ca/certs
+mkdir -p /root/ca/crl
+mkdir -p /root/ca/private
+mkdir -p /root/ca/requests
+touch /root/ca/index.txt
+echo '1234' > /root/ca/serial
+ 
+ 
+ 
+ 
+
+
+
+
+#4
+#WIP
 
 
 #5
