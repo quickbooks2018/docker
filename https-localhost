@@ -1,3 +1,49 @@
+#https://networklessons.com/uncategorized/openssl-certification-authority-ca-ubuntu-server/?utm_source=youtube&utm_medium=social&utm_campaign=OpenSSL%20Certification%20Authority%20(CA)%20on%20Ubuntu%20Ser...
+#https://www.youtube.com/watch?v=oCl0gzLPPMI&feature=youtu.be
+
+#Our server is now configured correctly.
+
+#OpenSSL Configuration
+#OpenSSL uses a configuration file that is easy to read. There are a couple of things that we will change in it:
+
+# vim /usr/lib/ssl/openssl.cnf
+#Look for the following section:
+
+#[ CA_default ]
+
+#dir		= ./demoCA
+#And change it, so it looks like this:
+
+#[ CA_default ]                                                                                 
+                                                                                               
+#dir             = /root/ca
+#The “/root/ca” folder is where we will store our private keys and certificates.
+
+#You might also want to take a look at the default policy:
+
+#[ policy_match ]
+#countryName		= match
+#stateOrProvinceName	= match
+#organizationName	= match
+#organizationalUnitName	= optional
+#commonName		= supplied
+#emailAddress		= optional
+#Some fields like country, state/province, and organization have to match. If you are building your CA for a lab environment like I am then you might want to change some of these values:
+
+#[ policy_match ]
+#countryName             = match
+#stateOrProvinceName     = optional
+#organizationName        = optional
+#organizationalUnitName  = optional
+#commonName              = supplied
+#emailAddress            = optional
+#I’ve changed it so that only the country name has to match.
+
+
+
+
+
+
 #!/bin/bash
 #OS: Ubuntu-16-18-LTS
 
