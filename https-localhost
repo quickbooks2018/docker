@@ -39,10 +39,17 @@
 #emailAddress            = optional
 #I’ve changed it so that only the country name has to match.
 
+###########################################################################
+
+ # Maunally update the /etc/hosts
+ #127.0.1.1       ca.cloudelligent.local ca
+ 
 
 
 
 
+
+#Note: Before running the script, do the mentioned above changes first
 
 #!/bin/bash
 #OS: Ubuntu-16-18-LTS
