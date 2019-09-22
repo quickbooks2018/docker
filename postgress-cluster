@@ -1,5 +1,7 @@
 #########################################################################################################
 
+# https://hub.docker.com/r/bitnami/postgresql/
+
 # Postgres Setup
 # Setting up a streaming replication
 # https://hub.docker.com/r/bitnami/postgresql/
@@ -83,6 +85,59 @@ cp /etc/fstab /etc/fstab.orig
 # For Ubuntu 18.04 use the lsblk command.
 
 sudo lsblk -o +UUID
+
+####################################################################
+
+# AWS Persistent Volumes
+
+# As PostgreSQL image is non-root, you need to set the proper permissions to the mounted directory in your host
+
+# sudo chown 1001:1001 /path/to/postgresql-persistence/conf/
+
+chown 1001:1001 /root/postgresql
+
+
+# Postgresql Cluster Setting up a streaming replication on AWS
+#  STEPS
+
+1. VPC Creation with AWS Terraform
+2. Master Postgresql Server Launching via Terraform Module
+3. Slaves Servers Launcing via Terraform Module (Number of Slaves required)
+4. Master Postgresql Server OS type: Ubuntu
+
+mkdir /root/postgresql-master
+chown 1001:1001 /root/postgresql
+
+docker run --name postgresql-master \
+  -e POSTGRESQL_REPLICATION_MODE=master \
+  -e POSTGRESQL_USERNAME=my_user \
+  -e POSTGRESQL_PASSWORD=password123 \
+  -e POSTGRESQL_DATABASE=my_database \
+  -e POSTGRESQL_REPLICATION_USER=my_repl_user  \
+  -e POSTGRESQL_REPLICATION_PASSWORD=my_repl_password \
+  -v /root/postgresql-master:/bitnami/postgresql \
+  -p  5432:5432 \
+  -d  bitnami/postgresql:latest
+
+5. Slave Postgresql Server OS type: Ubuntu
+
+mkdir /root/postgresql-slave1
+chown 1001:1001 /root/postgresql-slave1
+
+docker run --name postgresql-slave1 \
+  -e POSTGRESQL_REPLICATION_MODE=slave \
+  -e POSTGRESQL_PASSWORD=password123 \
+  -e POSTGRESQL_MASTER_HOST=10.11.0.239 \
+  -e POSTGRESQL_MASTER_PORT_NUMBER=5432 \
+  -e POSTGRESQL_REPLICATION_USER=my_repl_user \
+  -e POSTGRESQL_REPLICATION_PASSWORD=my_repl_password \
+  -v /root/postgresql-slave1:/bitnami/postgresql \
+  bitnami/postgresql:latest
+
+# Note: detach mode can be used with -d
+# N Number of Slaves Nodes can be setup according to requirement.
+
+
 
 
 
