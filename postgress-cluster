@@ -1,0 +1,71 @@
+#########################################################################################################
+
+# Postgres Setup
+# Setting up a streaming replication
+# https://hub.docker.com/r/bitnami/postgresql/
+
+# https://www.ionos.com/community/server-cloud-infrastructure/docker/understanding-and-managing-docker-container-volumes/
+
+
+# Master Setup
+
+docker volume create --name postgresql-master
+
+
+# docker volume rm [volume name]
+
+ docker run --name postgresql-master \
+  -e POSTGRESQL_REPLICATION_MODE=master \
+  -e POSTGRESQL_USERNAME=my_user \
+  -e POSTGRESQL_PASSWORD=password123 \
+  -e POSTGRESQL_DATABASE=my_database \
+  -e POSTGRESQL_REPLICATION_USER=my_repl_user  \
+  -e POSTGRESQL_REPLICATION_PASSWORD=my_repl_password \
+ -v postgresql-master:/bitnami/postgresql \
+ -p 5432:5432 \
+  -d  bitnami/postgresql:latest
+
+# Slaves SetUps
+
+docker volume create --name postgresql-slave1
+
+
+docker run --name postgresql-slave1 \
+  -e POSTGRESQL_REPLICATION_MODE=slave \
+  -e POSTGRESQL_PASSWORD=password123 \
+  -e POSTGRESQL_MASTER_HOST=10.11.0.239 \
+  -e POSTGRESQL_MASTER_PORT_NUMBER=5432 \
+  -e POSTGRESQL_REPLICATION_USER=my_repl_user \
+  -e POSTGRESQL_REPLICATION_PASSWORD=my_repl_password \
+  -v postgresql-slave1:/bitnami/postgresql \
+  bitnami/postgresql:latest
+
+
+##########################################################
+
+docker volume create --name postgresql-slave2
+
+docker run --name postgresql-slave2 \
+  -e POSTGRESQL_REPLICATION_MODE=slave \
+  -e POSTGRESQL_PASSWORD=password123 \
+  -e POSTGRESQL_MASTER_HOST=10.11.0.239 \
+  -e POSTGRESQL_MASTER_PORT_NUMBER=5432 \
+  -e POSTGRESQL_REPLICATION_USER=my_repl_user \
+  -e POSTGRESQL_REPLICATION_PASSWORD=my_repl_password \
+  -v postgresql-slave2:/bitnami/postgresql \
+  bitnami/postgresql:latest
+
+
+################################################################
+docker volume create --name postgresql-slave3
+
+docker run --name postgresql-slave3 \
+  -e POSTGRESQL_REPLICATION_MODE=slave \
+  -e POSTGRESQL_PASSWORD=password123 \
+  -e POSTGRESQL_MASTER_HOST=192.168.0.11 \
+  -e POSTGRESQL_MASTER_PORT_NUMBER=5432 \
+  -e POSTGRESQL_REPLICATION_USER=my_repl_user \
+  -e POSTGRESQL_REPLICATION_PASSWORD=my_repl_password \
+  -v postgresql-slave3:/bitnami/postgresql \
+  bitnami/postgresql:latest
+
