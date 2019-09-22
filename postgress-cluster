@@ -69,3 +69,21 @@ docker run --name postgresql-slave3 \
   -v postgresql-slave3:/bitnami/postgresql \
   bitnami/postgresql:latest
 
+
+###################################################################
+# https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-using-volumes.html
+
+# EBS Volume Attachment
+
+mkdir /root/postgresql-master
+mkfs.ext4 /dev/nvme1n1
+mount /dev/nvme1n1 /root/postgresql-master
+cp /etc/fstab /etc/fstab.orig
+
+# For Ubuntu 18.04 use the lsblk command.
+
+sudo lsblk -o +UUID
+
+
+
+
