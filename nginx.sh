@@ -54,7 +54,7 @@ location / {
     proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header        X-Forwarded-Proto $scheme;
     proxy_redirect http:// https://;
-    proxy_pass              http://jenkins:8080;
+    proxy_pass              http://IP:8080;
     # Required for new HTTP-based CLI
     proxy_http_version 1.1;
     proxy_request_buffering off;
