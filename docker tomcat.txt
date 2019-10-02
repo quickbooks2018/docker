@@ -1,0 +1,67 @@
+# Apache TomCat SetUp
+
+# Offcial # ref: https://hub.docker.com/_/tomcat?tab=description
+
+docker volume ls 
+
+docker volume create tomcat
+
+docker run --name tomcat -v tomcat:/usr/local/tomcat/conf -p 80:8080 --restart unless-stopped -d tomcat:8.0
+
+# The configuration files are available in /usr/local/tomcat/conf/. By default, no user is included in the "manager-gui" role required to operate the "/manager/html" web application. If you wish to use this app, you must define such a user in tomcat-users.xml.
+
+# User Settings
+
+docker exec -it tomcat /bin/bash
+
+cd /usr/local/tomcat/conf
+
+apt update -y
+
+apt install -y vim
+
+cp tomcat-users.xml tomcat-users.xml.backup
+
+vim tomcat-users.xml
+
+# uncomment the roles section
+
+#######################################################################
+
+<role rolename="manager-gui"/>
+  <role rolename="manager-script"/>
+  <user username="tomcat" password="cba!@#$%" roles="manager-gui"/>
+  <user username="admin" password="saqlainmushtaq.com.pk" roles="manager-gui,manager-script"/>
+  <user username="qasim" password="cloudelligent.com" roles="manager-script"/>
+
+########################################################################
+
+docker restart tomcat
+
+http://IP/manager
+
+# Provide the mentioned above passwords
+
+### Instructions ###
+401 Unauthorized
+You are not authorized to view this page. If you have not changed any configuration files, please examine the file conf/tomcat-users.xml in your installation. That file must contain the credentials to let you use this webapp.
+
+For example, to add the manager-gui role to a user named tomcat with a password of s3cret, add the following to the config file listed above.
+
+<role rolename="manager-gui"/>
+<user username="tomcat" password="s3cret" roles="manager-gui"/>
+Note that for Tomcat 7 onwards, the roles required to use the manager application were changed from the single manager role to the following four roles. You will need to assign the role(s) required for the functionality you wish to access.
+
+manager-gui - allows access to the HTML GUI and the status pages
+manager-script - allows access to the text interface and the status pages
+manager-jmx - allows access to the JMX proxy and the status pages
+manager-status - allows access to the status pages only
+The HTML interface is protected against CSRF but the text and JMX interfaces are not. To maintain the CSRF protection:
+
+Users with the manager-gui role should not be granted either the manager-script or manager-jmx roles.
+If the text or jmx interfaces are accessed through a browser (e.g. for testing since these interfaces are intended for tools not humans) then the browser must be closed afterwards to terminate the session.
+For more information - please see the Manager App HOW-TO.
+
+###
+
+http://IP/manager
