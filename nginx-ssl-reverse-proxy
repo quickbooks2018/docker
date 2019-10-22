@@ -48,7 +48,9 @@ location / {
        }
 }' >  ~/nginx/conf.d/server.conf
 
-#6
+#6 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /root/ssl/certs/server.key -out /root/ssl/certs/server.crt
+
+#7
 docker run --name nginx --restart unless-stopped -v ~/ssl/certs:/etc/ssl/certs -v ~/nginx/conf.d:/etc/nginx/conf.d -p 443:443 -p 80:80 -d nginx
 
 
