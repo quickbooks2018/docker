@@ -126,6 +126,14 @@ The issue was resolved by ---------> apt-get update -y && apt-get install -y lib
 
 https://github.com/moby/moby/issues/37531
 
+
+# Accessing private repos
+
+# anyone who wants to integrate a github or other repos just has to add this public key 
+# cat /var/jenkins_home/.ssh/id_rsa.pub
+
+# https://www.youtube.com/watch?v=HTlAssPBKBs
+
 ####################################################################################################################
 
 
