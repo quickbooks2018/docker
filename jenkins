@@ -140,6 +140,13 @@ ssh-keygen -t rsa -b 4096 -C "quickbooks2018@gmail.com" -f /var/jenkins_home/.ss
 
 # https://www.youtube.com/watch?v=HTlAssPBKBs
 
+# PUSH IMAGES
+https://techoverflow.net/2019/04/01/how-to-fix-docker-push-denied-requested-access-to-the-resource-is-denied/
+
+inside docker container
+
+docker login
+
 ####################################################################################################################
 
 
