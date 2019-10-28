@@ -10,6 +10,13 @@ docker volume create tomcat-webapps
 
 docker run --name tomcat -v tomcat:/usr/local/tomcat/conf -v tomcat-webapps:/usr/local/tomcat/webapps -p 80:8080 --restart unless-stopped -d tomcat:8.0
 
+
+# Usefull Links
+
+# https://gist.github.com/hallazzang/c346e544b1c6fce8f304fdd5b2295fb6
+
+# https://www.youtube.com/watch?v=pVrix9lo5zA
+
 # The configuration files are available in /usr/local/tomcat/conf/. By default, no user is included in the "manager-gui" role required to operate the "/manager/html" web application. If you wish to use this app, you must define such a user in tomcat-users.xml.
 
 # User Settings
