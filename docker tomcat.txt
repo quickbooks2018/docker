@@ -76,3 +76,11 @@ For more information - please see the Manager App HOW-TO.
 ###
 
 http://IP/manager
+
+
+# tomcat server without docker
+
+
+https://www.youtube.com/watch?v=m21nFreFw8A
+
+https://github.com/ValaxyTech/DevOpsDemos/blob/master/Tomcat/tomcat_installation.MD
