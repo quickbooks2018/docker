@@ -1,4 +1,4 @@
-# Tomcat directory structure   ----> /usr/local/tomcat
+# Tomcat directory structure   ----> /usr/local/tomcat  ---> create you application here, for example web1 (copy data from webapps, then cd web1, cd ROOT. rm -rf *, put your file here"
 
 # https://www.youtube.com/watch?v=V598VXQzTog
 
