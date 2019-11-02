@@ -1,5 +1,8 @@
 # Tomcat directory structure   ----> /usr/local/tomcat  ---> create you application here, for example web1 (copy data from webapps, then cd web1, cd ROOT. rm -rf *, put your file here"
 
+
+# docker run --name tomcat  -v tomcat:/usr/local/tomcat/conf -v /root/web1:/usr/local/tomcat/web1 -p 80:8080 --restart unless-stopped -d tomcat:8.0
+ 
 # https://www.youtube.com/watch?v=V598VXQzTog
 
 # Tomcat Alias
