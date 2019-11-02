@@ -1,4 +1,4 @@
-# Tomcat directory structure
+# Tomcat directory structure   ----> /usr/local/tomcat
 
 # https://www.youtube.com/watch?v=V598VXQzTog
 
