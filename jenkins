@@ -253,3 +253,43 @@ Network settings
 --link-local-ip=[] : Sets one or more container's Ethernet device's link local IPv4/IPv6 addresses
 
 https://docs.docker.com/engine/reference/run/
+
+
+
+
+#### Jenkinfile ###
+
+# https://stackoverflow.com/questions/38665282/how-to-set-custom-context-for-docker-build-in-jenkinsfile
+# https://stackoverflow.com/questions/42655474/jenkinsfile-pipeline-errors-expected-a-symbol-and-undefined-section
+
+pipeline {
+    agent any
+    environment{
+        TAG = 'getDockerTag()'
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                sh  docker.build("quickbooks2018/testing:latest", "-f docker/cartodb/Dockerfile . ")
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+            }
+        }
+    }
+}
+
+// This Command returns the latest git commit id
+def getDockerTag(){
+      def tag = sh script: 'git rev-parse HEAD', returnStdout: true
+      return tag
+    } 
+
