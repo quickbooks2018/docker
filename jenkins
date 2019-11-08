@@ -292,7 +292,7 @@ https://medium.com/@gustavo.guss/jenkins-building-docker-image-and-sending-to-re
 pipeline {
     environment {
     registry = "quickbooks2018/testing"
-    registryCredential = 'dockerhub'
+    
   }
     agent any
    
