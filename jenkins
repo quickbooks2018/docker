@@ -300,7 +300,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-          docker.build registry + ":$BUILD_NUMBER", "-f docker/cartodb/Dockerfile docker/cartodb/"
+          docker.build registry + ":$BUILD_NUMBER", "-f docker/cartodb/Dockerfile docker/cartodb"
                             }
                
             }
