@@ -285,4 +285,36 @@ pipeline {
 }
 
 
+### Jenkinsfile ###
+
+https://medium.com/@gustavo.guss/jenkins-building-docker-image-and-sending-to-registry-64b84ea45ee9
+
+pipeline {
+    environment {
+    registry = "quickbooks2018/testing"
+    registryCredential = 'dockerhub'
+  }
+    agent any
+   
+    stages {
+        stage('Build') {
+            steps {
+                script {
+          docker.build registry + ":$BUILD_NUMBER", "-f docker/cartodb/Dockerfile docker/cartodb/"
+                            }
+               
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+            }
+        }
+    }
+}
 
