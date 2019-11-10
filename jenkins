@@ -363,5 +363,9 @@ docker stop $(docker ps -a | grep -v "jenkins" | awk 'NR>1 {print $1}')
 
 docker rm $(docker ps -a | grep -v "jenkins" | awk 'NR>1 {print $1}')
 
+docker stop $(docker ps -a | grep -v "jenkins" | awk 'NR>1 {print $1}') 2>&1 >/dev/null
+
+docker rm $(docker ps -a | grep -v "jenkins" | awk 'NR>1 {print $1}') 2>&1 >/dev/null
+
 
 
