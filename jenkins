@@ -378,7 +378,8 @@ pipeline {
     environment {
     tests = "docker/cartodb/tests"
      bats = "/opt/bats"
-      run = "/opt/tests"
+      APP_ROOT = "/opt"
+      
     
   }
     agent any
@@ -391,9 +392,10 @@ pipeline {
                     echo $PWD
                     whoami
                     ls $PWD
+                    docker-compose up -d
                     echo 'Removing all existing running containers except Jenkins'
                     docker stop $(docker ps -a | grep -v "jenkins" | awk 'NR>1 {print $1}') 2>&1 >/dev/null
-                    docker rm $(docker ps -a | grep -v "jenkins" | awk 'NR>1 {print $1}') 2>&1 >/dev/null
+                    docker stop $(docker ps -a | grep -v "jenkins" | awk 'NR>1 {print $1}') 2>&1 >/dev/null
                     docker-compose up -d
                 '''
             }
@@ -406,18 +408,27 @@ pipeline {
                     whoami
                     ls $PWD
                     echo 'Mentioned below are the available paths to run our bash scripts'
-                    echo $PATH
                     echo 'Currently we have two containers running';docker-compose ps
-                    echo 'Installing bats'
-                    docker exec cartodb  git clone https://github.com/sstephenson/bats.git $bats
-                    docker exec cartodb chmod +x $bats/install.sh
-                    docker exec cartodb $bats/install.sh /usr/local 
-                    docker exec cartodb mkdir /opt/tests
-                    echo 'We are now going to copy our test script in the cartodb container at /opt/tests'
-                    docker cp $tests/run.sh cartodb:$run
-                    docker exec cartodb ls $run
-                    docker exec cartodb chmod +x $run/run.sh
-                    docker exec cartodb $run/run.sh /usr/local
+                    echo 'Installing bats on the docker host'
+                    echo  'Our PATH is';echo $PATH
+                    echo "Removing the $bats directory, if already exists for git clone bats";rm -rf $bats 
+                    git clone https://github.com/sstephenson/bats.git $bats
+                    chmod +x $bats/install.sh
+                    $bats/install.sh /usr/local 
+                    echo 'We are going to conduct API calls for importing files'
+                    ls $tests
+                    cp $tests/run.sh $APP_ROOT
+                     cp $tests/test.csv $APP_ROOT
+                    ls $APP_ROOT
+                    chmod +x $APP_ROOT/run.sh
+                    cd $APP_ROOT
+                    echo $APP_ROOT
+                    echo "Our Present Working Directory is $PWD"
+                    apt update -y && apt-get install iputils-ping
+                    ping -c 5 cartodb
+                    $APP_ROOT/run.sh /usr/local/bin
+                    
+                   
                     
                     
                 '''
