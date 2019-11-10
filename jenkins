@@ -367,6 +367,10 @@ docker stop $(docker ps -a | grep -v "jenkins" | awk 'NR>1 {print $1}') 2>&1 >/d
 
 docker rm $(docker ps -a | grep -v "jenkins" | awk 'NR>1 {print $1}') 2>&1 >/dev/null
 
+docker stop $(docker ps -a | grep -v "jenkins" | cut -d ' ' -f1) 2>&1 >/dev/null
+
+docker rm $(docker ps -a | grep -v "jenkins" | cut -d ' ' -f1) 2>&1 >/dev/null
+
 
 ### Jenkinsfile ###
 
