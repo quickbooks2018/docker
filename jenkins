@@ -318,3 +318,38 @@ pipeline {
     }
 }
 
+### Jenkinsfile ###
+
+# https://jenkins.io/doc/pipeline/tour/running-multiple-steps/
+
+pipeline {
+    environment {
+    repo = "quickbooks2018/testing"
+    
+  }
+    agent any
+   
+    stages {
+        stage('Build via docker-compose') {
+            steps {
+               
+              sh '''
+                    echo $PWD
+                    whoami
+                    ls $PWD
+                    docker-compose up -d
+                '''
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+            }
+        }
+    }
+}
