@@ -353,3 +353,15 @@ pipeline {
         }
     }
 }
+
+
+### Stop all containers except ONE ###
+
+https://stackoverflow.com/questions/40744000/remove-all-docker-containers-except-one
+
+docker stop $(docker ps -a | grep -v "jenkins" | awk 'NR>1 {print $1}')
+
+docker rm $(docker ps -a | grep -v "jenkins" | awk 'NR>1 {print $1}')
+
+
+
