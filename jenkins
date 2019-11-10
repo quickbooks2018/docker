@@ -373,7 +373,8 @@ docker rm $(docker ps -a | grep -v "jenkins" | awk 'NR>1 {print $1}') 2>&1 >/dev
 pipeline {
     environment {
     tests = "docker/cartodb/tests"
-     bats = "/opt/bats"  
+     bats = "/opt/bats"
+      run = "/opt/tests"
     
   }
     agent any
@@ -408,7 +409,11 @@ pipeline {
                     docker exec cartodb chmod +x $bats/install.sh
                     docker exec cartodb $bats/install.sh /usr/local 
                     docker exec cartodb mkdir /opt/tests
-                    echo 'We are now going to copy our test script in the cartodb container at /opt/tests';docker exec cartodb ls /opt/tests
+                    echo 'We are now going to copy our test script in the cartodb container at /opt/tests'
+                    docker cp $tests/run.sh cartodb:$run
+                    docker exec cartodb ls $run
+                    docker exec cartodb chmod +x $run/run.sh
+                    docker exec cartodb $run/run.sh /usr/local
                     
                     
                 '''
@@ -421,4 +426,3 @@ pipeline {
         }
     }
 }
-
