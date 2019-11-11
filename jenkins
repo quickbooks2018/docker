@@ -422,7 +422,7 @@ pipeline {
                      cp $tests/test.csv $api_test
                     ls $api_test
                  #   chmod +x $api_test/run.sh /usr/local/bin
-                    bash -uvx chmod +x $api_test/wip.sh /usr/local/bin
+                    bash -uvx  $api_test/wip.sh
                     ping -c 5 cartodb
                     $api_test/wip.sh /usr/local/bin
                     
