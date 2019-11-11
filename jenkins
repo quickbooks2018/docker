@@ -378,7 +378,7 @@ pipeline {
     environment {
     tests = "docker/cartodb/tests"
      bats = "/opt/bats"
-      APP_ROOT = "/opt"
+      api_test = "/opt"
       
     
   }
@@ -417,16 +417,15 @@ pipeline {
                     $bats/install.sh /usr/local 
                     echo 'We are going to conduct API calls for importing files'
                     ls $tests
-                    cp $tests/run.sh $APP_ROOT
-                     cp $tests/test.csv $APP_ROOT
-                    ls $APP_ROOT
-                    chmod +x $APP_ROOT/run.sh
-                    cd $APP_ROOT
-                    echo $APP_ROOT
-                    echo "Our Present Working Directory is $PWD"
-                    apt update -y && apt-get install iputils-ping
+                 #   cp $tests/run.sh $api_test
+                    cp $tests/wip.sh $api_test
+                     cp $tests/test.csv $api_test
+                    ls $api_test
+                 #   chmod +x $api_test/run.sh /usr/local/bin
                     ping -c 5 cartodb
-                    $APP_ROOT/run.sh /usr/local/bin
+                    $api_test/wip.sh /usr/local/bin
+                    
+                  
                     
                    
                     
