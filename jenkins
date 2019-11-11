@@ -408,23 +408,24 @@ pipeline {
                     whoami
                     ls $PWD
                     echo 'Mentioned below are the available paths to run our bash scripts'
+                    echo $PATH
                     echo 'Currently we have two containers running';docker-compose ps
                     echo 'Installing bats on the docker host'
                     echo  'Our PATH is';echo $PATH
                     echo "Removing the $bats directory, if already exists for git clone bats";rm -rf $bats 
                     git clone https://github.com/sstephenson/bats.git $bats
                     chmod +x $bats/install.sh
-                    $bats/install.sh /usr/local 
+                    $bats/install.sh /usr/local
                     echo 'We are going to conduct API calls for importing files'
                     ls $tests
-                 #   cp $tests/run.sh $api_test
                     cp $tests/wip.sh $api_test
-                     cp $tests/test.csv $api_test
+                    cp $tests/wip.sh /usr/local/bin
+                    cp $tests/test.csv $api_test
                     ls $api_test
-                 #   chmod +x $api_test/run.sh /usr/local/bin
-                    bash -uvx  $api_test/wip.sh
                     ping -c 5 cartodb
-                    $api_test/wip.sh /usr/local/bin
+                    bash -uvx wip.sh
+                    
+                    
                     
                   
                     
