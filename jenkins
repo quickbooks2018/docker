@@ -391,11 +391,10 @@ docker rm $(docker ps -a | grep -v "jenkins" | cut -d ' ' -f1) 2>&1 >/dev/null
 pipeline {
     environment {
     tests = "docker/cartodb/tests"
-     bats = "/opt/bats"
-      api_test = "/opt"
-      
-    
+    bats = "/opt/bats"
+    CARTO_HOST= "geografia"
   }
+
     agent any
    
     stages {
@@ -403,49 +402,50 @@ pipeline {
             steps {
                
               sh '''
+              
+              
                     echo $PWD
                     whoami
                     ls $PWD
+                    apt update -y && apt-get install iputils-ping -y
                     docker-compose up -d
                     echo 'Removing all existing running containers except Jenkins'
                     docker stop $(docker ps -a | grep -v "jenkins" | awk 'NR>1 {print $1}') 2>&1 >/dev/null
                     docker stop $(docker ps -a | grep -v "jenkins" | awk 'NR>1 {print $1}') 2>&1 >/dev/null
-                    docker-compose up -d
+                    echo 'Number of containers currently running'
+                    docker-compose down
+                    docker ps -a
+                    docker-compose up --build -d
+                    echo '##########################################################################'
+                    docker-compose exec -T cartodb service nginx status
+                    docker-compose exec -T cartodb service nginx stop
+                   #  docker-compose exec -T cartodb service nginx status
+                    
+                    
+                    # docker-compose up -d
+                    # docker-compose exec -T cartodb service nginx stop
+                    
+                    
+                    
                 '''
             }
         }
         stage('Unit Testing cartodb container') {
             steps {
-                
                  sh '''
-                    echo $PWD
-                    whoami
-                    ls $PWD
-                    echo 'Mentioned below are the available paths to run our bash scripts'
-                    echo $PATH
-                    echo 'Currently we have two containers running';docker-compose ps
                     echo 'Installing bats on the docker host'
-                    echo  'Our PATH is';echo $PATH
-                    echo "Removing the $bats directory, if already exists for git clone bats";rm -rf $bats 
+                    echo  'Our PATH is'; echo $PATH
+                    echo "Removing the $bats directory, if already exists for git clone bats"; rm -rf $bats 
                     git clone https://github.com/sstephenson/bats.git $bats
                     chmod +x $bats/install.sh
                     $bats/install.sh /usr/local
+                    echo 'Status of running containers'
+                    docker-compose ps
+                    docker ps -a
                     echo 'We are going to conduct API calls for importing files'
-                    ls $tests
-                    cp $tests/wip.sh $api_test
-                    cp $tests/wip.sh /usr/local/bin
-                    cp $tests/test.csv $api_test
-                    ls $api_test
-                    ping -c 5 cartodb
-                    bash -uvx wip.sh
                     
-                    
-                    
-                  
-                    
-                   
-                    
-                    
+                    chmod +x $tests/run.sh
+                    bash -uvx $tests/run.sh
                 '''
             }
         }
@@ -453,6 +453,14 @@ pipeline {
             steps {
                 echo 'Deploying....'
             }
+        }
+        stage('Cleanup') {
+            steps{
+                sh '''
+                    docker-compose down
+                '''
+            }
+            
         }
     }
 }
