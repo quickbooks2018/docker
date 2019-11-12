@@ -419,7 +419,7 @@ pipeline {
                     echo '##########################################################################'
                     docker-compose exec -T cartodb service nginx status
                     docker-compose exec -T cartodb service nginx stop
-                   #  docker-compose exec -T cartodb service nginx status
+                  
                     
                     
                     # docker-compose up -d
@@ -442,10 +442,10 @@ pipeline {
                     echo 'Status of running containers'
                     docker-compose ps
                     docker ps -a
-                    echo 'We are going to conduct API calls for importing files'
-                    
-                    chmod +x $tests/run.sh
-                    bash -uvx $tests/run.sh
+                    echo 'We are going to conduct API calls for importing files & changing our directory to'
+                    chmod +x $tests/wip.sh
+                    cp $tests/wip.sh /usr/local/bin
+                    bash -uvx $tests/wip.sh
                 '''
             }
         }
