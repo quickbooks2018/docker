@@ -480,7 +480,7 @@ pipeline {
             steps {
                
               sh '''
-                    docker-compose up -d
+                    docker-compose up -d --build
                     docker-compose exec -T cartodb service nginx stop
                 '''
             }
