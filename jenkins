@@ -7,7 +7,7 @@ docker network ls
 
 docker network create --driver=bridge cloudelligent
 
-docker run --name jenkins --network=cloudelligent -d --user=root -v ~/jenkins:/var/jenkins_home -p 8080:8080 --restart unless-stopped jenkins/jenkins:2.176.1
+docker run --name jenkins --network=cloudelligent -d --user=root -v ~/jenkins:/var/jenkins_home -p 8080:8080 --restart unless-stopped jenkins/jenkins:lts
 
 
 #1 
@@ -106,7 +106,7 @@ docker network create --driver=bridge cloudelligent
 
 #####################################################################################################################
 https://github.com/jenkinsci/docker/blob/master/README.md
-docker run --name jenkins -d -v /home/ubuntu/jenkins:/var/jenkins_home -p 8080:8080 -p 50000:50000 --restart unless-stopped jenkins/jenkins:2.176.1
+docker run --name jenkins -d -v /home/ubuntu/jenkins:/var/jenkins_home -p 8080:8080 -p 50000:50000 --restart unless-stopped jenkins/jenkins:lts
 ######################################################################################################################
 
 docker run --name jenkins -d --user=root -v /root/jenkins:/var/jenkins_home -p 8080:8080 --restart unless-stopped jenkins/jenkins:2.176.1
@@ -119,7 +119,7 @@ https://forums.docker.com/t/docker-not-found-in-jenkins-pipeline/31683/14
 Building Docker images with Jenkins that runs inside a Docker container
 
 
-docker run --name jenkins -d --user=root -v /root/jenkins:/var/jenkins_home -p 8080:8080 -v $(which docker):/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock --restart always jenkins/jenkins:2.176.1
+docker run --name jenkins -d --user=root -v /root/jenkins:/var/jenkins_home -p 8080:8080 -v $(which docker):/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock --restart always jenkins/jenkins:lts
 ###############################################################################################
 
 The issue was resolved by ---------> apt-get update -y && apt-get install -y libltdl7 -------------- > on container
@@ -135,7 +135,7 @@ https://github.com/moby/moby/issues/37531
 
 # https://docs.docker.com/network/host/
 
-docker run --name jenkins -d --network=host --user=root -v /root/jenkins:/var/jenkins_home -p 8080:8080 -v $(which docker):/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock --restart always jenkins/jenkins:2.176.1
+docker run --name jenkins -d --network=host --user=root -v /root/jenkins:/var/jenkins_home -p 8080:8080 -v $(which docker):/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock --restart always jenkins/jenkins:lts
 
 
 
