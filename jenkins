@@ -407,7 +407,7 @@ pipeline {
                     echo $PWD
                     whoami
                     ls $PWD
-                    apt update -y && apt-get install iputils-ping -y
+                    apt update -y && apt-get install jq iputils-ping -y
                     docker-compose up -d
                     echo 'Removing all existing running containers except Jenkins'
                     docker stop $(docker ps -a | grep -v "jenkins" | awk 'NR>1 {print $1}') 2>&1 >/dev/null
@@ -469,8 +469,10 @@ pipeline {
 
 pipeline {
     environment {
-    tests = "docker/cartodb/tests"
+    // not used yet - maybe needed later
+    tests = "docker/cartodb/tests" 
     bats = "/opt/bats"
+   
   }
 
     agent any
@@ -480,6 +482,7 @@ pipeline {
             steps {
                
               sh '''
+                    apt update -y && apt install jq -y
                     docker-compose up -d --build
                     docker-compose exec -T cartodb service nginx stop
                 '''
@@ -495,7 +498,10 @@ pipeline {
                     chmod +x $bats/install.sh
                     $bats/install.sh /usr/local
                     echo 'We are going to conduct API calls for importing files'
-                    ./docker/cartodb/tests/run.sh
+                    docker-compose ps; sleep 2
+                   ./docker/cartodb/tests/run.sh
+                   
+                    
                 '''
             }
         }
