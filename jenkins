@@ -464,7 +464,7 @@ pipeline {
     }
 }
 
-
+### Important Point if Jenkins Stuck use SLEEP 60 in Pipelines
 ### Jenkinsfile
 
 pipeline {
@@ -498,6 +498,7 @@ pipeline {
                     chmod +x $bats/install.sh
                     $bats/install.sh /usr/local
                     echo 'We are going to conduct API calls for importing files'
+                    sleep 60
                     docker-compose ps; sleep 2
                    ./docker/cartodb/tests/run.sh
                    
