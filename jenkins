@@ -530,8 +530,7 @@ pipeline {
 pipeline {
     environment {
     // not used yet - maybe needed later
-    tests = "docker/cartodb/tests" 
-    bats = "/opt/bats"
+        CIRCLECI="API Trigger"
    
   }
     agent any
@@ -549,10 +548,12 @@ pipeline {
             steps {
                  sh '''#!/bin/bash
                    
-                   curl -u {6dad0147210a747e7ef0df8baf41fb06c65ae776}: \
-                   -d build_parameters[CIRCLE_JOB]=deploy_docker \
+                   curl -u 73c54a5de3207e0plala7cec148ttarr6fshshhshsh: \
+                    -d build_parameters[CIRCLE_JOB]=build \
                    https://circleci.com/api/v1.1/project/github/quickbooks2018/learning/tree/master
-                    
+                  # Note: Job Name is build ---> as mentioned in config.yml ---> just below jobs
+                  # https://circleci.com/docs/2.0/sample-config/
+                  https://circleci.com/docs/2.0/api-job-trigger/
                 '''
             }
         }
@@ -572,4 +573,28 @@ pipeline {
             
         }
     }
+    
+    
+    ############################# Circleci Single Runner Example ################################
+    
+    config.yml
+    
+    ##############################################################################################
+    
+    version: 2
+jobs:
+  build:
+    docker:
+    - image: circleci/node:4.8.2
+    steps:
+    - checkout
+    - run:
+        command: echo "hello world"
+    environment:
+    - CIRCLE_COMPARE_URL: https://github.com/quickbooks2018/learning/compare/ad639c71599375e0a1fe7d24255fef1a1b9a4a86...bba157982a3bf1859d0797a3a7442d81ace388dc
+workflows:
+  version: 2
+  workflow:
+    jobs:
+    - build
 }
