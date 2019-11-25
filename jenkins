@@ -553,7 +553,7 @@ pipeline {
                    https://circleci.com/api/v1.1/project/github/quickbooks2018/learning/tree/master
                   # Note: Job Name is build ---> as mentioned in config.yml ---> just below jobs
                   # https://circleci.com/docs/2.0/sample-config/
-                  https://circleci.com/docs/2.0/api-job-trigger/
+                  # https://circleci.com/docs/2.0/api-job-trigger/
                 '''
             }
         }
