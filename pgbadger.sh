@@ -35,6 +35,8 @@ echo ""
 
 echo "ALHUMDULLIAH Latest pgbadger-report is available at "$IP":10000"
 
+echo ""
+
 # docker rm -f pgbadger-report
 
 #END
