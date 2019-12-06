@@ -598,3 +598,10 @@ workflows:
     jobs:
     - build
 }
+
+
+### GIT SMART ###
+
+https://github.com/geelen/git-smart
+
+git smart-pull before doing any work
