@@ -605,3 +605,81 @@ workflows:
 https://github.com/geelen/git-smart
 
 git smart-pull before doing any work
+
+
+
+### docker image build & push automation
+
+
+pipeline {
+    environment {
+    // not used yet - maybe needed later
+    tests = "docker/cartodb/tests" 
+    bats = "/opt/bats"
+   
+  }
+
+    agent any
+   
+    stages {
+        stage('Build via docker-compose') {
+            steps {
+               
+              sh '''
+                   
+                    
+                    apt update -y && apt install jq -y
+                    
+                    docker-compose up -d --build
+                    docker-compose exec -T cartodb service nginx stop
+                '''
+            }
+        }
+        stage('Unit Testing cartodb container') {
+            steps {
+                 sh '''
+                    echo 'Installing bats on the docker host'
+                    echo  'Our PATH is'; echo $PATH
+                    echo "Removing the $bats directory, if already exists for git clone bats"; rm -rf $bats 
+                    git clone https://github.com/sstephenson/bats.git $bats
+                    chmod +x $bats/install.sh
+                    $bats/install.sh /usr/local
+                    echo 'We are going to conduct API calls for importing files'
+                    docker-compose ps; sleep 15
+                   ./docker/cartodb/tests/run.sh
+                    docker-compose down
+                    
+                '''
+            }
+        }
+        stage('GitHub Tagging & Building docker image creation') {
+            steps {
+                sh '''
+                   
+                    echo 'Creating a docker image with GitHub Tags Option ....'
+                    
+                    apt update -y && apt install -y git
+                   
+                    # This will give the latest commit ID
+                    COMMIT_ID=`git rev-list --tags --date-order | head -n1`
+                    # Latest TAG
+                    TAG=`git show-ref --tags | grep "$COMMIT_ID" | awk -F / '{print $NF}'`
+                    echo $COMMIT_ID
+                    echo $TAG
+                    docker build -t chasim1982/samba:$TAG ./docker/cartodb
+                    docker push chasim1982/samba:$TAG
+                    #END
+                    
+                    
+                '''
+            }
+        }
+        stage('Cleanup') {
+            steps{
+                sh '''
+                    docker-compose down
+                '''
+            }
+            
+        }
+    }
