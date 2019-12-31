@@ -7,15 +7,15 @@ docker network create bitnami-wordpress-tier
 
 # Mariadb Setup
 docker volume create mariadb
-docker run --name mariadb -e MARIADB_ROOT_PASSWORD="ausdermoitoeuropas" -v mariadb:/bitnami --network="bitnami-wordpress-tier" -d bitnami/mariadb:latest
+docker run --name mariadb -e MARIADB_ROOT_PASSWORD="ausdermoitoeuropas" -v mariadb:/bitnami --network="bitnami-wordpress-tier" --restart unless-stopped -d bitnami/mariadb:latest
 
 
 # Phpmyadmin Setup
-docker run --name phpmyadmin --network="bitnami-wordpress-tier" --link mariadb:db -id -p 8080:80 phpmyadmin/phpmyadmin
+docker run --name phpmyadmin --network="bitnami-wordpress-tier" --link mariadb:db -id -p 8080:80 --restart unless-stopped phpmyadmin/phpmyadmin
 
 
 # Wordpress Setup
-docker run --name bitnami-wordpress --network="bitnami-wordpress-tier" -e WORDPRESS_DATABASE_NAME="bitnami_wordpress" -e WORDPRESS_DATABASE_USER="root" -e WORDPRESS_DATABASE_PASSWORD="ausdermoitoeuropas" --link mariadb:db -p 80:80 -v /root/wordpress:/bitnami -d bitnami/wordpress:latest
+docker run --name bitnami-wordpress --network="bitnami-wordpress-tier" -e WORDPRESS_DATABASE_NAME="bitnami_wordpress" -e WORDPRESS_DATABASE_USER="root" -e WORDPRESS_DATABASE_PASSWORD="ausdermoitoeuropas" --link mariadb:db -p 80:80 -v /root/wordpress:/bitnami --restart unless-stopped -d bitnami/wordpress:latest
 
 
 
