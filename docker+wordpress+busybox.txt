@@ -8,7 +8,7 @@ docker run --name MYSQL -e MYSQL_ROOT_PASSWORD=abc -v /home/asim/Desktop/local:/
 
 
 #PHPMYADMIN SETUP
-docker run --name PHPMYADMIN --network="ASIM-86-A" --link MYSQL:db -td phpmyadmin/phpmyadmin
+docker run --name PHPMYADMIN --network="ASIM-86-A" --link MYSQL:db -id phpmyadmin/phpmyadmin
 
 
 #BUSYBOX FOR DATA ONLY CONTAINERS
