@@ -20,3 +20,68 @@ docker run --name bitnami-wordpress --network="bitnami-wordpress-tier" -e WORDPR
 
 
 #END
+
+
+##############################################################################################################################################
+
+
+#!/bin/bash
+
+#1 
+mkdir -p ~/ssl/certs
+
+#2 
+mkdir -p ~/nginx/conf.d
+
+#3 
+cd ~/nginx/conf.d
+
+#4 
+apt update -y  2> /dev/null 
+apt install -y vim 2> /dev/null
+yum update -y  2> /dev/null 
+yum install -y vim 2> /dev/null
+
+#5
+echo '
+server {
+  listen 80;
+  server_name 13.229.153.227;
+  return 301 https://$host$request_uri;
+}
+server {
+  server_name 13.229.153.227;
+  listen 443 ssl;
+  ssl_certificate /etc/ssl/certs/server.crt;
+  ssl_certificate_key /etc/ssl/certs/server.key;
+  
+  
+    ssl_protocols       TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
+    ssl_ciphers    TLS-CHACHA20-POLY1305-SHA256:TLS-AES-256-GCM-SHA384:TLS-AES-128-GCM-SHA256:HIGH:!aNULL:!MD5; 
+ 
+  
+  
+location / {
+    proxy_set_header        Host $host:$server_port;
+    proxy_set_header        X-Real-IP $remote_addr;
+    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header        X-Forwarded-Proto $scheme;
+    proxy_redirect http:// https://;
+    proxy_pass              http://172.31.40.41:8000;
+    # Required for new HTTP-based CLI
+    proxy_http_version 1.1;
+    proxy_request_buffering off;
+  
+       }
+}' >  ~/nginx/conf.d/server.conf
+
+#6 
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /root/ssl/certs/server.key -out /root/ssl/certs/server.crt
+
+#7
+docker run --name nginx --network="bitnami-wordpress-tier" --restart unless-stopped -v ~/ssl/certs:/etc/ssl/certs -v ~/nginx/conf.d:/etc/nginx/conf.d -p 443:443 -p 80:80 -d nginx
+
+
+
+
+#END
