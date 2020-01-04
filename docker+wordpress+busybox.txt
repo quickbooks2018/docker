@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# https://hackernoon.com/docker-data-containers-cb250048d162
 
 #MYSQL SETUP
 docker run --name MYSQL -e MYSQL_ROOT_PASSWORD=abc -v /home/asim/Desktop/local:/var/lib/mysql --network="ASIM-86-A" -d mysql
