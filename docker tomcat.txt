@@ -5,6 +5,18 @@
 # docker volume create tomcat
 
 # docker run --name tomcat  -v tomcat:/usr/local/tomcat/conf -v /root/web1:/usr/local/tomcat/web1 -p 80:8080 --restart unless-stopped -d tomcat:8.0
+
+
+#########################################################################################################################
+
+# persistent volumes example
+
+docker volume create tomcat-devops
+docker volume create tomcat-devops-webapps
+
+docker run --name tomcat-devops --network="cloudelligent" -v tomcat-devops:/usr/local/tomcat/conf -v tomcat-devops-webapps:/usr/local/tomcat/webapps -p 8037:8080 --restart unless-stopped -d tomcat:8.0
+
+#########################################################################################################################
  
 # https://www.youtube.com/watch?v=V598VXQzTog
 
