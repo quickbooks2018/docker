@@ -10,6 +10,7 @@ docker network create -d macvlan \
   -o parent=ens33 home_asim
 
 
+docker run --name ubuntu-macvlan --network home_asim -id ubuntu:latest
 
 
 
