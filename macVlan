@@ -1,0 +1,58 @@
+
+# https://docs.docker.com/network/macvlan/
+
+Bridge mode
+To create a macvlan network which bridges with a given physical network interface, use --driver macvlan with the docker network create command. You also need to specify the parent, which is the interface the traffic will physically go through on the Docker host.
+
+docker network create -d macvlan \
+  --subnet=192.168.1.0/24 \
+  --gateway=192.168.1.1 \
+  -o parent=ens33 home_asim
+
+
+
+
+
+###
+# https://unix.stackexchange.com/questions/490722/unable-to-start-ssh-service-on-centos-docker-image
+
+
+
+docker network create -d macvlan --subnet=192.168.1.0/24 --ip-range=192.168.1.100/24 --gateway=192.168.1.1 -o macvlan_mode=bridge -o parent=ens33 home_asim_2
+
+### For Amazon-Linux & Centos-7 ---> SystemD
+https://unix.stackexchange.com/questions/490722/unable-to-start-ssh-service-on-centos-docker-image
+
+Systemd is now included in both the centos:7 and centos:latest base containers, but it is not active by default. In order to use systemd, you will need to include text similar to the example Dockerfile below:
+
+The sample Dockerfile provided is as follows:
+
+FROM amazonlinux:latest
+ENV container docker
+RUN yum update -y && yum install -y net-tools && yum install -y openssh-server openssh-clients
+RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == \
+systemd-tmpfiles-setup.service ] || rm -f $i; done); \
+rm -f /lib/systemd/system/multi-user.target.wants/*;\
+rm -f /etc/systemd/system/*.wants/*;\
+rm -f /lib/systemd/system/local-fs.target.wants/*; \
+rm -f /lib/systemd/system/sockets.target.wants/*udev*; \
+rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
+rm -f /lib/systemd/system/basic.target.wants/*;\
+rm -f /lib/systemd/system/anaconda.target.wants/*;
+VOLUME [ "/sys/fs/cgroup" ]
+CMD ["/usr/sbin/init"]
+
+
+By removing these files, systemd is prevented from starting several services during container startup. This approach results in a bare-bones, yet functional systemd inside the container.
+
+Running a container from this image also requires a specific option to mount the cgroup volume:
+
+docker run -it -v /sys/fs/cgroup:/sys/fs/cgroup:ro systemd-app
+
+# For Non-Ubuntu Hosts
+
+docker run --name amazon-linux-macvlan -id -v /sys/fs/cgroup:/sys/fs/cgroup:ro --network home_asim quickbooks2018/amazonlinux
+
+# For Ubuntu Hosts
+
+docker run --name amazon-linux-macvlan -id -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v /tmp/$(mktemp -d):/run --network home_asim quickbooks2018/amazonlinux
