@@ -95,6 +95,13 @@ docker run --name nginx --network=cloudelligent --restart unless-stopped -v ~/ss
 
 # Docker Custom Bridge Network is recommended in order to communicate containers with container name.
 
+https://stackoverflow.com/questions/25845538/how-to-use-sudo-inside-a-docker-container
+
+# For Installations & updates of package in a container.
+
+docker exec -u root -t -i container_id /bin/bash
+
+
 https://hub.docker.com/r/jenkins/jenkins/tags
 
 STABLE Version:2.176.1
