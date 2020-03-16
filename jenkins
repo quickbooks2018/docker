@@ -392,7 +392,7 @@ pipeline {
     environment {
     tests = "docker/cartodb/tests"
     bats = "/opt/bats"
-    CARTO_HOST= "geografia"
+    CARTO_HOST= "cloudelligent"
   }
 
     agent any
