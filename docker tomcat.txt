@@ -14,7 +14,7 @@
 docker volume create tomcat-devops
 docker volume create tomcat-devops-webapps
 
-docker run --name tomcat-devops --network="cloudelligent" -v tomcat-devops:/usr/local/tomcat/conf -v tomcat-devops-webapps:/usr/local/tomcat/webapps -p 8037:8080 --restart unless-stopped -d tomcat:8.0
+docker run --name tomcat-devops --network="asim-devops" -v tomcat-devops:/usr/local/tomcat/conf -v tomcat-devops-webapps:/usr/local/tomcat/webapps -p 8037:8080 --restart unless-stopped -d tomcat:8.0
 
 #########################################################################################################################
  
@@ -70,7 +70,7 @@ vim tomcat-users.xml
   <role rolename="manager-script"/>
   <user username="tomcat" password="cba!@#$%" roles="manager-gui"/>
   <user username="admin" password="saqlainmushtaq.com.pk" roles="manager-gui,manager-script"/>
-  <user username="qasim" password="cloudelligent.com" roles="manager-script"/>
+  <user username="qasim" password="asim-devops" roles="manager-script"/>
 
 ########################################################################
 
