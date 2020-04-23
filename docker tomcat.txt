@@ -77,12 +77,13 @@ vim tomcat-users.xml
 docker restart tomcat
 
 http://IP/manager
-
+##############################################################################
 # HOST MANAGER ROLE
 # https://tomcat.apache.org/tomcat-8.0-doc/html-host-manager-howto.html
+##############################################################################
 
 <user username="test" password="chang3m3N#w" roles="admin-gui"/>
-
+##############################################################################
 # Provide the mentioned above passwords
 
 ### Instructions ###
