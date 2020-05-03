@@ -1,7 +1,7 @@
 #!/bin/bash
-#OS: Ubuntu16/18-LTS
-#Purpose:Automated deployment of Pritunl
-#Owner:cloudelligent.com
+# OS: Ubuntu16/18-LTS
+# Purpose:Automated deployment of Pritunl
+# Maintainer: Muhammad Asim
 
 apt update -y
 apt install -y curl
