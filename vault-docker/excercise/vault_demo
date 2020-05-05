@@ -1,0 +1,217 @@
+# Addtional Commands
+##########################################################
+# Initialize the Vault Cluster
+# export VAULT_ADDR='http://127.0.0.1:8200'
+# ---> vault operator init -key-shares=5 -key-threshold=3
+##########################################################
+# Initialize the Vault Cluster
+# ---> vault operator unseal
+# ---> vault status
+# ---> Authenticate against the vault
+# ---> vault login  ----> put the root token
+###########################################################
+# # Enable logging, Before we test out the functionality, let's enable an Audit Device:
+# ---> docker exec -it vault sh
+# ---> touch /vault/logs/audit.log
+
+# ---> vault audit enable file file_path=/vault/logs/audit.log
+# ---> vault audit list
+# apk update
+# apk add jq
+# cat /vault/logs/audit.log | jq
+##############################################################
+# New Token Creation
+# https://learn.hashicorp.com/vault/identity-access-management/tokens
+# ---> vault token create
+# ---> vault token lookup KKSKSKDJJDJDJDJS
+# ---> vault token create -ttl=300s
+############################################################
+# Vault Authenticate from a remote machine
+# ---> export VAULT_ADDR='http://172.31.66.116:8200'
+# ---> vault auth list
+#############################################################
+# Policies
+# Vault enable USERNAME & PASSOWRDS
+# ---> vault auth enable userpass
+# rdsadmin
+# ---> vault policy write rdsadmin ./rdsadmin.hcl
+# ---> vault policy list
+# ---> vault policy read rdsadmin
+# mysqladmin
+# ---> vault policy write mysqladmin ./mysqladmin.hcl
+# ---> vault policy list
+# ---> vault policy read mysqladmin
+
+# UserSetUP
+# Note: Best practice is assign a policy to a group & users in that group but we are doing here creating a rdsadmin ---> user ---> assigining a policy
+# ---> vault write auth/userpass/users/mysqladmin password='pakistan1982 policies=mysqladmin
+# ---> vault write auth/userpass/users/rdsadmin password='cba!@#$%' policies=rdsadmin
+##############################################################
+
+######################################################################
+# ---> vault secrets enable -path=database database #################################### ---> Must
+######################################################################
+
+### Dynamic Credentials & Vault Understanding ###
+###################################################
+# https://www.vaultproject.io/docs/secrets/databases/mysql-maria
+
+### Databases
+##############
+
+
+
+# Requirement: Actual local database, valid url/port/username/password
+
+### MySQL Local Environment Excercise ###
+
+## Root ###
+vault write database/config/my-mysql-database \
+    plugin_name=mysql-database-plugin \
+    connection_url="{{username}}:{{password}}@tcp(192.168.1.6:3306)/" \
+    allowed_roles="mysqladmin" \
+    username="root" \
+    password="ausdermoitoeuropas"
+
+vault write database/roles/mysqladmin \
+    db_name=local-mysql-database \
+    creation_statements="CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT SELECT ON *.* TO '{{name}}'@'%';" \
+    default_ttl="1h" \
+    max_ttl="24h"
+
+### Login with mysqladmin ###
+# Vault login
+# https://www.vaultproject.io/docs/commands/login
+# Ubuntu-Persistent Environment Vairables ---> echo "export VAULT_ADDR='http://172.31.45.55:8200'" > /etc/profile.d/vault_environment_variables.sh
+# Ubuntu-Persistent Environment Vairables ---> chmod +x /etc/profile.d/vault_environment_variables.sh
+# ---> export VAULT_ADDR='http://172.31.45.55:8200'  ---> VAULT_SERVER
+# ---> vault login ---> default ask for a token
+# ---> vault login -method=userpass username=mysqladmin ---> From next time you can use token for authentication
+
+# Dynamic Secrets
+# https://www.vaultproject.io/docs/secrets/databases/mysql-maria.html
+
+# Database Engine
+# https://www.vaultproject.io/intro/getting-started/secrets-engines
+# https://www.vaultproject.io/docs/secrets/databases/mysql-maria
+
+# ---> vault read database/creds/mysqladmin
+
+################################################################################################################################
+### AWS RDS Excercise ###
+# https://www.vaultproject.io/docs/secrets/databases/mysql-maria
+# ---> allowed Roles # https://learn.hashicorp.com/vault/secrets-management/db-root-rotation
+# ----> allowed Roles # https://www.vaultproject.io/api-docs/secret/databases#allowed_roles
+# Requirement: Actual RDS database, valid url/port/username/password
+
+## Root ###
+ vault write database/config/rds-mysql-database \
+    plugin_name=mysql-rds-database-plugin \
+    connection_url="{{username}}:{{password}}@tcp(RDSDNSENDPOINT:3306)/" \
+    allowed_roles="rdsmysqladmin" \
+    username="infragurus" \
+    password="123456789"
+
+vault write database/roles/rdsmysqladmin \
+    db_name=rds-mysql-database \
+    creation_statements="CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT SELECT ON *.* TO '{{name}}'@'%';" \
+    default_ttl="1h" \
+    max_ttl="24h"
+
+
+### Login with rdsmysqladmin ###
+# Vault login
+# https://www.vaultproject.io/docs/commands/login
+
+# Ubuntu-Persistent Environment Vairables ---> echo "export VAULT_ADDR='http://172.31.45.55:8200'" > /etc/profile.d/vault_environment_variables.sh
+# Ubuntu-Persistent Environment Vairables ---> chmod +x /etc/profile.d/vault_environment_variables.sh
+# ---> export VAULT_ADDR='http://172.31.70.55:8200'  ---> VAULT_SERVER
+# ---> vault login ---> default ask for a token
+# ---> vault login -method=userpass username=rdsadmin ---> From next time you can use token for authentication
+
+# Dynamic Secrets
+# https://www.vaultproject.io/docs/secrets/databases/mysql-maria.html
+
+# Database Engine
+# https://www.vaultproject.io/intro/getting-started/secrets-engines
+# https://www.vaultproject.io/docs/secrets/databases/mysql-maria
+
+# ---> vault read database/creds/rdsmysqladmin
+
+### Revoke Lease ---> so Credentials will become no more valid
+# ---> vault lease revoke LEASEID
+
+### Application Usage ###
+
+### Application Testing ### 
+
+####################################################################################################################################################################################################
+#!/bin/bash
+# Purpose: Vault Dynamic Credentials Usage in actual production
+# Maintainer: DevOps Muhammad Asim <quickbooks2018@gmail.com>
+
+# Docker Installation
+
+curl -fsSL https://get.docker.com -o get-docker.sh
+sh get-docker.sh      2>&1 > /dev/null
+rm -rf get-docker.sh
+yum install -y docker 2>&1 > /dev/null
+systemctl start docker
+systemctl enable docker
+
+# Docker Compose Installation
+
+curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+docker-compose --version
+
+
+
+
+# Wordpress Application Setup
+rm -rf "$PWD"/secrets
+mkdir "$PWD"/secrets
+
+cd "$PWD"/secrets
+
+vault read database/creds/rdsmysqladmin > credentials.txt
+
+
+
+WORDPRESS_DB_HOST="vault.cxqbmqcwfxq5.us-east-1.rds.amazonaws.com"
+
+WORDPRESS_DB_USER=`cat credentials.txt  | tail -n2 | awk '{print $2}' | tail -n1`
+
+WORDPRESS_DB_PASSWORD=`cat credentials.txt   | tail -n2 | awk '{print $2}' | head -n1`
+
+WORDPRESS_DB_NAME="wordpress"
+
+#docker run --name wordpress -e WORDPRESS_DB_HOST="$WORDPRESS_DB_HOST" -e WORDPRESS_DB_NAME="$WORDPRESS_DB_NAME" -e WORDPRESS_DB_PASSWORD="$WORDPRESS_DB_PASSWORD" -e WORDPRESS_DB_USER="$WORDPRESS_DB_USER"  -p 80:80 --restart unless-stopped -d wordpress
+
+sleep 3
+echo -e "\nRemoving the credentials file from server\n"
+rm -rf credentials.txt
+
+
+
+#docker run --name wordpress -e WORDPRESS_DB_HOST="$WORDPRESS_DB_HOST" -e WORDPRESS_DB_NAME="$WORDPRESS_DB_NAME" -e WORDPRESS_DB_PASSWORD="${WORDPRESS_DB_PASSWORD}" -e WORDPRESS_DB_USER="${WORDPRESS_DB_USER}"  -p 80:80 --restart unless-stopped -d wordpress
+
+### First Step ###
+### DataBase & Everything Must be Setup with Original Credentials then when move to Vault Dynamic Credentials for Reading the DB ###
+# Create a new database with Original Credentials ---> CREATE DATABASE wordpress;
+docker run --name wordpress -e WORDPRESS_DB_HOST="vault.cxqbmqcwfxq5.us-east-1.rds.amazonaws.com" -e WORDPRESS_DB_NAME="wordpress" -e WORDPRESS_DB_PASSWORD="123456789" -e WORDPRESS_DB_USER="infragurus" -p 80:80 --restart unless-stopped -d wordpress
+
+
+
+#END
+######################################################################################################################################################################################################################################################################################
+# Secret Engine
+# KV Key Value
+
+# ---> vault secrets enable -version=2 -path=secret kv
+# ---> vault kv put secret/aws/asim_credentials ACCESS_KEYS=122455788778kaka SECRET_ACCESS_KEYS=KKAKAKKAKAKAK
+# ---> vault kv list secret
+# ---> vault kv get secret/aws/asim_credentials
+# Versioning
+# ---> vault kv metadata put -max-versions=5 secret/aws/asim_credentials
