@@ -1,12 +1,13 @@
 # https://stackoverflow.com/questions/37242217/access-docker-container-from-host-using-containers-name
 
-docker run --rm --hostname dns.mageddo \
+docker run --name dns-server --hostname dns.mageddo \
 -v /var/run/docker.sock:/var/run/docker.sock \
 -v /etc/resolv.conf:/etc/resolv.conf \
 --restart unless-stopped -d defreitas/dns-proxy-server
 
+
 docker run --name apache --hostname apache -p 80:80 -id httpd
 
-
 ping dns.mageddo
+
 ping apache
