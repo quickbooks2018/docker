@@ -1,0 +1,5 @@
+# https://www.ssh.com/ssh/tunneling/example
+
+ssh -i -N -L 8888:127.0.0.1:80 ubuntu@IP
+
+localhost:8888
