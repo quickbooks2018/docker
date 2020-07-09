@@ -71,3 +71,4 @@ docker-compose ps
 # Important Commands to list all images & version of PHP simply run below command
 # wget -q https://registry.hub.docker.com/v1/repositories/php/tags -O -  | sed -e 's/[][]//g' -e 's/"//g' -e 's/ //g' | tr '}' '\n'  | awk -F: '{print $3}' | grep apache
 # docker-compose up -d --build
+# http://zetcode.com/php/faker/
