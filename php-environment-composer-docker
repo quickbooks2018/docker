@@ -1,0 +1,73 @@
+#!/bin/bash
+# Purpose: PHP Automated development environment in docker
+# Maintainer: Muhammmad Asim <quickbooks2018@gmail.com>
+# OS: Ubuntu-18-LTS
+
+# docker installation
+curl -fsSL https://get.docker.com -o get-docker.sh
+sh get-docker.sh
+systemctl start docker
+systemctl enable docker
+rm -rf get-docker.sh
+
+# docker-compose installation
+curl -L "https://github.com/docker/compose/releases/download/1.26.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+docker-compose --version
+
+
+
+
+/bin/cat << EOF > docker-compose.yaml
+version: "3.7"
+services:
+  web-server:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    restart: unless-stopped
+    volumes:
+      - "./public_html/:/var/www/html/"
+    ports:
+      - "8080:80"
+  mysql-server:
+    image: mysql:8.0.19
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.0.1
+    restart: always
+    environment:
+      PMA_HOST: mysql-server
+      PMA_USER: root
+      PMA_PASSWORD: secret
+    ports:
+      - "5000:80"
+volumes:
+  mysql-data:
+EOF
+
+/bin/cat << EOF > Dockerfile
+FROM php:7.4.3-apache
+RUN apt update -y && apt upgrade -y && apt install git -y
+RUN docker-php-ext-install mysqli pdo pdo_mysq l
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+EOF
+
+docker-compose up -d
+docker-compose ps
+
+# Stopping the LAMP Server
+# docker-compose down
+
+#END
+
+# Important Commands to list all images & version of PHP simply run below command
+# wget -q https://registry.hub.docker.com/v1/repositories/php/tags -O -  | sed -e 's/[][]//g' -e 's/"//g' -e 's/ //g' | tr '}' '\n'  | awk -F: '{print $3}' | grep apache
+# docker-compose up -d --build
