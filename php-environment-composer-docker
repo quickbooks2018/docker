@@ -60,7 +60,7 @@ RUN docker-php-ext-install mysqli pdo pdo_mysq l
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 EOF
 
-docker-compose up -d
+docker-compose up -d --build
 docker-compose ps
 
 # Stopping the LAMP Server
