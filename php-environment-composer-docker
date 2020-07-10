@@ -55,7 +55,6 @@ EOF
 /bin/cat << EOF > Dockerfile
 FROM php:7.4.3-apache
 RUN apt update -y && apt upgrade -y && apt install git -y
-RUN docker-php-ext-install mysqli pdo pdo_mysq l
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 EOF
