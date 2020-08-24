@@ -12,6 +12,13 @@
                                                                                                 eureka.client.register-with-eureka=false
                                                                                                 eureka.client.fetch-registry=false
 
+# spring.application.name is a unique name for your application.
+
+# server.port in which your application will be bound and wewill use default port 8761 for eureka server.
+
+# eureka.client.fetch-registry doesn't register itself in eureka server.
+
+# eureka.client.register-with-eureka is determines if service register itself as a client in eureka server.
 
 
                                             ### MAVEN ###
