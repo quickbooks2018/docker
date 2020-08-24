@@ -43,3 +43,7 @@ ENTRYPOINT ["java","-jar","eureka-server.jar"]
 ------------------------------------------> command docker tag imageid eureka-server
 docker network create eureka
 docker run --name eureka-server --network=eureka -p 80:8761 --restart unless-stopped -id eureka-server:latest
+
+# Deploy in 1 min 
+---> docker network create eureka
+---> docker run --name eureka-server --network=eureka -p 80:8761 --restart unless-stopped -id quickbooks2018/eureka-server:latest
