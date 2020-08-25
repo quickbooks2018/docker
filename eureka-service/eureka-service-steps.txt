@@ -1,0 +1,43 @@
+
+                                           ### Steps ###
+1. https://start.spring.io/   ---> create a eureka-service  (discovery-service)
+
+
+---> Edit the following files ---> src --> main --> java -->             Application.java  ---> import org.springframework.boot.SpringApplication;
+                                                                                                import org.springframework.boot.autoconfigure.SpringBootApplication;
+                                                                                                import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+                                                                                                @EnableDiscoveryClient
+
+                                           main --> resources --> application.properties   ---> spring.application.name=ptvsports.cloudgeeks.ca
+                                                                                                server.port=8080
+                                                                                                eureka.instance.hostname=eureka-server
+                                                                                                eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka/
+
+
+
+                                            ### MAVEN ###
+2. Compile with Maven and created a JAR File.
+docker run -it --rm --name my-maven-project -v "$(pwd)"/ptvsports.cloudgeeks.ca:/usr/src/mymaven -w /usr/src/mymaven maven:latest mvn clean package
+
+                                          ### Dockerfile ###
+
+FROM openjdk:latest
+EXPOSE 8761
+ADD /target/ptvsports.cloudgeeks.ca.jar ptvsports.cloudgeeks.ca.jar
+ENTRYPOINT ["java","-jar","ptvsports.cloudgeeks.ca.jar"]
+
+------------------------------------------> command     docker build .
+
+                                           ###  TAG  ###
+
+------------------------------------------> command docker tag imageid quickbooks2018/ptvsports.cloudgeeks.ca
+docker network create eureka
+docker run --name ptvsports.cloudgeeks.ca --network=eureka -p 8080:8080 --restart unless-stopped -id quickbooks2018/ptvsports.cloudgeeks.ca:latest
+                                    
+---> no need to expose the ports
+docker run --name ptvsports.cloudgeeks.ca --network=eureka --restart unless-stopped -id quickbooks2018/ptvsports.cloudgeeks.ca:latest
+
+# Deploy eureka-service in 1 min 
+---> docker network create eureka
+---> docker run --name ptvsports.cloudgeeks.ca --network=eureka --restart unless-stopped -id quickbooks2018/ptvsports.cloudgeeks.ca:latest
+
