@@ -1,7 +1,4 @@
 # https://spring.io/guides/gs/service-registration-and-discovery/
-# useful link https://dzone.com/articles/spring-cloud-amp-spring-bootimplementing-eureka-se
-# useful link https://dzone.com/articles/dockerizing-the-eureka-server-and-spring-boot-appl
-
 
                                            ### Steps ###
 1. https://start.spring.io/   ---> create a eureka-server  (discovery-server)
