@@ -22,7 +22,7 @@ docker run -it --rm --name my-maven-project -v "$(pwd)"/ptvsports.cloudgeeks.ca:
                                           ### Dockerfile ###
 
 FROM openjdk:latest
-EXPOSE 8761
+EXPOSE 8080
 ADD /target/ptvsports.cloudgeeks.ca.jar ptvsports.cloudgeeks.ca.jar
 ENTRYPOINT ["java","-jar","ptvsports.cloudgeeks.ca.jar"]
 
