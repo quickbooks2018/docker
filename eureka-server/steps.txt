@@ -26,7 +26,7 @@
 
                                             ### MAVEN ###
 2. Compile with Maven and created a JAR File.
-docker run -it --rm --name my-maven-project -v "$(pwd)"/discovery-server:/usr/src/mymaven -w /usr/src/mymaven maven:latest mvn clean package
+docker run -it --rm --name my-maven-project -v "$(pwd)"/eureka-server:/usr/src/mymaven -w /usr/src/mymaven maven:latest mvn clean package
 
                                           ### Dockerfile ###
 
