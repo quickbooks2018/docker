@@ -1,0 +1,41 @@
+# 1 Attach Policy
+
+#  https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-using-import-tool-cli-cloudwatch-iam-role.html
+
+
+
+
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:DescribeLogStreams",
+                "logs:PutLogEvents"
+            ],
+            "Resource": [
+                "arn:aws:logs:REGION:ACCOUNT:log-group:/aws/cognito/*"
+            ]
+        }
+    ]    
+}
+
+
+# https://docs.docker.com/config/containers/logging/awslogs/
+
+2. docker run --name eureka-server --log-driver=awslogs --log-opt awslogs-region=us-east-1 --log-opt awslogs-group="eureka-server" --log-opt awslogs-stream="eureka-server-log-stream" -p 8080:8761 --restart unless-stopped  -id imageid:tag
+
+
+# http://mvpjava.com/docker-logging-symlink-hack/
+# https://youtu.be/TFCua2yj09Y
+
+3. Dockerfile best practices for logs
+
+---> Simply create Symbolic Links
+
+RUN ln -sf /dev/stdout /log/server.log \
+ && ln -sf /dev/stderr /log/server.log
