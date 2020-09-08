@@ -35,7 +35,20 @@ EXPOSE 8080
 ADD /target/shirts-0.0.1-SNAPSHOT.jar shirts-0.0.1-SNAPSHOT.jar
 ENTRYPOINT ["java","-jar","shirts-0.0.1-SNAPSHOT.jar"]
 
+
+                                         ### Dockerfile ###
+                                        
+
+FROM openjdk:latest
+EXPOSE 8080
+ADD /target/shopping-cart-0.0.1-SNAPSHOT.jar shopping-cart-0.0.1-SNAPSHOT.jar
+ENTRYPOINT ["java","-jar","shopping-cart-0.0.1-SNAPSHOT.jar"]
+
+
+
 -----------------------------------------> command docker build -t quickbooks2018/eureka-shirts .
+
+-----------------------------------------> command docker build -t 
 
 ------------------------------------------> command     docker build .
 
