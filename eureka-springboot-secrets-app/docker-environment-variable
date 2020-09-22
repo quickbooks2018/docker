@@ -1,0 +1,1 @@
+docker run --name secret -p 80:8080 -e SHIRT_SIZE="large" --restart unless-stopped -id quickbooks2018/spring-boot-aws-secrets-manager:latest
