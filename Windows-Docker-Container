@@ -1,4 +1,9 @@
-#https://github.com/docker/for-win/issues/1588
+# https://github.com/docker/for-win/issues/1588
+# https://github.com/vercel/hyper/issues/2888
+
+######################################################
+winpty docker.exe run -it --rm ubuntu:14.04 /bin/bash
+######################################################
 
 
 # On git bash just type:
