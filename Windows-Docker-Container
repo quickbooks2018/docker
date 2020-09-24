@@ -1,0 +1,14 @@
+#https://github.com/docker/for-win/issues/1588
+
+
+# On git bash just type:
+#########################################
+alias docker="winpty docker"
+##########################################
+and tty will work
+
+after starting the docker I mean when it will run
+do a docker login from PowerShell (git-bash )and then use git-bash
+
+then create docker conatainer
+docker container run -it -p 80:80 nginx
