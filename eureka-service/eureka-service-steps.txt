@@ -18,6 +18,12 @@
                                             ### MAVEN ###
 2. Compile with Maven and created a JAR File.
 docker run -it --rm --name my-maven-project -v "$(pwd)"/ptvsports.cloudgeeks.ca:/usr/src/mymaven -w /usr/src/mymaven maven:latest mvn clean package
+  
+                                             ### MAVEN SKIP Tests ###
+# https://github.com/adorsys/xs2a/issues/21                                             
+
+docker run -it --rm --name my-maven-project -v "$(pwd)"/demo:/usr/src/mymaven -w /usr/src/mymaven maven:latest mvn -DskipTests=true clean package
+
 
                                           ### Dockerfile ###
 
