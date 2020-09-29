@@ -17,3 +17,8 @@ do a docker login from PowerShell (git-bash )and then use git-bash
 
 then create docker conatainer
 docker container run -it -p 80:80 nginx
+
+
+## Volume Mount
+
+docker run --name amazonlinux -v c:/Users/Muhammad\ Asim/Desktop/vpc:/root -id amazonlinux
