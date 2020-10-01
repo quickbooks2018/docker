@@ -1,0 +1,1 @@
+docker run --name shirt-size -e SHIRT_SIZE="large" -p 8080:8080 -id shirts
