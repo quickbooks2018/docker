@@ -2,13 +2,15 @@
 # Purpose Springboot services communication
 # Maintianer Muhammad Asim <quickbooks2018@gmail.com>
 
+# https://www.youtube.com/watch?v=E7ClfZiOY6c&ab_channel=cloudgeeksinc
+
 docker network create springboot --attachable
 
-docker run --name shirts --network=springboot -p 8080:8080 --restart unless-stopped -id quickbooks2018/eureka-shirts:latest
+docker run --name shirts --network=springboot -p 8080:8080 --restart unless-stopped -id quickbooks2018/eureka-shirts:latest                # ---> /shirts /shirts/calltoshoppingcart
 
-docker run --name shopping-cart --network=springboot -p 8090:8080 --restart unless-stopped -id  quickbooks2018/eureka-shopping-cart:latest
+docker run --name shopping-cart --network=springboot -p 8090:8090 --restart unless-stopped -id  quickbooks2018/eureka-shopping-cart:latest  # ---> /cart
 
-docker run --name eureka-server --network=springboot -p 8761:8761 --restart unless-stopped -id quickbooks2018/eureka-server:latest
+docker run --name eureka-server --network=springboot -p 8761:8761 --restart unless-stopped -id quickbooks2018/eureka-server:latest         
 
 
 #END
