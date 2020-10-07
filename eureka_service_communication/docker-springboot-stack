@@ -1,0 +1,19 @@
+#!/bin/bash
+# Purpose Springboot services communication
+# Maintianer Muhammad Asim <quickbooks2018@gmail.com>
+
+docker network create springboot --attachable
+
+docker run --name shirts --network=springboot -p 8080:80 --restart unless-stopped -id quickbooks2018/eureka-shirts:latest
+
+docker run --name shopping-cart --network=springboot -p 8090:80 --restart unless-stopped -id  quickbooks2018/eureka-shopping-cart:latest
+
+docker run --name eureka-server --network=springboot -p 8090:80 --restart unless-stopped -id quickbooks2018/eureka-server:latest
+
+
+#END
+
+
+
+
+
