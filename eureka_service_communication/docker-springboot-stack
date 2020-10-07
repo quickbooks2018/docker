@@ -2,6 +2,7 @@
 # Purpose Springboot services communication
 # Maintianer Muhammad Asim <quickbooks2018@gmail.com>
 
+# https://www.youtube.com/watch?v=bWxA62L7fEE&list=PLUGjPVfdlv9IdT8JhrJPH-eb7QcMqBZkn&index=8&ab_channel=cloudgeeksinc
 # https://www.youtube.com/watch?v=E7ClfZiOY6c&ab_channel=cloudgeeksinc
 
 docker network create springboot --attachable
