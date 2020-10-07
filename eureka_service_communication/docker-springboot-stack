@@ -8,7 +8,7 @@ docker run --name shirts --network=springboot -p 8080:80 --restart unless-stoppe
 
 docker run --name shopping-cart --network=springboot -p 8090:80 --restart unless-stopped -id  quickbooks2018/eureka-shopping-cart:latest
 
-docker run --name eureka-server --network=springboot -p 80:80 --restart unless-stopped -id quickbooks2018/eureka-server:latest
+docker run --name eureka-server --network=springboot -p 80:8761 --restart unless-stopped -id quickbooks2018/eureka-server:latest
 
 
 #END
