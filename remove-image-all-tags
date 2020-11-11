@@ -1,0 +1,3 @@
+# http://thushw.blogspot.com/2017/03/docker-delete-all-tags-of-image.html
+
+docker images | grep quickbooks2018/green | tr -s ' ' | cut -d ' ' -f 2 | xargs -I {} docker rmi quickbooks2018/green:{}
