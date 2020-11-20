@@ -33,11 +33,11 @@ docker run --name gcp --group-add 0 -v "/var/run/docker.sock:/var/run/docker.soc
 
 docker run --name ubuntu --group-add 0 -v "/var/run/docker.sock:/var/run/docker.sock"  -v c:/Users/Muhammad\ Asim/Desktop/ubuntu:/root -id ubuntu:latest
 
-docker run --name ubuntu --group-add 0 -v "/var/run/docker.sock:/var/run/docker.sock"  -v c:/Users/Muhammad\ Asim/Desktop/centos:/root -id centos:latest
+docker run --name centos --group-add 0 -v "/var/run/docker.sock:/var/run/docker.sock"  -v c:/Users/Muhammad\ Asim/Desktop/centos:/root -id centos:latest
 
-docker run --name ubuntu --group-add 0 -v "/var/run/docker.sock:/var/run/docker.sock"  -v c:/Users/Muhammad\ Asim/Desktop/amazonlinux:/root -id amazonlinux:latest
+docker run --name amazonlinux --group-add 0 -v "/var/run/docker.sock:/var/run/docker.sock"  -v c:/Users/Muhammad\ Asim/Desktop/amazonlinux:/root -id amazonlinux:latest
 
-docker run --name ubuntu --group-add 0 -v "/var/run/docker.sock:/var/run/docker.sock"  -v c:/Users/Muhammad\ Asim/Desktop/nginx:/usr/share/nginx/html -id nginx:latest
+docker run --name nginx --group-add 0 -v "/var/run/docker.sock:/var/run/docker.sock"  -v c:/Users/Muhammad\ Asim/Desktop/nginx:/usr/share/nginx/html -id nginx:latest
 
 
 
