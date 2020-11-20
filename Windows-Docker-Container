@@ -29,10 +29,15 @@ docker run --name amazonlinux -v c:/Users/Muhammad\ Asim/Desktop/vpc:/root -id a
 
 docker run --name gcp --group-add 0 -v "/var/run/docker.sock:/var/run/docker.sock" -id google/cloud-sdk:latest         ---> run in Poweshell (Admin)
 
+########################################################## VSCODE/ALL Editors in the World/All OS of the worls) #############################################
 
+docker run --name ubuntu --group-add 0 -v "/var/run/docker.sock:/var/run/docker.sock"  -v c:/Users/Muhammad\ Asim/Desktop/ubuntu:/root -id ubuntu:latest
 
+docker run --name ubuntu --group-add 0 -v "/var/run/docker.sock:/var/run/docker.sock"  -v c:/Users/Muhammad\ Asim/Desktop/centos:/root -id centos:latest
 
+docker run --name ubuntu --group-add 0 -v "/var/run/docker.sock:/var/run/docker.sock"  -v c:/Users/Muhammad\ Asim/Desktop/amazonlinux:/root -id amazonlinux:latest
 
+docker run --name ubuntu --group-add 0 -v "/var/run/docker.sock:/var/run/docker.sock"  -v c:/Users/Muhammad\ Asim/Desktop/nginx:/usr/share/nginx/html -id nginx:latest
 
 
 
@@ -60,179 +65,16 @@ docker run --name gcp --group-add 0 -v "/var/run/docker.sock:/var/run/docker.soc
 
 
 
-###################################################################################################################################################
 
-# https://www.youtube.com/watch?v=sUy9C1bY3gQ&feature=youtu.be
 
-Running Docker in Docker on Windows (Linux containers)
-Running Docker in Docker on Windows 1
-By Tom GregoryPosted on April 17, 2020
-Last Updated on November 4, 2020
 
-If you need to run Docker within a container, or in other words Docker in Docker, this can sometimes be confusing, especially in Windows where it’s not obvious how Docker is setup. In this article, we’ll be lifting the covers on Docker for Windows and exploring how to run Docker commands in containers. Note that we’ll be covering only Linux based containers in this article.
 
-How Docker works on Windows
-When using Docker for Windows, also known as Docker desktop, a virtual machine running the Docker daemon is installed using the Windows Hyper-V virtualisation framework.
 
-Commands that are run from the Docker CLI on a Windows command prompt are passed through to the Docker daemon running in a VM:
 
 
-If we run docker version we can clearly see the distinction here between client and server. The Docker Engine comprises the client and server, the client being the Docker CLI and the server the Docker daemon. See below that the Docker daemon is running in Linux:
 
 
-For the most part, when building and running containers we don’t need to know about these details. Unless, of course, we want to run Docker inside Docker.
 
-In this case, we need a way to:
 
-Install the Docker CLI in a container
-Get the Docker CLI to communicate with the Docker daemon running on the host
-Provide the container with the correct permissions to use that communication channel
-All about /var/run/docker.sock
-A Unix socket is a way for processes running on the same host to communicate with each other. It doesn’t involve the network, so is more lightweight than other protocols such as TCP/IP sockets. They are addressed using a filename, ending in a .sock extension.
 
-The Docker daemon listens to a socket at /var/run/docker.sock, responding to calls to the Docker API. If we want to be able to issue Docker commands from a container, we’ll need to communicate with this socket.
 
-
-Thankfully, since the Docker socket is described as a file, we can expose that file to the container as a volume when we run it, using the Docker run command’s -v option:
-
--v, –volume=[host-src:]container-dest[:]: Bind mount a volume.
-
-So if we want a container to have access to /var/run/docker.sock we’ll pass the argument -v "/var/run/docker.sock:/var/run/docker.sock" to expose the socket at the same location in the container.
-
-Portainer: a Docker in Docker example
-An example of exposing /var/run/docker.sock as a volume inside Docker is when using the Docker management UI, Portainer. You can start it like this:
-
-docker run -d -p 9000:9000 --name portainer -v "/var/run/docker.sock:/var/run/docker.sock" portainer/portainer
-
-Windows Docker commands
-All of the commands in this article have been tested with the Windows command prompt.
-
-When you access the UI at http://localhost:9000 it will ask you what Docker environment you want to manage. One of the options is to manage the local environment via the /var/run/docker.sock file:
-
-
-With this configuration, Portainer then has access to the Windows Docker daemon, and can issue whatever commands it needs to. For example, below we can see a list of the running containers:
-
-
-Running Docker in Docker as a root user
-If you’re running a Docker image that runs as the root user, then all that is required is to mount /var/run/docker.sock as a volume, as in the case with Portainer above.
-
-To illustrate this more concisely, let’s create a Docker image that extends the popular lightweight Alpine base image:
-
-FROM alpine
-RUN apk add docker
-This Dockerfile simply installs the Docker CLI, which will later communicate with the Docker daemon running in our Docker for Windows setup. The Alpine base image by default uses the root user.
-
-Build the image using docker build --tag docker-in-docker .:
-
-
-This builds a Docker image called docker-in-docker. Now we can try running a Docker command in a container started from this image, with docker run --rm -v "/var/run/docker.sock:/var/run/docker.sock" docker-in-docker /bin/sh -c "docker ps":
-
-
-This output is showing all the containers that I have running in my installation of Docker for Windows. Everything’s working as expected! ✅
-
-Running Docker in Docker as a non-root user
-We don’t always want to run our container as root. There are many Docker images that setup an additional user, following the best practice of starting the container as a user that only has minimal permissions. An example of this is the Jenkins Docker image, which has the jenkins user.
-
-Permission denied problems
-To illustrate the problems that using a non-root user can cause when we want to run Docker in Docker, here’s another Dockerfile example:
-
-FROM alpine
-RUN apk add docker
-RUN adduser -D tom
-USER tom
-we’re installing Docker on top of the Alpine Linux base image, as before
-we’re adding a user called tom with no password (the -D option)
-the USER instruction means that when the image is run any commands should be run as tom
-Let’s build the image with docker build --tag docker-in-docker-non-root . similarly to the previous example.
-
-Now run it with docker run --rm -v "/var/run/docker.sock:/var/run/docker.sock" docker-in-docker-non-root /bin/sh -c "docker ps"
-
-Unfortunately this time we get a permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock error:
-
-
-It seems like we don’t have permission to access /var/run/docker.sock. 🔒
-
-Using --group-add to provide access to /var/run/docker.sock
-The problem we have can be highlighted by running the same docker run command as before, but this time we’ll run ls -l on /var/run/docker.sock:
-
-
-We can see here that the file is owned by the root user and also the root group. It’s no wonder then that we can’t access it.
-
-To fix this, we can use the --group-add Docker argument that allows us to run a Docker image with additional groups for the user.
-
-–group-add: Add additional groups to run as
-
-The root group has id 0, so to illustrate this working, let’s use the --group-add 0 argument then run the groups command in the container to see which groups we belong to:
-
-
-We can clearly see here that tom is now a member of both the tom and root groups.
-
-Now let’s try to run Docker in Docker with docker run --rm --group-add 0 -v "/var/run/docker.sock:/var/run/docker.sock" docker-in-docker-non-root /bin/sh -c "docker ps"
-
-
-Awesome! So we’ve got a way to run Docker in Docker as a non-root user too. ✅
-
-Group id using WSL 2 – if you’re running Docker Desktop with the WSL 2 engine enabled, the group id will be different to the one specified above. Generate the group id with this command docker run --rm -v /var/run/docker.sock:/var/run/docker.sock alpine stat -c %g /var/run/docker.sock
-
-Running Docker in Docker with Jenkins
-When building images using a continuous integration server, such as Jenkins, we’ll need to run Docker in Docker in order to use the Docker daemon of the host. A Jenkins Docker container starts with the jenkins user, so let’s try the techniques learnt in this article by:
-
-installing the Docker CLI in Jenkins
-mounting a volume to allow access to the Docker socket
-adding the root group to the Jenkins user
-To install the Docker CLI we’ll use this Dockerfile:
-
-FROM jenkins/jenkins:latest
-
-USER root
-RUN curl -sSL https://get.docker.com/ | sh
-USER jenkins
-we have to temporarily switch to the root user to install Docker
-we run a Docker install script
-we switch back to the Jenkins user
-Build this image with docker build --tag docker-in-docker-jenkins ..
-
-Start Jenkins with docker run --rm --group-add 0 -v "/var/run/docker.sock:/var/run/docker.sock" -p 8080:8080 --name jenkins docker-in-docker-jenkins:
-
-
-Now let’s issue a Docker command to Jenkins using docker exec jenkins docker ps:
-
-
-All good. So now we can create Jenkins jobs to build or run Docker images!
-
-Security considerations
-How secure is using --group-add 0?
-Short answer, not very. Essentially we’re adding the user to the root group which means that any files owned by the root group may be read/write/executable by the user. It’s not as bad as running the container as the root user, but it’s probably not far off.
-
-Unfortunately, when running containers such as Jenkins there’s no better alternative that I’ve found so far in Docker for Windows. Fortunately, most people running Docker containers in Windows are doing so for for development, rather than production purposes.
-
-Also bear in mind that any risk of container breakout, where the container gets full access to the host machine, is mitigated by the fact that the Docker daemon in Docker for Windows is running inside a virtual machine.
-
-Final thoughts
-Since this article was published, the Windows Subsystem for Linux (WSL) 2 has been released, which enables Linux containers to be run natively without emulation. Docker Desktop has an option to use the WSL 2 based engine, which can be turned on through this setting:
-
-
-Once this option has gained mainstream use this article will be fully updated to reflect it. For now, please see the section above about generating the group id when using Docker Desktop with WSL 2.
-
-Get the newsletter
-Found this article helpful? Subscribe for monthly updates.
-
-✅ All of my latest articles for the month
-✅ Access to video tutorials
-✅ Exclusive tips not found on my website
-
-Your e-mail address
-
-
-Resources
-DOCKER
-Read the official docs about Docker Desktop for WSL 2
-For more info on Dockerfile instructions, check out these docs
-
-VIDEO
-If you prefer to learn in video format then check out the accompanying video below. It’s part of the Tom Gregory Tech YouTube channel.
-
-
-FacebookTwitterLinkedIn
-Related Posts
-Running Jenkins jobs in AWS ECS with slave agentsVPCs, subnets, and gateways - fundamentals for working with containers in AWS10 Docker Commands You Didn't Know About
