@@ -27,7 +27,7 @@ docker run --name amazonlinux -v c:/Users/Muhammad\ Asim/Desktop/vpc:/root -id a
 # https://tomgregory.com/running-docker-in-docker-on-windows/
 # Docker in Docker
 
-docker run --name gcp --group-add 0 -v "/var/run/docker.sock:/var/run/docker.sock" -id google/cloud-sdk:latest
+docker run --name gcp --group-add 0 -v "/var/run/docker.sock:/var/run/docker.sock" -id google/cloud-sdk:latest         ---> run in Poweshell (Admin)
 
 
 
