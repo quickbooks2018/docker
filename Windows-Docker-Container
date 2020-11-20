@@ -39,6 +39,8 @@ docker run --name amazonlinux --group-add 0 -v "/var/run/docker.sock:/var/run/do
 
 docker run --name nginx --group-add 0 -v "/var/run/docker.sock:/var/run/docker.sock"  -v "c:/Users/Muhammad Asim/Desktop/nginx:/usr/share/nginx/html" -id nginx:latest
 
+Note: docker not found inside container simply install it
+
 
 
 
