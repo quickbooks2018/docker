@@ -23,7 +23,7 @@ docker run --name phpmyadmin --network="bitnami-wordpress-tier" --link mariadb:d
 
 
 # Wordpress Setup
-docker run --name bitnami-wordpress --network="bitnami-wordpress-tier" -e WORDPRESS_DATABASE_NAME="bitnami_wordpress" -e WORDPRESS_DATABASE_USER="root" -e WORDPRESS_DATABASE_PASSWORD="quickbooks2018" --link mariadb:db -p 80:80 -v /root/wordpress:/bitnami --restart unless-stopped -d bitnami/wordpress:latest
+docker run --name bitnami-wordpress --network="bitnami-wordpress-tier" -e WORDPRESS_DATABASE_NAME="bitnami_wordpress" -e WORDPRESS_DATABASE_USER="root" -e WORDPRESS_DATABASE_PASSWORD="quickbooks2018" --link mariadb:db -p 80:8080 -v /root/wordpress:/bitnami --restart unless-stopped -d bitnami/wordpress:latest
 
 
 
