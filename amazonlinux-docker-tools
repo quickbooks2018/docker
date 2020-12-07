@@ -1,0 +1,40 @@
+#!/bin/bash
+#Purpose: aws-tools in docker 
+
+
+# Terraform Setup
+
+curl -# -LO https://releases.hashicorp.com/terraform/0.14.0/terraform_0.14.0_linux_amd64.zip
+
+yum update -y && yum install -y unzip 2>&1 >/dev/null
+unzip terraform_0.14.0_linux_amd64.zip 2>&1 >/dev/null
+rm -rf *.zip  2>&1 >/dev/null
+cp terraform /usr/bin/  2>&1 >/dev/null
+cp terraform /usr/local/bin  2>&1 >/dev/null
+rm -rf terraform
+
+
+
+# Install AWS Cli
+
+yum update -y && yum install -y awscli 2>&1 >/dev/null
+
+
+
+
+# Kubectl Installation
+curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+
+chmod +x ./kubectl
+
+mv ./kubectl /usr/bin/kubectl
+
+
+# EKSCTL Installation
+
+# https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html
+yum install -y tar gzip
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+mv /tmp/eksctl /usr/local/bin
+eksctl version
+
