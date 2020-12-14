@@ -1,0 +1,30 @@
+#!/bin/bash
+# Purpose: Wordpress setup in 1 minute with docker
+# Maintainer: <quickbooks2018@gmail.com> Muhammad Asim Arain
+
+
+# Create a network
+docker network create wordpress --attachable
+
+# Persistent Storage for database
+docker volume create mysql
+
+# Persistent Storage for wordpress
+docker volume create wordpress
+
+# Mysql Setup
+# https://hub.docker.com/_/mysql
+docker run --name mysql -e MYSQL_DATABASE=mydb -e MYSQL_ROOT_PASSWORD="ausdermoitoeuropas"  -e MYSQL_USER="asim" -e MYSQL_PASSWORD="asimarain" -v mysql:/var/lib/mysql --network="wordpress" --restart unless-stopped -id mysql:5.7
+
+# Phpmyadmin Setup
+# https://hub.docker.com/_/phpmyadmin?tab=description
+docker run --name phpmyadmin --network="wordpress" --link mariadb:db -id -p 8080:80 --restart unless-stopped phpmyadmin/phpmyadmin
+
+
+# Wordpress Setup
+# https://hub.docker.com/_/wordpress
+
+docker run --name wordpress --network="wordpress" -e WORDPRESS_DB_NAME="mydb" -e WORDPRESS_DB_USER="asim" -e WORDPRESS_DB_PASSWORD="asimarain" -e WORDPRESS_DB_HOST="mysql" -p 80:80 -v wordpress:/var/www/html --restart unless-stopped -id wordpress:latest
+
+
+# END
