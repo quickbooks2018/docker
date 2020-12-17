@@ -11,3 +11,19 @@ docker run --name postgres --network="postgres" -e POSTGRES_PASSWORD="12345678" 
 docker run --link postgres:db --network="postgres" -p 8080:8080 -id adminer
 
 #END
+
+
+#!/bin/bash
+# https://nickjanetakis.com/blog/docker-tip-79-saving-a-postgres-database-in-a-docker-image
+# https://www.postgresqltutorial.com/postgresql-show-databases/#:~:text=Use%20%5Cl%20or%20%5Cl%2B%20in,pg_database%20to%20get%20all%20databases.
+
+docker network create postgres
+
+#Postgres Setup
+docker run --name postgres --network="postgres" -e POSTGRES_PASSWORD="12345678" -id quickbooks2018/postgres
+
+# Adminer Setup
+docker run --link postgres:db --network="postgres" -p 8080:8080 -id adminer
+
+# user ---> postgres
+# password ---> 12345678
