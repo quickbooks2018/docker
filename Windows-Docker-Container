@@ -42,6 +42,104 @@ docker run --name nginx --group-add 0 -v "/var/run/docker.sock:/var/run/docker.s
 Note: docker not found inside container simply install it
 
 
+######################################################################### SETUP IN Kafka directory ###############################################################
+
+---
+version: "3"
+services:
+  zookeeper:
+    image: 'bitnami/zookeeper:latest'
+    networks:
+      - kafka
+    restart: unless-stopped
+    ports:
+      - '2181:2181'
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+  kafka:
+    image: 'bitnami/kafka:latest'
+    networks:
+      - kafka
+    restart: unless-stopped
+    user: root
+    ports:
+      - '9092:9092'
+      - '9093:9093'
+    volumes:
+      - $PWD/kafka-persistence:/bitnami/kafka
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=CLIENT://:9092,EXTERNAL://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://kafka:9092,EXTERNAL://localhost:9093
+      - KAFKA_INTER_BROKER_LISTENER_NAME=CLIENT
+    depends_on:
+      - zookeeper
+networks:
+  kafka:
+      external: true
+
+
+############################################
+# docker network create kafka --attachable
+############################################
+
+# https://docs.confluent.io/5.5.0/quickstart/cos-docker-quickstart.html
+
+  # Important Commands 
+
+### Topic Creation without docker exec in to container ###
+
+ # Topic Creation
+ --------------------
+# docker exec kafka_kafka_1 kafka-topics.sh --create --zookeeper zookeeper:2181 --replication-factor 2 --partitions 3 --topic my-topic
+# ---> Mentioned above command give us an error because, we have 1 broker & setting up replication factor 2
+# Error while executing topic command : Replication factor: 2 larger than available brokers: 1
+
+
+# docker exec kafka_kafka_1 kafka-topics.sh --create --zookeeper zookeeper:2181 --replication-factor 1 --partitions 3 --topic my-topics
+
+# docker exec kafka_kafka_1 kafka-topics.sh kafka-topics.sh --create --zookeeper zookeeper:2181 --replication-factor 1 --partitions 1 --topic my-topic
+
+# List Topic
+--------------
+# docker exec kafka_kafka_1 kafka-topics.sh  --list --zookeeper zookeeper:2181
+
+# Describe a topic
+-------------------
+# docker exec kafka_kafka_1 kafka-topics.sh  --describe --topic my-topic --zookeeper zookeeper:2181
+
+# Creating Producers
+---------------------
+# docker exec -it kafka_kafka_1 kafka-console-producer.sh --bootstrap-server localhost:9092 --topic my-topic
+
+  # Creating Consumers
+  ---------------------
+ # docker exec -it kafka_kafka_1 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic my-topic --from-beginning
+
+  # Listing Consumers Groups
+  --------------------------
+  # docker exec kafka_kafka_1 kafka-consumer-groups.sh --bootstrap-server localhost:9092 --list
+
+  # Describe Consumers Groups
+  ----------------------------
+  # docker exec kafka_kafka_1 kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group GROUPNAME
+
+  # Consumer Offsets  (Consumer information stored in consumer offsets by kafka)
+  --------------------------------------------------------------------------------
+  # docker exec kafka_kafka_1 kafka-topics.sh --bootstrap-server localhost:9092 --list
+
+
+
+ # docker-compose -f docker-compose.yml up
+
+ # docker-compose -f docker-compose.yml up -d
+
+
+  # https://github.com/bitnami/bitnami-docker-kafka
+
+
 
 
 
