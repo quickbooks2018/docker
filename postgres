@@ -28,3 +28,15 @@ docker run --link postgres:db --network="postgres" -p 8080:8080 -id adminer
 # user ---> postgres
 # password ---> 12345678
 # Do not give DB name
+
+####################################################################################################################
+
+#!/bin/bash
+
+#Postgres Setup
+docker run --name postgres --network="postgres" -e POSTGRES_PASSWORD="12345678" -p 5432:5432 -id quickbooks2018/postgres
+
+# Adminer Setup
+docker run --link postgres:db --network="postgres" -p 8080:8080 -id adminer
+
+#END
