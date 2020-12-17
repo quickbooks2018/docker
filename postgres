@@ -27,3 +27,4 @@ docker run --link postgres:db --network="postgres" -p 8080:8080 -id adminer
 
 # user ---> postgres
 # password ---> 12345678
+# Do not give DB name
