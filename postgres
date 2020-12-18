@@ -1,6 +1,7 @@
 #!/bin/bash
 # https://nickjanetakis.com/blog/docker-tip-79-saving-a-postgres-database-in-a-docker-image
 # https://www.postgresqltutorial.com/postgresql-show-databases/#:~:text=Use%20%5Cl%20or%20%5Cl%2B%20in,pg_database%20to%20get%20all%20databases.
+# https://onexlab-io.medium.com/golang-postgres-8b26d2c777e
 
 
 
