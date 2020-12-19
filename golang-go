@@ -1,0 +1,40 @@
+# https://gowebexamples.com/hello-world/
+
+Go Application
+---------------
+web.go
+-------
+package main
+
+import (
+    "fmt"
+    "net/http"
+)
+
+func main() {
+    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+        fmt.Fprintf(w, "Hello from cloudgeeks.ca, : %s\n", r.URL.Path)
+    })
+
+    http.ListenAndServe(":80", nil)
+}
+
+
+
+Dockerfile
+----------
+FROM golang:alpine
+
+# Set the Current Working Directory inside the container
+WORKDIR /usr/src/goapp
+
+# Copy everything from the current directory to the PWD (Present Working Directory) inside the container
+COPY web.go /usr/src/goapp/web.go
+
+
+# This container exposes port 8080 to the outside world
+EXPOSE 80
+
+# Run the executable
+CMD ["go","run","web.go"]
+
