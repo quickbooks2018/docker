@@ -45,7 +45,7 @@ CMD ["go","run","web.go"]
 goapp
 ------
 
-goapp.yaml
+goapp.yaml with AWS ALB Ingress
 
 
 ---
@@ -97,3 +97,33 @@ spec:
     app: goapp
     tier: frontend
   type: NodePort
+ 
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: devops.cloudgeeks.ca
+  labels:
+    name: goapp
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
+    alb.ingress.kubernetes.io/healthcheck-port: traffic-port
+    alb.ingress.kubernetes.io/healthcheck-path: /
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: '15'
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '5'
+    alb.ingress.kubernetes.io/success-codes: '200'
+    alb.ingress.kubernetes.io/healthy-threshold-count: '2'
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
+spec:
+  rules:
+    - host: devops.cloudgeeks.ca
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: goapp
+              servicePort: 80
