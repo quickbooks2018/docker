@@ -1,5 +1,8 @@
 # https://gowebexamples.com/hello-world/
 
+docker run --name gowebapp -p 80:80 -id quickbooks2018/goapp:v1
+
+
 Go Application
 ---------------
 web.go
@@ -13,7 +16,7 @@ import (
 
 func main() {
     http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        fmt.Fprintf(w, "Hello from cloudgeeks.ca, : %s\n", r.URL.Path)
+        fmt.Fprintf(w, "Hello from cloudgeeks.ca %s\n", r.URL.Path)
     })
 
     http.ListenAndServe(":80", nil)
