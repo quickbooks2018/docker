@@ -1,0 +1,9 @@
+docker network create invozone
+
+# Mysql Setup
+# https://hub.docker.com/_/mysql
+docker run --name mysql -e MYSQL_DATABASE=mydb -p 3306:3306 -e MYSQL_ROOT_PASSWORD="ausdermoitoeuropas"  -e MYSQL_USER="asim" -e MYSQL_PASSWORD="asimarain" -v mysql:/var/lib/mysql --network="invozone" --restart unless-stopped -id mysql:5.7
+
+# Phpmyadmin Setup
+# https://hub.docker.com/_/phpmyadmin?tab=description
+docker run --name phpmyadmin --network="invozone" --link mysql:db -id -p 80:80 --restart unless-stopped phpmyadmin/phpmyadmin
