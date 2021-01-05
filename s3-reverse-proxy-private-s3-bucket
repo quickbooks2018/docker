@@ -1,0 +1,2 @@
+# AWS S3 bucket reverse proxy
+docker run --name s3-private-bucket-reverse-proxy -e BUCKET=cloudgeeks-ca -e ACCESS_KEY=AKIA2CNS6Vfff3NQSE64TXV -e SECRET_KEY=vnMjvysiMrncmvPcaXFswWGGnlffffUbeSvenA0EZkOr -p 80:80 --restart unless-stopped -id quickbooks2018/s3-reverse-proxy:latest
