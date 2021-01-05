@@ -9,7 +9,7 @@ systemctl enable docker
 
 docker network ls
 
-docker network create --driver=bridge cloudelligent
+docker network create --driver=bridge cloudgeeks-ca
 
 
 #1 
@@ -37,11 +37,11 @@ yum install -y vim 2> /dev/null
 echo '
 server {
   listen 80;
-  server_name teleport.cloudelligent.com;
+  server_name teleport.cloudgeeks.ca;
   return 301 https://$host$request_uri;
 }
 server {
-  server_name teleport.cloudelligent.com;
+  server_name teleport.cloudgeeks.ca;
   listen 443 ssl;
   ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
   ssl_certificate_key /etc/ssl/certs/nginx-selfsigned.key;
@@ -67,7 +67,7 @@ location / {
 }' >  ~/nginx/conf.d/server.conf
 
 #8
-docker run --name nginx --network=cloudelligent --restart unless-stopped -v ~/ssl/certs:/etc/ssl/certs -v ~/nginx/conf.d:/etc/nginx/conf.d -p 443:443 -p 80:80 -d nginx
+docker run --name nginx --network=cloudgeeks-ca --restart unless-stopped -v ~/ssl/certs:/etc/ssl/certs -v ~/nginx/conf.d:/etc/nginx/conf.d -p 443:443 -p 80:80 -d nginx
 
 
 
