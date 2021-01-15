@@ -1,0 +1,1 @@
+docker-compose --env-file docker.env up -d --scale cloudgeeksapp=6 --no-recreate

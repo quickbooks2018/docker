@@ -1,0 +1,57 @@
+version: "3.7"
+
+services:
+  
+  redis:
+    image: redis
+    networks:
+      - cloudgeeks
+    restart: unless-stopped
+    container_name: redis
+    
+
+  elastic_search:
+    image: bitnami/elasticsearch:latest
+    networks:
+      - cloudgeeks
+    restart: unless-stopped
+    container_name: elastic_search
+    
+  cloudgeeksapp:
+    image: registry.gitlab.com/cloudgeeks/cloudgeeks:latest
+    env_file:
+      - docker.env
+    environment:
+      - ELASTICSEARCH_URL=http://elastic_search:9200
+      - REDIS_URL=redis://redis:6379
+    expose:
+    - "4001"
+    networks:
+      - cloudgeeks
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+      - elastic_search
+    entrypoint: ["./entrypoint.sh"]
+
+  postgres:
+    image: postgres:10.12-alpine
+    networks:
+      - cloudgeeks
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: cloudgeeksdb
+      PGDATA: /var/lib/postgresql/data/pgdata
+    restart: unless-stopped
+    container_name: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+
+volumes:
+  pgdata:
+networks:
+  cloudgeeks:
+   external: true

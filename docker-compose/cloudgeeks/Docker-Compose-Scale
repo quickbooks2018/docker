@@ -1,0 +1,14 @@
+# https://docs.docker.com/compose/reference/scale/
+
+# https://docs.docker.com/compose/compose-file/compose-file-v3/#replicas
+
+version: "3.9"
+services:
+  worker:
+    image: dockersamples/examplevotingapp_worker
+    networks:
+      - frontend
+      - backend
+    deploy:
+      mode: replicated
+      replicas: 6
