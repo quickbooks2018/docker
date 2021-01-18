@@ -1,0 +1,41 @@
+#!/bin/bash
+#Purpose: Automated Backups of postgres docker 
+# https://hub.docker.com/r/prodrigestivill/postgres-backup-local
+
+
+BACKUP_S3=`ls -ltr /root/s3/cloudgeeks-backups/postgres/daily | grep ".gz" | awk '{print $9}' | tail -n1`
+
+
+docker run --network invocom --rm -v "/root/postgres/backups:/backups" -u "$(id -u):$(id -g)" -e POSTGRES_HOST=postgres -e POSTGRES_DB=psotgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres  prodrigestivill/postgres-backup-local /backup.sh
+
+
+cp -r /root/postgres/backups/daily /root/s3/cloudgeeks-backups/postgres
+
+rm -rf /root/postgres
+
+for i in $BACKUP_S3
+do
+sleep 5
+rm -f /root/s3/cloudgeeks-backups/postgres/daily/$i
+
+done
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Backup extract
+#gunzip -f cloudgeeks-202103.sql.gz
+
+
+
+#END
