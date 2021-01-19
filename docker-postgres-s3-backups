@@ -2,6 +2,7 @@
 #Purpose: Automated Backups of postgres docker 
 # https://hub.docker.com/r/prodrigestivill/postgres-backup-local
 # https://www.tablesgenerator.com/markdown_tables
+# https://hub.docker.com/repository/docker/quickbooks2018/postgres-backup-local
 
 
 BACKUP_S3=`ls -ltr /root/s3/cloudgeeks-backups/postgres/daily | grep ".gz" | awk '{print $9}' | tail -n1`
