@@ -1,7 +1,7 @@
 #!/bin/bash
 #Purpose: Automated Backups of postgres docker 
 # https://hub.docker.com/r/prodrigestivill/postgres-backup-local
-# https://ecotrust-canada.github.io/markdown-toc/
+# https://www.tablesgenerator.com/markdown_tables
 
 
 BACKUP_S3=`ls -ltr /root/s3/cloudgeeks-backups/postgres/daily | grep ".gz" | awk '{print $9}' | tail -n1`
