@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  s3fs:
+    privileged: true
+    image: cloudgeeksmedia:latest
+    devices:
+      - "/dev/fuse"
+    cap_add:
+      - SYS_ADMIN
+      - DAC_READ_SEARCH
+    cap_drop:
+      - NET_ADMIN
