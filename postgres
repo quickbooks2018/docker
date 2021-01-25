@@ -23,7 +23,7 @@ docker run --name pgadmin -e PGADMIN_DEFAULT_EMAIL="quickbooks2018@gmail.com" -e
 
 # Create a Connection
 # connection-name anynameyouwant
-#username postgres
+#username asim
 #password 12345678
 #dbname   postgres
 
