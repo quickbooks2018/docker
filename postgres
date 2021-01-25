@@ -67,3 +67,11 @@ docker run --name postgres --network="postgres" -e POSTGRES_PASSWORD="12345678" 
 docker run --link postgres:db --network="postgres" -p 8080:8080 -id adminer
 
 #END
+
+
+# Restore a Postgres
+--------------------
+# https://www.postgresqltutorial.com/postgresql-restore-database/
+
+pg_restore -U asim --dbname my_dev < mydb.sql
+
