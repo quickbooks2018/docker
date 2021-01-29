@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: goapp
+  labels:
+    app: goapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: goapp
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        app: goapp
+        tier: frontend
+    spec:
+      containers:
+      - image: nginx:latest
+        imagePullPolicy: Always
+        name: goapp
+        ports:
+        - containerPort: 80
+          name: http
+        resources:
+          limits:
+            cpu: 500m
+            memory: 1024Mi
+          requests:
+            cpu: 500m
+            memory: 1024Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: goapp
+  labels:
+    app: goapp
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+  selector:
+    app: goapp
+    tier: frontend
+  type: NodePort
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: devops.cloudgeeks.com
+  labels:
+    name: goapp
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
+    alb.ingress.kubernetes.io/healthcheck-port: traffic-port
+    alb.ingress.kubernetes.io/healthcheck-path: /
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: '15'
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '5'
+    alb.ingress.kubernetes.io/success-codes: '200'
+    alb.ingress.kubernetes.io/healthy-threshold-count: '2'
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
+spec:
+  rules:
+    - host: devops.cloudgeeks.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: goapp
+              servicePort: 80

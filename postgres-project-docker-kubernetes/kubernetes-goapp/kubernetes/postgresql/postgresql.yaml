@@ -1,0 +1,81 @@
+# Statefulset does not need a dedicated definition of an object of type  PersistentVolumeClaim .
+---
+apiVersion: apps/v1
+
+kind: StatefulSet
+metadata:
+  name: postgres
+  labels:
+    app: postgres
+spec:
+  serviceName: postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+      tier: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+        tier: postgres
+    spec:
+      containers:
+      - image: quickbooks2018/postgres:latest
+        securityContext:
+            runAsUser: 0
+        name: postgres
+        env:
+        # Note: The ENV vars need to be created manually, using create-postgres-credentials.sh
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials
+              key: POSTGRES_DB
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+             secretKeyRef:
+               name: postgres-credentials
+               key: POSTGRES_PASSWORD
+        ports:
+        - containerPort: 5432
+          name: postgres
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 50m
+            memory: 200Mi
+        volumeMounts:
+        - name: postgres-persistent-storage
+          mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+  - metadata:
+      name: postgres-persistent-storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: postgres
+      resources:
+        requests:
+          storage: 10Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  labels:
+    app: postgres
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: postgres
+    tier: postgres
+  clusterIP: None

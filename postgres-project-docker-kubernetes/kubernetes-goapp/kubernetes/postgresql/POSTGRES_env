@@ -1,0 +1,3 @@
+POSTGRES_DB=`aws kms decrypt --region us-east-1 --ciphertext-blob fileb:///root/secrets/postgres/postgres-database.txt --output text --query Plaintext | base64 --decode`
+POSTGRES_USER=`aws kms decrypt --region us-east-1 --ciphertext-blob fileb:///root/secrets/postgres/postgres-user.txt --output text --query Plaintext | base64 --decode`
+POSTGRES_PASSWORD=`aws kms decrypt --region us-east-1 --ciphertext-blob fileb:///root/secrets/postgres/postgres-password.txt  --output text --query Plaintext | base64 --decode`
