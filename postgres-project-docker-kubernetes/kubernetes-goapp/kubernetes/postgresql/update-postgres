@@ -67,6 +67,11 @@ cd /var/lib/postgresql/data/pgdata
 
 docker exec -it {postgres_container}  psql -U postgres -c "SELECT pg_reload_conf();"
 
+# defaults to postgres dbname
+##########################################################
+psql -U postgres -d mydbname -c "SELECT pg_reload_conf();"
+##########################################################
+
 
 Option_2
 
