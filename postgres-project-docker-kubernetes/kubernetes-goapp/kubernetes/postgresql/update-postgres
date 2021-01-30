@@ -66,3 +66,11 @@ cd /var/lib/postgresql/data/pgdata
 # https://github.com/docker-library/postgres/issues/217
 
 docker exec -it {postgres_container}  psql -U postgres -c "SELECT pg_reload_conf();"
+
+
+Option_2
+
+# https://www.heatware.net/databases/postgresql-reload-config-without-restarting/
+
+
+/usr/bin/pg_ctl reload
