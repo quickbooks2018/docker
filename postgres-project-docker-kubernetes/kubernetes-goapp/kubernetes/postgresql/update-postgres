@@ -149,3 +149,9 @@ fg 1234
 pkill -9 postgres
 
 pkill -19 postgres
+
+
+# PG Admin
+-----------
+
+SHOW max_connections;
