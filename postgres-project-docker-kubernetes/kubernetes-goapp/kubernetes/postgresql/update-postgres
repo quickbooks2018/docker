@@ -157,3 +157,11 @@ pkill -19 postgres
 kubectl get pods -n default -o wide
 
 SHOW max_connections;
+
+
+# pg-admin connection get the container name
+
+
+kubectl get pods POD_NAME_HERE -o jsonpath='{.spec.containers[*].name}'
+
+Note: container name is the Hostname or put the Ip-address of Pod
