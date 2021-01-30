@@ -72,6 +72,9 @@ Option_2
 
 # https://www.heatware.net/databases/postgresql-reload-config-without-restarting/
 
+su -c "pg_ctl reload" - postgres
+
+
 su postgres
 which pg_ctl
 /usr/bin/pg_ctl reload
