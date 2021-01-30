@@ -124,3 +124,28 @@ PID   USER     TIME  COMMAND
    57 root      0:00 /bin/bash
   179 root      0:00 /bin/bash
   200 root      0:00 ps aux
+
+
+
+
+# linux
+https://www.ibm.com/support/knowledgecenter/en/ssw_aix_72/osmanagement/proc_restart.html
+
+ps aux
+
+In the ps command output, find the process you want to restart and note its PID number. In the example, the PID is 1234.
+To send the CONTINUE signal to the stopped process, type the following:
+kill -19 1234
+
+
+Substitute the PID of your process for the 1234. The -19 indicates the CONTINUE signal. This command restarts the process in the background. If the process can run in the background, you are finished with the procedure. If the process must run in the foreground (as a vi session would), you must proceed with the next step.
+To bring the process in to the foreground, type the following:
+
+fg 1234
+
+
+# Kill a process with service name
+-----------------------------------
+pkill -9 postgres
+
+pkill -19 postgres
