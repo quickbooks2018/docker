@@ -154,4 +154,6 @@ pkill -19 postgres
 # PG Admin
 -----------
 
+kubectl get pods -n default -o wide
+
 SHOW max_connections;
