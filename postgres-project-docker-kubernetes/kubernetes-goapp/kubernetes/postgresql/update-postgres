@@ -78,3 +78,16 @@ su -c "pg_ctl reload" - postgres
 su postgres
 which pg_ctl
 /usr/bin/pg_ctl reload
+
+
+# https://wiki.alpinelinux.org/wiki/Alpine_Linux_Init_System
+
+rc-update add <service> <runlevel>
+
+rc-update del <service> <runlevel>
+
+rc-service <service> <start stop restart>
+
+Equivalent to /etc/init.d/service <start stop restart>
+
+rc-status
