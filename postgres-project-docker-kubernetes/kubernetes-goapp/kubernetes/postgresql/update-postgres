@@ -1,0 +1,68 @@
+# Must read dokcerhub postgres
+-------------------------------
+https://hub.docker.com/_/postgres
+
+
+# Step-1
+# https://stackoverflow.com/questions/33924198/how-do-you-cleanly-list-all-the-containers-in-a-kubernetes-pod
+
+# Always See how many containers are running in Pod
+
+kubectl get pods POD_NAME_HERE -o jsonpath='{.spec.containers[*].name}'
+
+kubectl get pods postgres-database-0 -o jsonpath='{.spec.containers[*].name}'
+
+
+# Step-2
+
+# https://stackoverflow.com/questions/39979880/kubectl-exec-into-container-of-a-multi-container-pod
+ Flags: -c, --container="": Container name. If omitted, the first container in the pod will be chosen -p, --pod="": Pod name -i, --stdin[=false]: Pass stdin to the container -t, --tty[=false]: Stdin is a TTY
+
+So i just used the container name from my manifest.yaml and it worked like charm. Hope this helps others ...
+
+Name of the container: ipengine-net-benchmark-iperf-server
+
+kubectl exec -ti ipengine-net-benchmark-488656591-gjrpc -c ipengine-net-benchmark-iperf-server /bin/bash
+
+
+# Take a Shell in Pod container with container name
+
+
+kubectl exec -it postgres-database-0 -c postgres-database -n default /bin/bash 
+
+
+# Take a Shell in Pod container (if there is only 1 container running it works with PODNAME)
+
+kubectl exec -it postgres-database-0 -n default /bin/bash 
+
+# Postgres default config in alpine
+https://stackoverflow.com/questions/46981073/how-to-run-postgres-in-a-docker-alpine-linux-container
+
+FROM postgres:10.0-alpine
+
+USER postgres
+
+RUN chmod 0700 /var/lib/postgresql/data &&\
+    initdb /var/lib/postgresql/data &&\
+    echo "host all  all    0.0.0.0/0  md5" >> /var/lib/postgresql/data/pg_hba.conf &&\
+    echo "listen_addresses='*'" >> /var/lib/postgresql/data/postgresql.conf &&\
+    pg_ctl start &&\
+    psql -U postgres -tc "SELECT 1 FROM pg_database WHERE datname = 'main'" | grep -q 1 || psql -U postgres -c "CREATE DATABASE main" &&\
+    psql -c "ALTER USER postgres WITH ENCRYPTED PASSWORD 'mysecurepassword';"
+
+EXPOSE 5432
+
+postgres:11-alpine   configurations
+###
+
+default
+--------
+cd /var/lib/postgresql/data/pgdata
+
+/etc/init.d/
+
+# Reload configurations in postgres
+
+# https://github.com/docker-library/postgres/issues/217
+
+docker exec -it {postgres_container}  psql -U postgres -c "SELECT pg_reload_conf();"
