@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pgadmin
+  namespace: main
+  labels:
+    env: prod
+spec:
+  containers:
+  - name: pgadmin
+    image: dpage/pgadmin4:latest
+    env:
+    - name: PGADMIN_DEFAULT_EMAIL
+      value: asim@invozone.com
+    - name: PGADMIN_DEFAULT_PASSWORD
+      value: asimarain
+    imagePullPolicy: IfNotPresent
+  restartPolicy: Always 
