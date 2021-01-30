@@ -91,3 +91,36 @@ rc-service <service> <start stop restart>
 Equivalent to /etc/init.d/service <start stop restart>
 
 rc-status
+
+
+
+Show List of run levels on Alpine Linux
+If you want to show the list of all run levels on your Alpine Linux, type the following command:
+
+list run levels
+----------------
+# rc-status --list
+Outputs:
+#rc-status --list
+boot
+nonetwork
+default
+sysinit
+shutdown
+
+
+list all services
+-------------------
+bash-5.1# rc-service --list
+bash-5.1# ps aux
+PID   USER     TIME  COMMAND
+    1 postgres  0:00 postgres
+   49 postgres  0:00 postgres: checkpointer
+   50 postgres  0:00 postgres: background writer
+   51 postgres  0:00 postgres: walwriter
+   52 postgres  0:00 postgres: autovacuum launcher
+   53 postgres  0:00 postgres: stats collector
+   54 postgres  0:00 postgres: logical replication launcher
+   57 root      0:00 /bin/bash
+  179 root      0:00 /bin/bash
+  200 root      0:00 ps aux
