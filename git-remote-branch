@@ -1,0 +1,60 @@
+# https://www.freecodecamp.org/news/git-checkout-remote-branch-tutorial/
+
+git remote -r 
+
+git branch -a 
+
+git ls-remote
+
+git remote -r | grep -i docker
+
+
+How to Git Checkout Remote Branch
+-----------------------------------------
+Let's say there's a remote branch created by another developer, and you want to pull that branch. Here's how you go about it:
+
+1. Fetch all remote branches
+-----------------------------
+##################
+git fetch origin
+##################
+This fetches all the remote branches from the repository. origin is the remote name you're targetting. So if you had an upstream remote name, you can call git fetch upstream.
+
+2. List the branches available for checkout
+-------------------------------------------
+To see the branches available for checkout, run the following:
+
+##################
+git branch -a
+##################
+The output of this command is the list of branches available for checkout. For the remote branches, you'll find them prefixed with remotes/origin.
+
+3. Pull changes from a remote branch
+-------------------------------------
+Note that you cannot make changes directly on a remote branch. Hence, you need a copy of that branch. Say you wanted to copy the remote branch fix-failing-tests, here's how you would do it:
+
+############################################################
+git checkout -b fix-failing-tests origin/fix-failing-tests
+#############################################################
+What this does is:
+
+it creates a new branch called fix-failing-tests
+it checkouts that branch
+it pulls changes from origin/fix-failing-tests to that branch
+And now you have a copy of that remote branch. Also, you can push commits to that remote branch. For example, you make push a new commit like so:
+
+touch new-file.js
+git add .
+git commit -m "add new file"
+git push
+This will push the committed changes to origin/fix-failing-tests. If you noticed, we didn't have to specify where we were pushing the changes (like git push origin fix-failing-tests). That's because git automatically sets the local branch to track the remote branch.
+
+Conclusion
+Git branching makes it very easy to collaborate during application development.
+
+With branches, different developers can easily work on different parts of the application simultaneously.
+
+With checkout remote branch, collaboration even becomes more seamless as developers can also copy remote branches locally on their systems, make changes, and push to the remote branches.
+
+
+
