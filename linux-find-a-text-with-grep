@@ -1,1 +1,4 @@
+grep -rnwi 'PATH' -e 'TEXT'
+
+
 grep -rnwi '/root/asim/stitch-connect-elixir' -e 'REDIS_URL'
