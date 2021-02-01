@@ -1,0 +1,46 @@
+
+1. To start a new session in attached mode with session name
+------------------------------
+screen -U -S qasim
+
+__________________
+screen -D qasim
+__________________
+
+2. List current screen session
+------------------------------
+screen -ls
+
+3. Connection with screen session
+----------------------------------
+Eg. I want connect with session no 1
+-------------------------------------
+screen -r 1
+
+4. Detach with screen session
+-------------------------------
+press ctrl+a   release both hands and then press ---> d
+
+
+5. Kill screen sessions
+---------------------------
+screen -S [session # you want to kill] -X  quit
+
+
+6. To join a screen that is already attached  ---> Connect to specific session in "watching/spy mode"
+---------------------------------------------
+screen -x screenid
+
+screen -x qasim
+
+7. Screen run a bash command, which in turn runs your script.
+-----------------------------------------------------------
+
+screen -d -m bash -c 'ping google.com'
+
+8. Screen run a bash Interative shell, which in turn runs your script.
+------------------------------------------------------------
+
+screen -dm -U -S taha bash -c '/root/asim.sh'
+
+screen -dm -U -S google bash -c 'echo taha;echo hadi;/root/asim.sh;ping google.com'
