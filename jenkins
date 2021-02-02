@@ -5,9 +5,9 @@ sh get-docker.sh
 
 docker network ls
 
-docker network create --driver=bridge cloudelligent
+docker network create --driver=bridge cloudgeeks-ca
 
-docker run --name jenkins --network=cloudelligent -d --user=root -v ~/jenkins:/var/jenkins_home --restart unless-stopped jenkins/jenkins:lts
+docker run --name jenkins --network=cloudgeeks-ca -d --user=root -v ~/jenkins:/var/jenkins_home --restart unless-stopped jenkins/jenkins:lts
 
 
 #1 
@@ -35,13 +35,13 @@ yum install -y vim 2> /dev/null
 echo '
 server {
   listen 80;
-  server_name jenkins.cloudelligent.com;
+  server_name jenkins.cloudgeeks-ca.com;
   return 301 https://$host$request_uri;
 }
 
 
 server {
-  server_name jenkins.cloudelligent.com;
+  server_name jenkins.cloudgeeks-ca.com;
   listen 443 ssl;
   ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
   ssl_certificate_key /etc/ssl/certs/nginx-selfsigned.key;
@@ -67,7 +67,7 @@ location / {
 }' >  ~/nginx/conf.d/server.conf
 
 #8
-docker run --name nginx --network=cloudelligent --restart unless-stopped -v ~/ssl/certs:/etc/ssl/certs -v ~/nginx/conf.d:/etc/nginx/conf.d -p 443:443 -p 80:80 -d nginx
+docker run --name nginx --network=cloudgeeks-ca --restart unless-stopped -v ~/ssl/certs:/etc/ssl/certs -v ~/nginx/conf.d:/etc/nginx/conf.d -p 443:443 -p 80:80 -d nginx
 
 
 
@@ -109,7 +109,7 @@ Note: In case permissions issue use ---> --user=root
 
 docker network ls
 
-docker network create --driver=bridge cloudelligent
+docker network create --driver=bridge cloudgeeks-ca
 
 #####################################################################################################################
 https://github.com/jenkinsci/docker/blob/master/README.md
@@ -171,7 +171,7 @@ docker login
 ####################################################################################################################
 
 
-docker run --name jenkins --network=cloudelligent -d -v /home/ubuntu/jenkins:/var/jenkins_home --restart unless-stopped -p 80:8080 -p 50000:50000 jenkins/jenkins:lts
+docker run --name jenkins --network=cloudgeeks-ca -d -v /home/ubuntu/jenkins:/var/jenkins_home --restart unless-stopped -p 80:8080 -p 50000:50000 jenkins/jenkins:lts
 
 
 
@@ -179,7 +179,7 @@ docker run --name jenkins --network=cloudelligent -d -v /home/ubuntu/jenkins:/va
 
 docker network ls
 
-docker network create --driver=bridge cloudelligent
+docker network create --driver=bridge cloudgeeks-ca
 
 
 
@@ -196,7 +196,7 @@ docker network create --driver=bridge cloudelligent
 #6 apt update -y && apt install -y vim > /dev/null
    yum update -y && yum install -y vim > /dev/null
 
-#7 vim server.cloudelligent.conf 
+#7 vim server.cloudgeeks-ca.conf
 
 upstream jenkins {
   server jenkins:8080 fail_timeout=0;
@@ -204,13 +204,13 @@ upstream jenkins {
 
 server {
   listen 80;
-  server_name jenkins.cloudelligent.com;
+  server_name jenkins.cloudgeeks-ca.com;
   return 301 https://$host$request_uri;
 }
 
 
 server {
-  server_name jenkins.cloudelligent.com;
+  server_name jenkins.cloudgeeks-ca.com;
   listen 443 ssl;
   ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
   ssl_certificate_key /etc/ssl/certs/nginx-selfsigned.key;
@@ -227,7 +227,7 @@ location / {
     proxy_request_buffering off;
     proxy_buffering off; # Required for HTTP-based CLI to work over SSL
     # workaround for https://issues.jenkins-ci.org/browse/JENKINS-45651
-    add_header 'X-SSH-Endpoint' 'jenkins.cloudelligent.com:50022' always;
+    add_header 'X-SSH-Endpoint' 'jenkins.cloudgeeks-ca.com:50022' always;
        }
 }
 
@@ -236,7 +236,7 @@ location / {
 #Note Proxy pass will be the container IP
 #Example: docker inspect --format '{{ .NetworkSettings.IPAddress }}' fdeabb276a76
 
-#8 docker run --name nginx --network=cloudelligent --restart unless-stopped -v /root/ssl/private:/etc/ssl/private -v /root/ssl/certs:/etc/ssl/certs -v /root/nginx/conf.d:/etc/nginx/conf.d -p 443:443 -d nginx
+#8 docker run --name nginx --network=cloudgeeks-ca --restart unless-stopped -v /root/ssl/private:/etc/ssl/private -v /root/ssl/certs:/etc/ssl/certs -v /root/nginx/conf.d:/etc/nginx/conf.d -p 443:443 -d nginx
 
 #Note:  You can also make an entry in /etc/hosts 
 
@@ -399,7 +399,7 @@ pipeline {
     environment {
     tests = "docker/cartodb/tests"
     bats = "/opt/bats"
-    CARTO_HOST= "cloudelligent"
+    CARTO_HOST= "cloudgeeks-ca"
   }
 
     agent any

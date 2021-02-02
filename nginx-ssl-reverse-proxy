@@ -19,11 +19,11 @@ yum install -y vim 2> /dev/null
 echo '
 server {
   listen 80;
-  server_name jira.cloudelligent.com;
+  server_name jira.cloudgeeks-ca.com;
   return 301 https://$host$request_uri;
 }
 server {
-  server_name jira.cloudelligent.com;
+  server_name jira.cloudgeeks-ca.com;
   listen 443 ssl;
   ssl_certificate /etc/ssl/certs/server.crt;
   ssl_certificate_key /etc/ssl/certs/server.key;
@@ -109,7 +109,7 @@ docker run --name nginx --restart unless-stopped -v ~/ssl/certs:/etc/ssl/certs -
 
 docker network ls
 
-docker network create --driver=bridge cloudelligent
+docker network create --driver=bridge cloudgeeks-ca
 
 
 
@@ -129,13 +129,13 @@ docker network create --driver=bridge cloudelligent
 
 server {
   listen 80;
-  server_name jira.cloudelligent.com;
+  server_name jira.cloudgeeks-ca.com;
   return 301 https://$host$request_uri;
 }
 
 
 server {
-  server_name jira.cloudelligent.com;
+  server_name jira.cloudgeeks-ca.com;
   listen 443 ssl;
   ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
   ssl_certificate_key /etc/ssl/certs/nginx-selfsigned.key;
@@ -158,7 +158,7 @@ location / {
 #Note Proxy pass will be the container IP
 #Example: docker inspect --format '{{ .NetworkSettings.IPAddress }}' fdeabb276a76
 
-#8 docker run --name nginx --network=cloudelligent -v ~/nginx/ssl/certs:/etc/ssl/certs -v ~/nginx/ssl/certs:/etc/ssl/certs -v ~/nginx/conf.d:/etc/nginx/conf.d -p 443:443 -p 80:80 --restart unless-stopped -d nginx
+#8 docker run --name nginx --network=cloudgeeks-ca -v ~/nginx/ssl/certs:/etc/ssl/certs -v ~/nginx/ssl/certs:/etc/ssl/certs -v ~/nginx/conf.d:/etc/nginx/conf.d -p 443:443 -p 80:80 --restart unless-stopped -d nginx
 
 #Note:  You can also make an entry in /etc/hosts 
 

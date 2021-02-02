@@ -7,4 +7,4 @@
 
 4. https://ssl-ccp.godaddy.com/repository?origin=CALLISTO
 
-5. https://www.sslshopper.com/ssl-checker.html#hostname=jira.cloudelligent.com
+5. https://www.sslshopper.com/ssl-checker.html#hostname=jira.cloudgeeks-ca.com

@@ -1,11 +1,11 @@
 
 server {
   listen 80;
-  server_name teleport.cloudelligent.com;
+  server_name teleport.cloudgeeks-ca.com;
   return 301 https://$host$request_uri;
 }
 server {
-  server_name teleport.cloudelligent.com;
+  server_name teleport.cloudgeeks-ca.com;
   listen 443 ssl;
   ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
   ssl_certificate_key /etc/ssl/certs/nginx-selfsigned.key;
