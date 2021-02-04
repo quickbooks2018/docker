@@ -11,3 +11,17 @@ docker run --name apache --hostname apache -p 80:80 -id httpd
 ping dns.mageddo
 
 ping apache
+
+
+
+docker run --name dns-server --hostname dns.cloudgeeks.ca \
+-v /var/run/docker.sock:/var/run/docker.sock \
+-v /etc/resolv.conf:/etc/resolv.conf \
+--restart unless-stopped -d quickbooks2018/docker-dns-server:latest
+
+
+docker run --name apache --hostname asim.cloudgeeks.ca -p 80:80 -id httpd
+
+ping dns.cloudgeeks.ca
+
+ping asim.cloudgeeks.ca
