@@ -49,3 +49,12 @@ nginx                           latest    f6d0b4767a6c   3 weeks ago      133MB
 
 _______________________________________________________________________________________________________________________
 docker commit --change='CMD ["apachectl", "-DFOREGROUND"]' -c "EXPOSE 80" c3f279d17e0a  svendowideit/testimage:version4
+
+
+3. Dockerfile
+
+   WORKDIR nginx /usr/share/nginx/html
+   COPY index.html index.html
+   
+   
+
