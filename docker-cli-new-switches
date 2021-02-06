@@ -1,0 +1,26 @@
+# New docker-cli 
+
+1. Creation of New Image, from a running container, Commit to docker images via running container put new tag & push to repo, it helps just git commit 
+
+# https://docs.docker.com/engine/reference/commandline/commit/
+
+Example
+--------
+ 
+ docker exec -it nginx bash
+
+ apt update -y && apt install -y vim
+ exit
+
+ docker commit -m "vim is installed" -a "Muhammad Asim quickbooks2018@gmail.com" running-container newtag
+
+------------------------------------------------------------------------------------------------------------------------
+ docker commit -m "vim is installed" -a "Muhammad Asim asim@cloudgeeks.ca" nginx quickbooks2018/nginx-with-vim:v1
+------------------------------------------------------------------------------------------------------------------------
+
+ docker commit containerid newtag:v1
+
+
+
+_______________________________________________________________________________________________________________________
+docker commit --change='CMD ["apachectl", "-DFOREGROUND"]' -c "EXPOSE 80" c3f279d17e0a  svendowideit/testimage:version4
