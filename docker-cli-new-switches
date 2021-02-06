@@ -22,5 +22,30 @@ Example
 
 
 
+
+2. SIZE of running container, you will see the size after Installing vim 51.MB is size of writable layer & 133MB is ---> docker images ----> nginx image totall size
+
+
+ docker ps -s
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS          PORTS                NAMES     SIZE
+c34b272d2f7e   nginx     "/docker-entrypoint.…"   30 minutes ago   Up 30 minutes   0.0.0.0:80->80/tcp   nginx     51.1MB (virtual 184MB) 133+51
+
+
+Example:
+--------
+
+docker ps -s
+
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS          PORTS                  NAMES     SIZE
+17daf3f2ef23   nginx     "/docker-entrypoint.…"   6 seconds ago    Up 5 seconds    0.0.0.0:8080->80/tcp   nginx2    1.12kB (virtual 133MB)  ---> pure nginx
+c34b272d2f7e   nginx     "/docker-entrypoint.…"   35 minutes ago   Up 35 minutes   0.0.0.0:80->80/tcp     nginx     51.1MB (virtual 184MB   ---> after vim installed
+
+docker images
+
+REPOSITORY                      TAG       IMAGE ID       CREATED          SIZE
+quickbooks2018/nginx-with-vim   v1        6f71de76181e   12 minutes ago   184MB
+nginx                           latest    f6d0b4767a6c   3 weeks ago      133MB
+
+
 _______________________________________________________________________________________________________________________
 docker commit --change='CMD ["apachectl", "-DFOREGROUND"]' -c "EXPOSE 80" c3f279d17e0a  svendowideit/testimage:version4
