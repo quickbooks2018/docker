@@ -2,7 +2,7 @@
 
 # RabbitMQ Bitnami Setup
 
-docker network create rabbitmq
+docker network create rabbitmq --attachable
 
 docker run --name rabbitmq --user root --network rabbitmq -p 80:15672 -v $PWD/rabbitmq:/bitnami -id bitnami/rabbitmq:latest
 
