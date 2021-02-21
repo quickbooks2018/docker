@@ -142,6 +142,7 @@ docker exec -it rabbit-3 rabbitmqctl cluster_status
 # Automated Clustering
 
 #!/bin/bash
+
 #Purpose: RabbitMQ Cluster
 
 
