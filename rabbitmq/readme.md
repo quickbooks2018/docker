@@ -205,7 +205,7 @@ docker exec -it rabbit-3 rabbitmqctl set_policy ha-fed ".*" '{"federation-upstre
 
 #Consumer application
 
-#docker run --name consumer -it --rm --network rabbitmq  -e RABBIT_HOST=rabbitmq -e RABBIT_PORT=5672 -e RABBIT_USERNAME=user -e RABBIT_PASSWORD=bitnami quickbooks2018/rabbitmq-consumer:latest
+#docker run --name consumer -it --rm --network rabbits  -e RABBIT_HOST=rabbit-1 -e RABBIT_PORT=5672 -e RABBIT_USERNAME=asim -e RABBIT_PASSWORD=asim quickbooks2018/rabbitmq-consumer:latest
 
 
 
