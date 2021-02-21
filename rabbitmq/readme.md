@@ -175,10 +175,15 @@ docker run --name rabbit-3 --network rabbits -v ${PWD}/config/rabbit-3/:/config/
 #enable federation plugin
 
 sleep 10
+
 docker exec -it rabbit-1 rabbitmq-plugins enable rabbitmq_federation 
+
 sleep 10
+
 docker exec -it rabbit-2 rabbitmq-plugins enable rabbitmq_federation
+
 sleep 10
+
 docker exec -it rabbit-3 rabbitmq-plugins enable rabbitmq_federation
 
 
