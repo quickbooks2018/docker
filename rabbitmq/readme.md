@@ -143,6 +143,9 @@ docker exec -it rabbit-3 rabbitmqctl cluster_status
 
 # Linux
 
+# 1
+-----------------------------------------------------------------------------------------
+
 docker network create rabbits --attachable
 
 docker run --name rabbit-1 --network rabbits -v ${PWD}/config/rabbit-1/:/config/ -e RABBITMQ_CONFIG_FILE=/config/rabbitmq -e RABBITMQ_ERLANG_COOKIE=WIWVHCDTCIUAWANLMQAW -e RABBITMQ_DEFAULT_USER=asim -e RABBITMQ_DEFAULT_PASS=asim --hostname rabbit-1 -p 8081:15672 --restart unless-stopped -id rabbitmq:3.8-management
@@ -165,6 +168,12 @@ docker run -d --rm --net rabbits `
 -p 8081:15672 `
 rabbitmq:3.8-management
 
+
+# 2
+-----------------------------------------------------------------------------------------
+
+docker run --name rabbit-2 --network rabbits -v ${PWD}/config/rabbit-2/:/config/ -e RABBITMQ_CONFIG_FILE=/config/rabbitmq -e RABBITMQ_ERLANG_COOKIE=WIWVHCDTCIUAWANLMQAW -e RABBITMQ_DEFAULT_USER=asim -e RABBITMQ_DEFAULT_PASS=asim --hostname rabbit-2 -p 8082:15672 --restart unless-stopped -id rabbitmq:3.8-management
+
 docker run -d --rm --net rabbits `
 -v ${PWD}/config/rabbit-2/:/config/ `
 -e RABBITMQ_CONFIG_FILE=/config/rabbitmq `
@@ -173,6 +182,13 @@ docker run -d --rm --net rabbits `
 --name rabbit-2 `
 -p 8082:15672 `
 rabbitmq:3.8-management
+
+
+# 3
+-----------------------------------------------------------------------------------------
+
+docker run --name rabbit-3 --network rabbits -v ${PWD}/config/rabbit-3/:/config/ -e RABBITMQ_CONFIG_FILE=/config/rabbitmq -e RABBITMQ_ERLANG_COOKIE=WIWVHCDTCIUAWANLMQAW -e RABBITMQ_DEFAULT_USER=asim -e RABBITMQ_DEFAULT_PASS=asim --hostname rabbit-3 -p 8083:15672 --restart unless-stopped -id rabbitmq:3.8-management
+
 
 docker run -d --rm --net rabbits `
 -v ${PWD}/config/rabbit-3/:/config/ `
