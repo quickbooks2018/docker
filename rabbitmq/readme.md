@@ -150,6 +150,14 @@ docker exec -it rabbit-3 rabbitmqctl cluster_status
 
 curl -# -LO https://github.com/quickbooks2018/docker/raw/master/rabbitmq/rabbitmq.zip
 
+unzip rabbitmq.zip
+
+rm -f rabbitmq.zip
+
+cp -r rabbitmq/config .
+
+chown -R 1000:1000 config
+
 docker network create rabbits --attachable
 
 #1
