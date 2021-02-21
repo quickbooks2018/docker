@@ -172,6 +172,26 @@ docker run --name rabbit-2 --network rabbits -v ${PWD}/config/rabbit-2/:/config/
 
 docker run --name rabbit-3 --network rabbits -v ${PWD}/config/rabbit-3/:/config/ -e RABBITMQ_CONFIG_FILE=/config/rabbitmq -e RABBITMQ_ERLANG_COOKIE=WIWVHCDTCIUAWANLMQAW -e RABBITMQ_DEFAULT_USER=asim -e RABBITMQ_DEFAULT_PASS=asim --hostname rabbit-3 -p 8083:15672 --restart unless-stopped -id rabbitmq:3.8-management
 
+#enable federation plugin
+
+sleep 10
+docker exec -it rabbit-1 rabbitmq-plugins enable rabbitmq_federation 
+sleep 10
+docker exec -it rabbit-2 rabbitmq-plugins enable rabbitmq_federation
+sleep 10
+docker exec -it rabbit-3 rabbitmq-plugins enable rabbitmq_federation
+
+
+#mirror policy
+
+docker exec -it rabbit-1 rabbitmqctl set_policy ha-fed ".*" '{"federation-upstream-set":"all", "ha-sync-mode":"automatic","ha-mode":"nodes", "ha-params":["rabbit@rabbit-1","rabbit@rabbit-2","rabbit@rabbit-3"]}' --priority 1 --apply-to queues
+
+
+docker exec -it rabbit-2 rabbitmqctl set_policy ha-fed ".*" '{"federation-upstream-set":"all", "ha-sync-mode":"automatic","ha-mode":"nodes", "ha-params":["rabbit@rabbit-1","rabbit@rabbit-2","rabbit@rabbit-3"]}' --priority 1 --apply-to queues
+
+
+docker exec -it rabbit-3 rabbitmqctl set_policy ha-fed ".*" '{"federation-upstream-set":"all", "ha-sync-mode":"automatic","ha-mode":"nodes", "ha-params":["rabbit@rabbit-1","rabbit@rabbit-2","rabbit@rabbit-3"]}' --priority 1 --apply-to queues
+
 #END
 
 
