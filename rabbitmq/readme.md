@@ -192,6 +192,23 @@ docker exec -it rabbit-2 rabbitmqctl set_policy ha-fed ".*" '{"federation-upstre
 
 docker exec -it rabbit-3 rabbitmqctl set_policy ha-fed ".*" '{"federation-upstream-set":"all", "ha-sync-mode":"automatic","ha-mode":"nodes", "ha-params":["rabbit@rabbit-1","rabbit@rabbit-2","rabbit@rabbit-3"]}' --priority 1 --apply-to queues
 
+
+
+#Producer application
+
+#docker run --name producer -it --rm --network rabbits -e RABBIT_HOST=rabbit-1 -e RABBIT_PORT=5672 -e RABBIT_USERNAME=asim -e RABBIT_PASSWORD=asim -p 8080:80 quickbooks2018/rabbitmq-producer:latest
+
+#curl -X POST http://localhost:8080/publish/cloudgeeks.ca
+
+#curl -X POST http://localhost:8080/publish/asim
+
+
+#Consumer application
+
+#docker run --name consumer -it --rm --network rabbitmq  -e RABBIT_HOST=rabbitmq -e RABBIT_PORT=5672 -e RABBIT_USERNAME=user -e RABBIT_PASSWORD=bitnami quickbooks2018/rabbitmq-consumer:latest
+
+
+
 #END
 
 
