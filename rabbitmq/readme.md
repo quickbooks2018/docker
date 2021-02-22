@@ -87,7 +87,9 @@ docker exec -it rabbit-manager rabbitmqctl cluster_status
 # Enable Statistics
 
 docker exec -it rabbit-1 rabbitmq-plugins enable rabbitmq_management
+
 docker exec -it rabbit-2 rabbitmq-plugins enable rabbitmq_management
+
 docker exec -it rabbit-3 rabbitmq-plugins enable rabbitmq_management
 
 # Message Publisher
@@ -95,6 +97,7 @@ docker exec -it rabbit-3 rabbitmq-plugins enable rabbitmq_management
 ```
 
 cd messaging\rabbitmq\applications\publisher
+
 docker build . -t aimvector/rabbitmq-publisher:v1.0.0
 
 docker run -it --rm --net rabbits -e RABBIT_HOST=rabbit-1 -e RABBIT_PORT=5672 -e RABBIT_USERNAME=guest -e RABBIT_PASSWORD=guest -p 80:80 aimvector/rabbitmq-publisher:v1.0.0
@@ -105,6 +108,7 @@ docker run -it --rm --net rabbits -e RABBIT_HOST=rabbit-1 -e RABBIT_PORT=5672 -e
 ```
 
 docker build . -t aimvector/rabbitmq-consumer:v1.0.0
+
 docker run -it --rm --net rabbits -e RABBIT_HOST=rabbit-1 -e RABBIT_PORT=5672 -e RABBIT_USERNAME=guest -e RABBIT_PASSWORD=guest aimvector/rabbitmq-consumer:v1.0.0
 ```
 
@@ -125,16 +129,24 @@ docker exec -it rabbit-1 rabbitmqctl cluster_status
 #join node 2
 
 docker exec -it rabbit-2 rabbitmqctl stop_app
+
 docker exec -it rabbit-2 rabbitmqctl reset
+
 docker exec -it rabbit-2 rabbitmqctl join_cluster rabbit@rabbit-1
+
 docker exec -it rabbit-2 rabbitmqctl start_app
+
 docker exec -it rabbit-2 rabbitmqctl cluster_status
 
 #join node 3
 docker exec -it rabbit-3 rabbitmqctl stop_app
+
 docker exec -it rabbit-3 rabbitmqctl reset
+
 docker exec -it rabbit-3 rabbitmqctl join_cluster rabbit@rabbit-1
+
 docker exec -it rabbit-3 rabbitmqctl start_app
+
 docker exec -it rabbit-3 rabbitmqctl cluster_status
 
 ```
