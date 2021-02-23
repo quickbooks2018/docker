@@ -23,6 +23,8 @@ standard (default)   rancher.io/local-path   Delete          WaitForFirstConsume
 ## Deployment
 
 ```
+kubectl apply -n rabbits -f .
+
 kubectl apply -n rabbits -f .\kubernetes\rabbit-rbac.yaml
 kubectl apply -n rabbits -f .\kubernetes\rabbit-configmap.yaml
 kubectl apply -n rabbits -f .\kubernetes\rabbit-secret.yaml
@@ -33,6 +35,17 @@ kubectl apply -n rabbits -f .\kubernetes\rabbit-statefulset.yaml
 
 ```
 kubectl -n rabbits port-forward rabbitmq-0 8080:15672
+
+# All interfaces
+----------------
+kubectl -n rabbits port-forward rabbitmq-0 --address 0.0.0.0 8080:15672
+
+# All interfaces plus run at backend
+-------------------------------------
+kubectl -n rabbits port-forward rabbitmq-0 --address 0.0.0.0 8080:15672 &
+
+
+
 ```
 Go to htttp://localhost:8080 <br/>
 Username: `guest` <br/>
@@ -45,12 +58,22 @@ Password: `guest` <br/>
 cd messaging\rabbitmq\applications\publisher
 docker build . -t aimvector/rabbitmq-publisher:v1.0.0
 
-kubectl apply -f rabbits deployment.yaml
+kubectl -n rabbits apply -f .
+
+# Port-forward to the POD in namespace rabbits
+----------------------------------------------
+
+kubectl -n rabbits port-forward rabbitmq-publisher-6d5b4c679-p58hv --address 0.0.0.0 80:80 &
+curl -X POST http://localhost:80/publish/asim
 ```
 
 # Automatic Synchronization
 
 https://www.rabbitmq.com/ha.html#unsynchronised-mirrors
+
+
+kubectl -n rabbits exec -it rabbitmq-0 bash
+
 
 ```
 rabbitmqctl set_policy ha-fed \
