@@ -1,0 +1,54 @@
+#!/bin/bash
+sudo touch /var/log/user-data.log
+exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
+region=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | grep -oP '\"region\"[[:space:]]*:[[:space:]]*\"\K[^\"]+')
+export AWS_DEFAULT_REGION=$region
+instance_id=$(curl http://169.254.169.254/latest/meta-data/instance-id)
+hostName=$(echo "$HOSTNAME"."$region".compute.internal)
+user="asim"
+ipV4=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
+sudo useradd -u 999 -g 999 -s /bin/bash rabbitmq
+[ -d "/rabbitmq" ] || sudo mkdir -p /rabbitmq
+[ -d "/rabbitmq/config" ] || sudo mkdir -p /rabbitmq/config
+bash -c "sudo tee /rabbitmq/config/rabbitmq.conf <<EOF
+cluster_formation.peer_discovery_backend = aws
+cluster_formation.aws.region = "$region"
+cluster_formation.aws.use_autoscaling_group = true
+cluster_formation.discovery_retry_limit = 10
+cluster_formation.discovery_retry_interval = 10000
+cluster_name = cloudgeeks
+log.file.level = debug
+vm_memory_high_watermark.relative = 0.8
+EOF"
+bash -c "sudo tee /rabbitmq/config/rabbitmq-env.conf <<EOF
+NODENAME=rabbit@"$hostName"
+NODE_IP_ADDRESS="$ipV4"
+USE_LONGNAME=true
+EOF"
+
+bash -c "sudo tee /rabbitmq/config/enabled_plugins <<EOF
+[rabbitmq_management,rabbitmq_peer_discovery_aws,rabbitmq_federation,rabbitmq_prometheus].
+EOF"
+
+sudo chown -R rabbitmq:docker /rabbitmq
+
+sudo docker run -d --restart unless-stopped --name rabbit --hostname $hostName -v /rabbitmq/config:/etc/rabbitmq -e RABBITMQ_DEFAULT_USER=${user} -e RABBITMQ_ERLANG_COOKIE='${user}' -e RABBITMQ_DEFAULT_PASS=${password} -e RABBITMQ_DEFAULT_VHOST=cloudgeeks --log-opt max-size=1m --log-opt max-file=1 --network host rabbitmq:management
+while ! nc -vz 127.0.0.1 5672;do echo "Waiting for port" && sleep 5;done
+
+sleep 30
+
+sudo docker exec -i rabbit bash <<'EOF'
+rabbitmqctl set_policy -p cloudgeeks ha-all "" '{"ha-mode":"all","ha-sync-mode":"automatic"}'
+rabbitmqctl set_policy -p cloudgeeks ha-fed ".*" '{"federation-upstream-set":"all"}' --priority 1 --apply-to queues
+EOF
+%{ for e in env ~}
+sudo docker exec -i rabbit bash -c "rabbitmqctl add_vhost ${e}"
+sudo docker exec -i rabbit bash -c "rabbitmqctl add_user ${e} ${env_passwd}"
+sudo docker exec -i rabbit bash -c "rabbitmqctl set_user_tags ${e} administrator"
+sudo docker exec -i rabbit bash -c 'rabbitmqctl set_permissions -p ${e} ${e} ".*" ".*" "."'
+docker exec -i rabbit bash <<'EOF'
+rabbitmqctl set_policy -p ${e} ha-all "" '{"ha-mode":"all","ha-sync-mode":"automatic"}'
+rabbitmqctl set_policy -p ${e} ha-fed ".*" '{"federation-upstream-set":"all"}' --priority 1 --apply-to queues
+EOF
+sudo docker exec -i rabbit bash -c 'rabbitmqctl set_permissions -p ${e} ${user} ".*" ".*" "."'
+%{ endfor ~}
