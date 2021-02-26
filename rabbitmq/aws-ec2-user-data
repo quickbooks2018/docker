@@ -13,6 +13,7 @@ export AWS_DEFAULT_REGION=$region
 instance_id=$(curl http://169.254.169.254/latest/meta-data/instance-id)
 hostName=$(echo "$HOSTNAME"."$region".compute.internal)
 user="asim"
+password="asim"
 ipV4=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
 sudo useradd -u 999 -g 999 -s /bin/bash rabbitmq
 [ -d "/rabbitmq" ] || sudo mkdir -p /rabbitmq
@@ -39,7 +40,7 @@ EOF"
 
 sudo chown -R rabbitmq:docker /rabbitmq
 
-sudo docker run -d --restart unless-stopped --name rabbit --hostname $hostName -v /rabbitmq/config:/etc/rabbitmq -e RABBITMQ_DEFAULT_USER=${user} -e RABBITMQ_ERLANG_COOKIE='${user}' -e RABBITMQ_DEFAULT_PASS=${user} -e RABBITMQ_DEFAULT_VHOST=cloudgeeks --log-opt max-size=1m --log-opt max-file=1 --network host quickbooks2018/rabbitmq:latest
+sudo docker run -d --restart unless-stopped --name rabbit --hostname $hostName -v /rabbitmq/config:/etc/rabbitmq -e RABBITMQ_DEFAULT_USER=${user} -e RABBITMQ_ERLANG_COOKIE='${user}' -e RABBITMQ_DEFAULT_PASS=${password} -e RABBITMQ_DEFAULT_VHOST=cloudgeeks --log-opt max-size=1m --log-opt max-file=1 --network host quickbooks2018/rabbitmq:latest
 while ! nc -vz 127.0.0.1 5672;do echo "Waiting for port" && sleep 5;done
 
 sleep 30
@@ -50,7 +51,7 @@ rabbitmqctl set_policy -p cloudgeeks ha-fed ".*" '{"federation-upstream-set":"al
 EOF
 %{ for e in env ~}
 sudo docker exec -i rabbit bash -c "rabbitmqctl add_vhost ${e}"
-sudo docker exec -i rabbit bash -c "rabbitmqctl add_user ${e} ${env_passwd}"
+sudo docker exec -i rabbit bash -c "rabbitmqctl add_user ${e} ${password}"
 sudo docker exec -i rabbit bash -c "rabbitmqctl set_user_tags ${e} administrator"
 sudo docker exec -i rabbit bash -c 'rabbitmqctl set_permissions -p ${e} ${e} ".*" ".*" "."'
 docker exec -i rabbit bash <<'EOF'
