@@ -39,7 +39,7 @@ EOF"
 
 sudo chown -R rabbitmq:docker /rabbitmq
 
-sudo docker run -d --restart unless-stopped --name rabbit --hostname $hostName -v /rabbitmq/config:/etc/rabbitmq -e RABBITMQ_DEFAULT_USER=${user} -e RABBITMQ_ERLANG_COOKIE='${user}' -e RABBITMQ_DEFAULT_PASS=${user} -e RABBITMQ_DEFAULT_VHOST=cloudgeeks --log-opt max-size=1m --log-opt max-file=1 --network host rabbitmq:management
+sudo docker run -d --restart unless-stopped --name rabbit --hostname $hostName -v /rabbitmq/config:/etc/rabbitmq -e RABBITMQ_DEFAULT_USER=${user} -e RABBITMQ_ERLANG_COOKIE='${user}' -e RABBITMQ_DEFAULT_PASS=${user} -e RABBITMQ_DEFAULT_VHOST=cloudgeeks --log-opt max-size=1m --log-opt max-file=1 --network host quickbooks2018/rabbitmq:latest
 while ! nc -vz 127.0.0.1 5672;do echo "Waiting for port" && sleep 5;done
 
 sleep 30
