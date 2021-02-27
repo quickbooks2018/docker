@@ -50,11 +50,22 @@ cat > /root/rabbit/enabled_plugins <<'EOF'
 EOF
 
 
-# Permissions
-chown -R 1000:1000 /root/rabbit
-
-docker run -d --restart unless-stopped --name rabbit --hostname $hostName -v /root/rabbit:/config/ -e RABBITMQ_CONFIG_FILE=/config/rabbitmq -e RABBITMQ_DEFAULT_USER=${user} -e RABBITMQ_ERLANG_COOKIE='${user}' -e RABBITMQ_DEFAULT_PASS=${password} -e RABBITMQ_DEFAULT_VHOST=cloudgeeks --log-opt max-size=1m --log-opt max-file=1 --network host quickbooks2018/rabbitmq:latest
+docker run -d --restart unless-stopped --name rabbit --hostname $hostName -e RABBITMQ_DEFAULT_USER=${user} -e RABBITMQ_ERLANG_COOKIE='${user}' -e RABBITMQ_DEFAULT_PASS=${password} -e RABBITMQ_DEFAULT_VHOST=cloudgeeks --log-opt max-size=1m --log-opt max-file=1 --network host quickbooks2018/rabbitmq:latest
 while ! nc -vz 127.0.0.1 5672;do echo "Waiting for port" && sleep 5;done
+
+chmod 666 rabbitmq.conf
+
+chmod 666 enabled_plugins
+
+chmod 666 rabbitmq-ev.conf
+
+docker cp rabbitmq.conf rabbit:/etc/rabbitmq
+
+docker cp enabled_plugins rabbit:/etc/rabbitmq
+
+docker cp rabbitmq-env.conf rabbit:/etc/rabbitmq
+
+docker restart rabbit
 
 sleep 30
 
