@@ -60,7 +60,7 @@ chmod 666 rabbitmq.conf
 
 chmod 666 enabled_plugins
 
-chmod 666 rabbitmq-ev.conf
+chmod 666 rabbitmq-env.conf
 
 docker cp rabbitmq.conf rabbit:/etc/rabbitmq
 
