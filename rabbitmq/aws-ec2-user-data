@@ -25,10 +25,10 @@ password="asim"
 ipV4=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
 
 
-mkdir -p /root/rabbit
+mkdir -p "$PWD"/rabbit
 
 # Rabbitmq Configurations
-cat  > /root/rabbit/rabbitmq.conf <<'EOF'
+cat  > "$PWD"/rabbit/rabbitmq.conf <<'EOF'
 cluster_formation.peer_discovery_backend = aws
 cluster_formation.aws.region = "$region"
 cluster_formation.aws.use_autoscaling_group = true
@@ -39,18 +39,21 @@ log.file.level = debug
 vm_memory_high_watermark.relative = 0.8
 EOF
 
-cat > /root/rabbit/rabbitmq-env.conf <<'EOF'
+cat > "$PWD"/rabbit/rabbitmq-env.conf <<'EOF'
 NODENAME=rabbit@"$hostName"
 NODE_IP_ADDRESS="$ipV4"
 USE_LONGNAME=true
 EOF
 
-cat > /root/rabbit/enabled_plugins <<'EOF'
+cat > "$PWD"/rabbit/enabled_plugins <<'EOF'
 [rabbitmq_management,rabbitmq_peer_discovery_aws,rabbitmq_federation,rabbitmq_prometheus]
 EOF
 
 
-docker run -d --restart unless-stopped --name rabbit --hostname $hostName -e RABBITMQ_DEFAULT_USER=${user} -e RABBITMQ_ERLANG_COOKIE='${user}' -e RABBITMQ_DEFAULT_PASS=${password} -e RABBITMQ_DEFAULT_VHOST=cloudgeeks --log-opt max-size=1m --log-opt max-file=1 --network host quickbooks2018/rabbitmq:latest
+cd "$PWD"/rabbit
+
+
+docker run -d --restart unless-stopped --name rabbit --hostname $HOSTNAME  -e RABBITMQ_DEFAULT_USER=${user} -e RABBITMQ_ERLANG_COOKIE='${user}' -e RABBITMQ_DEFAULT_PASS=${password} -e RABBITMQ_DEFAULT_VHOST=cloudgeeks --log-opt max-size=1m --log-opt max-file=1 --network host quickbooks2018/rabbitmq:latest
 while ! nc -vz 127.0.0.1 5672;do echo "Waiting for port" && sleep 5;done
 
 chmod 666 rabbitmq.conf
