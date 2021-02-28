@@ -305,13 +305,13 @@ docker exec -it rabbit-3 rabbitmqctl set_policy ha-fed ".*" '{"federation-upstre
 # AWS EC2
 #Producer application
 
-#docker run --name producer -it --rm --network host -e RABBIT_HOST=rabbit@ip-172-31-5-249.ec2.internal -e RABBIT_PORT=15672 -e RABBIT_USERNAME=asim -e RABBIT_PASSWORD=asim -p 80:80 quickbooks2018/rabbitmq-producer:latest
+#docker run --name producer -it --rm --network host -e RABBIT_HOST=rabbit@"$HOSTNAME" -e RABBIT_PORT=15672 -e RABBIT_USERNAME=asim -e RABBIT_PASSWORD=asim -p 80:80 quickbooks2018/rabbitmq-producer:latest
 
-#curl -X POST http://localhost:8080/publish/cloudgeeks.ca
+#curl -X POST http://localhost:80/publish/cloudgeeks.ca
 
 #Consumer application
 
-#docker run --name consumer -it --rm --network rabbits  -e RABBIT_HOST=rabbit-1 -e RABBIT_PORT=5672 -e RABBIT_USERNAME=asim -e RABBIT_PASSWORD=asim quickbooks2018/rabbitmq-consumer:latest
+#docker run --name consumer -it --rm --network rabbits  -e RABBIT_HOST=rabbit@"$HOSTNAME" -e RABBIT_PORT=5672 -e RABBIT_USERNAME=asim -e RABBIT_PASSWORD=asim quickbooks2018/rabbitmq-consumer:latest
 
 
 
