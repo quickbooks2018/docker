@@ -54,7 +54,7 @@ EOF
 cd "$PWD"/rabbit
 
 
-docker run -d --restart unless-stopped --name rabbit --hostname $hostName  -e RABBITMQ_DEFAULT_USER=${user} -e RABBITMQ_ERLANG_COOKIE='${user}' -e RABBITMQ_DEFAULT_PASS=${password} -e RABBITMQ_DEFAULT_VHOST=cloudgeeks --log-opt max-size=1m --log-opt max-file=1 --network host quickbooks2018/rabbitmq:latest
+docker run -d --restart unless-stopped --name rabbit --hostname $hostName -e NODENAME=rabbit@"$hostName" -e NODE_IP_ADDRESS="$ipV4" -e USE_LONGNAME=true -e RABBITMQ_DEFAULT_USER=${user} -e RABBITMQ_ERLANG_COOKIE='${user}' -e RABBITMQ_DEFAULT_PASS=${password} -e RABBITMQ_DEFAULT_VHOST=cloudgeeks --log-opt max-size=1m --log-opt max-file=1 --network host quickbooks2018/rabbitmq:latest
 while ! nc -vz 127.0.0.1 5672;do echo "Waiting for port" && sleep 5;done
 
 sleep 10
@@ -63,13 +63,11 @@ chmod 666 rabbitmq.conf
 
 chmod 666 enabled_plugins
 
-chmod 666 rabbitmq-env.conf
 
 docker cp rabbitmq.conf rabbit:/etc/rabbitmq
 
 docker cp enabled_plugins rabbit:/etc/rabbitmq
 
-docker cp rabbitmq-env.conf rabbit:/etc/rabbitmq
 
 docker restart rabbit
 while ! nc -vz 127.0.0.1 5672;do echo "Waiting for port" && sleep 5;done
