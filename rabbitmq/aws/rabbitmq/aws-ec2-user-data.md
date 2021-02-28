@@ -35,7 +35,7 @@ EOF
 
 # Docker run
 
-docker run --name $hostname --network host -e NODENAME=rabbit@"$hostname" -e RABBITMQ_ERLANG_COOKIE=CLOUDGEEKS -e RABBITMQ_DEFAULT_USER=asim -e RABBITMQ_DEFAULT_PASS=asim -e USE_LONGNAME=true --hostname "$hostname" -p 15672:15672 --restart unless-stopped -id rabbitmq:management
+docker run --name $hostname --network host -e RABBITMQ_NODENAME=rabbit@"$hostname" -e RABBITMQ_ERLANG_COOKIE=CLOUDGEEKS -e RABBITMQ_DEFAULT_USER=asim -e RABBITMQ_DEFAULT_PASS=asim -e RABBITMQ_USE_LONGNAME=true --hostname "$hostname" -p 15672:15672 --restart unless-stopped -id rabbitmq:management
 
 cd rabbitmq/config
 
