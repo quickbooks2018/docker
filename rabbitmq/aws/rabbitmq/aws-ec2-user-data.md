@@ -57,6 +57,8 @@ sleep 30
 
 docker exec -it $hostname rabbitmqctl set_policy ha-fed ".*" '{"federation-upstream-set":"all", "ha-sync-mode":"automatic","ha-mode":"nodes", "ha-params":["rabbit@rabbit-1.cloudgeeks.ca","rabbit@rabbit-2.cloudgeeks.ca","rabbit@rabbit-3.cloudgeeks.ca"]}' --priority 1 --apply-to queues
 
+# Join Cluster
+
 docker exec -it $hostname rabbitmqctl stop_app
 
 docker exec -it $hostname rabbitmqctl join_cluster rabbit@rabbit-2
