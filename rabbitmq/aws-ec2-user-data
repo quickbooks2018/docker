@@ -80,16 +80,5 @@ rabbitmqctl set_policy -p cloudgeeks ha-all "" '{"ha-mode":"all","ha-sync-mode":
 rabbitmqctl set_policy -p cloudgeeks ha-fed ".*" '{"federation-upstream-set":"all"}' --priority 1 --apply-to queues
 EOF
 
-# Cluster Join
-
-docker exec -it rabbit rabbitmqctl stop_app
-
-sleep 10
-
-docker exec -it rabbit rabbitmqctl join_cluster cloudgeeks
-
-sleep 10
-
-docker exec -it rabbit rabbitmqctl start_app
 
 #END
