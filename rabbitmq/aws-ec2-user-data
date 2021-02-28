@@ -86,7 +86,7 @@ docker exec -it rabbit rabbitmqctl stop_app
 
 sleep 10
 
-docker exec -it rabbit rabbitmqctl join_cluster rabbit@cloudgeeks
+docker exec -it rabbit rabbitmqctl join_cluster cloudgeeks
 
 sleep 10
 
