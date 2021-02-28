@@ -82,14 +82,14 @@ EOF
 
 # Cluster Join
 
-docker exec -it $hostName rabbitmqctl stop_app
+docker exec -it rabbit rabbitmqctl stop_app
 
 sleep 10
 
-docker exec -it $hostName rabbitmqctl join_cluster rabbit@cloudgeeks
+docker exec -it rabbit rabbitmqctl join_cluster rabbit@cloudgeeks
 
 sleep 10
 
-docker exec -it $hostName rabbitmqctl start_app
+docker exec -it rabbit rabbitmqctl start_app
 
 #END
