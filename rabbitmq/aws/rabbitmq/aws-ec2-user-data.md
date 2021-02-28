@@ -57,6 +57,14 @@ sleep 30
 
 docker exec -it $hostname rabbitmqctl set_policy ha-fed ".*" '{"federation-upstream-set":"all", "ha-sync-mode":"automatic","ha-mode":"nodes", "ha-params":["rabbit@rabbit-1.cloudgeeks.ca","rabbit@rabbit-2.cloudgeeks.ca","rabbit@rabbit-3.cloudgeeks.ca"]}' --priority 1 --apply-to queues
 
+docker exec -it $hostname rabbitmqctl stop_app
+
+docker exec -it $hostname rabbitmqctl join_cluster rabbit@rabbit-2
+
+docker exec -it $hostname rabbitmqctl start_app
+
+
+
 #Producer application
 
 #docker run --name producer -it --rm --network host -e RABBIT_HOST="$HOSTNAME" -e RABBIT_PORT=5672 -e RABBIT_USERNAME=asim -e RABBIT_PASSWORD=asim -p 8080:80 quickbooks2018/rabbitmq-producer:latest
