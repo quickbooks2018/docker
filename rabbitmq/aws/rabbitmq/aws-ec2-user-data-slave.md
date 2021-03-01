@@ -6,7 +6,10 @@
 # https://hub.docker.com/_/rabbitmq
 # https://github.com/docker-library/rabbitmq/issues/61
 
-# Variables Update me
+# Cluster
+# https://www.rabbitmq.com/clustering.html
+
+# Variables --------------------------------------------------------------------> Hey! Please Update me
 hostname="rabbit-1.cloudgeeks.ca"
 hostedzoneid="Z0155344WOQ603Y4HMQL"
 
