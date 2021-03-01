@@ -9,7 +9,7 @@
 # Cluster
 # https://www.rabbitmq.com/clustering.html
 
-# Variables Update me
+# Variables --------------------------------------------------------------------> Hey! Please Update me
 hostname="rabbit-1.cloudgeeks.ca"
 hostedzoneid="Z0155344WOQ603Y4HMQL"
 
