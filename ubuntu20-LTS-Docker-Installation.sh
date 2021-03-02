@@ -23,6 +23,8 @@ systemctl restart docker
 
 systemctl status docker
 
+systemctl enable docker
+
 exit 0
 
 #END
