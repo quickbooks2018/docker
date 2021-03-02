@@ -17,6 +17,7 @@ yum install -y nc
 
 
 # variables section
+environment="dev"
 region=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | grep -oP '\"region\"[[:space:]]*:[[:space:]]*\"\K[^\"]+')
 export AWS_DEFAULT_REGION=$region
 instance_id=$(curl http://169.254.169.254/latest/meta-data/instance-id)
@@ -36,6 +37,10 @@ cluster_formation.aws.region = "$region"
 cluster_formation.aws.use_autoscaling_group = true
 cluster_formation.discovery_retry_limit = 10
 cluster_formation.discovery_retry_interval = 10000
+cluster_formation.aws.instance_tags.region = "$region"
+cluster_formation.aws.instance_tags.service = rabbitmq
+cluster_formation.aws.instance_tags.environment = "$environment"
+cluster_formation.aws.use_private_ip = true
 cluster_name = cloudgeeks
 log.file.level = debug
 vm_memory_high_watermark.relative = 0.8
