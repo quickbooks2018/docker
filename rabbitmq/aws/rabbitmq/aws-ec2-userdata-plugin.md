@@ -41,7 +41,7 @@ cluster_formation.discovery_retry_interval = 10000
 cluster_formation.aws.instance_tags.region = "$region"
 cluster_formation.aws.instance_tags.service = rabbitmq
 cluster_formation.aws.instance_tags.environment = "$environment"
-cluster_formation.aws.use_private_ip = true
+cluster_formation.aws.use_private_ip = false
 cluster_name = cloudgeeks
 log.file.level = debug
 vm_memory_high_watermark.relative = 0.8
@@ -60,8 +60,12 @@ EOF
 
 cd "$PWD"/rabbit
 
+export RABBITMQ_ERLANG_COOKIE=CLOUDGEEKS
+export $hotName
+export RABBITMQ_NODENAME=rabbit@"$hostName"
+export NODE_IP_ADDRESS="$ipV4"
 
-docker run -d --restart unless-stopped --name rabbit --hostname $hostName -e RABBITMQ_NODENAME=rabbit@"$hostName" -e NODE_IP_ADDRESS="$ipV4" -e RABBITMQ_USE_LONGNAME=true -e RABBITMQ_DEFAULT_USER=${user} -e RABBITMQ_ERLANG_COOKIE=CLOUDGEEKS -e RABBITMQ_DEFAULT_PASS=${password} -e RABBITMQ_DEFAULT_VHOST=cloudgeeks --log-opt max-size=1m --log-opt max-file=1 --network host quickbooks2018/rabbitmq:latest
+docker run -d --restart unless-stopped --name rabbit --hostname $hostName -e RABBITMQ_NODENAME=rabbit@"$hostName" -e RABBITMQ_USE_LONGNAME=true -e RABBITMQ_DEFAULT_USER=${user} -e RABBITMQ_ERLANG_COOKIE="CLOUDGEEKS" -e RABBITMQ_DEFAULT_PASS=${password} -e RABBITMQ_DEFAULT_VHOST=cloudgeeks --log-opt max-size=1m --log-opt max-file=1 --network host quickbooks2018/rabbitmq:latest
 while ! nc -vz 127.0.0.1 5672;do echo "Waiting for port" && sleep 5;done
 
 sleep 10
