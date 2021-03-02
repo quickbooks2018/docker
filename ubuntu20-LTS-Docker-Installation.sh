@@ -25,6 +25,10 @@ systemctl status docker
 
 systemctl enable docker
 
+# RUN Docker with out sudo
+
+sudo setfacl -m user:$USER:rw /var/run/docker.sock
+
 exit 0
 
 #END
