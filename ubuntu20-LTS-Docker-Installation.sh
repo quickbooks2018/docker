@@ -15,7 +15,7 @@ apt-cache policy docker-ce
 
 apt install docker-ce
 
-usermod -aG docker ${USER}
+usermod -aG docker ubuntu
 
 # usermod -aG docker username
 
