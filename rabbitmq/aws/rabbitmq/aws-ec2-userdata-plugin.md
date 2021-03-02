@@ -2,6 +2,7 @@
 # OS: AmazonLinux
 # Purpose: Rabbitmq Cluster Setup on AWS EC2 in docker
 # Maintainer: cloudgeeks.ca
+# https://www.rabbitmq.com/cluster-formation.html#peer-discovery-classic-config
 # https://www.rabbitmq.com/cluster-formation.html#peer-discovery-aws
 # https://hub.docker.com/_/rabbitmq
 # https://github.com/docker-library/rabbitmq/issues/61
