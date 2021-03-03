@@ -34,9 +34,6 @@ user="asim"
 password="asim"
 ipV4=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
 
-
-mkdir -p /root/rabbit
-
 # Rabbitmq Configurations
 echo "
 cluster_formation.peer_discovery_backend = aws
