@@ -82,9 +82,8 @@ while ! nc -vz 127.0.0.1 5672;do echo "Waiting for port" && sleep 5;done
 
 sleep 30
 
-docker exec -i rabbit bash <<'EOF'
-rabbitmqctl set_policy -p cloudgeeks ha-all "" '{"ha-mode":"all","ha-sync-mode":"automatic"}'
-rabbitmqctl set_policy -p cloudgeeks ha-fed ".*" '{"federation-upstream-set":"all"}' --priority 1 --apply-to queues
+docker exec -it rabbit bash <<'EOF'
+rabbitmqctl set_policy ha-fed ".*" '{"federation-upstream-set":"all", "ha-sync-mode":"automatic","ha-mode":"nodes", "ha-params":["rabbit@${RABBITMQ_NODENAME}"]}' --priority 1 --apply-to queues
 EOF
 
 
