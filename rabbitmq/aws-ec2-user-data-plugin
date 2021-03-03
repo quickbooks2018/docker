@@ -7,6 +7,7 @@
 # https://hub.docker.com/_/rabbitmq
 # https://github.com/docker-library/rabbitmq/issues/61
 # https://www.rabbitmq.com/clustering.html
+# Note: Make sure to TAG the EC2 Auto-Scaling Gourp EC2 with --->           service rabbit             <--- cluster_formation.aws.instance_tags.service = rabbitmq
 
 # Docker Installation
 yum install -y docker
@@ -38,9 +39,7 @@ cluster_formation.aws.region = "$region"
 cluster_formation.aws.use_autoscaling_group = true
 cluster_formation.discovery_retry_limit = 10
 cluster_formation.discovery_retry_interval = 10000
-cluster_formation.aws.instance_tags.region = "$region"
 cluster_formation.aws.instance_tags.service = rabbitmq
-cluster_formation.aws.instance_tags.environment = "$environment"
 cluster_formation.aws.use_private_ip = false
 cluster_name = cloudgeeks
 log.file.level = debug
