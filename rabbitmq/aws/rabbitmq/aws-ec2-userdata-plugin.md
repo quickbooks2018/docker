@@ -32,7 +32,7 @@ ipV4=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
 mkdir -p "$PWD"/rabbit
 
 # Rabbitmq Configurations
-cat  > "$PWD"/rabbit/rabbitmq.conf <<'EOF'
+echo "
 cluster_formation.peer_discovery_backend = aws
 cluster_formation.aws.region = "$region"
 cluster_formation.aws.use_autoscaling_group = true
@@ -45,13 +45,13 @@ cluster_formation.aws.use_private_ip = false
 cluster_name = cloudgeeks
 log.file.level = debug
 vm_memory_high_watermark.relative = 0.8
-EOF
+" > "$PWD"/rabbit/rabbitmq.conf
 
-cat > "$PWD"/rabbit/rabbitmq-env.conf <<'EOF'
+echo "
 NODENAME=rabbit@"$hostName"
 NODE_IP_ADDRESS="$ipV4"
 USE_LONGNAME=true
-EOF
+" > "$PWD"/rabbit/rabbitmq-env.conf
 
 cat > "$PWD"/rabbit/enabled_plugins <<'EOF'
 [rabbitmq_management,rabbitmq_peer_discovery_aws,rabbitmq_prometheus].
