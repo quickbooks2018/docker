@@ -60,12 +60,9 @@ EOF
 
 cd "$PWD"/rabbit
 
-export RABBITMQ_ERLANG_COOKIE=CLOUDGEEKS
-export $hotName
-export RABBITMQ_NODENAME=rabbit@"$hostName"
-export NODE_IP_ADDRESS="$ipV4"
 
-docker run -d --restart unless-stopped --name rabbit --hostname $hostName -e RABBITMQ_NODENAME=rabbit@"$hostName" -e RABBITMQ_USE_LONGNAME=true -e RABBITMQ_DEFAULT_USER=${user} -e RABBITMQ_ERLANG_COOKIE="CLOUDGEEKS" -e RABBITMQ_DEFAULT_PASS=${password} -e RABBITMQ_DEFAULT_VHOST=cloudgeeks --log-opt max-size=1m --log-opt max-file=1 --network host quickbooks2018/rabbitmq:latest
+
+docker run -d --restart unless-stopped --name rabbit -p 5672:5672 -p 15672:15672 --hostname $hostName -e RABBITMQ_NODENAME=rabbit@"$hostName" -e NODE_IP_ADDRESS="$ipV4" -e RABBITMQ_USE_LONGNAME=true -e RABBITMQ_DEFAULT_USER=${user} -e RABBITMQ_ERLANG_COOKIE="CLOUDGEEKS" -e RABBITMQ_DEFAULT_PASS=${password} -e RABBITMQ_DEFAULT_VHOST=cloudgeeks --log-opt max-size=1m --log-opt max-file=1 --network host quickbooks2018/rabbitmq:latest
 while ! nc -vz 127.0.0.1 5672;do echo "Waiting for port" && sleep 5;done
 
 sleep 10
