@@ -70,6 +70,7 @@ chmod 666 rabbitmq.conf
 
 chmod 666 enabled_plugins
 
+# Note: You can mount mentioned below or create a Dockerfile as well.
 
 docker cp rabbitmq.conf rabbit:/etc/rabbitmq
 
