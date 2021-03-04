@@ -74,6 +74,8 @@ while ! nc -vz 127.0.0.1 5672;do echo "Waiting for port" && sleep 5;done
 
 sleep 30
 
+docker exec -it rabbit rabbitmq-plugins enable rabbitmq_federation
+
 docker exec -it rabbit bash <<'EOF'
 rabbitmqctl set_policy ha-fed ".*" '{"federation-upstream-set":"all", "ha-sync-mode":"automatic","ha-mode":"nodes", "ha-params":["rabbit@${RABBITMQ_NODENAME}"]}' --priority 1 --apply-to queues
 EOF
