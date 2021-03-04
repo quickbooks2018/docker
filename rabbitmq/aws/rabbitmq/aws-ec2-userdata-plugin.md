@@ -66,7 +66,7 @@ chown -R rabbitmq:rabbitmq rabbitmq
 
 chmod 777 -R /root/rabbitmq
 
-docker run  --restart unless-stopped --name rabbit --network="host" -v /root/rabbitmq:/etc/rabbitmq --hostname $HOSTNAME -e RABBITMQ_NODENAME=rabbit@"$HOSTNAME" -e NODE_IP_ADDRESS="$ipV4" -e RABBITMQ_USE_LONGNAME=true -e RABBITMQ_DEFAULT_USER=${user} -e RABBITMQ_ERLANG_COOKIE=WIWVHCDTCIUAWANLMQAW -e RABBITMQ_DEFAULT_PASS=${password} -e RABBITMQ_DEFAULT_VHOST=cloudgeeks --log-opt max-size=1m --log-opt max-file=1 quickbooks2018/rabbitmq:latest
+docker run  --restart unless-stopped --name rabbit --network="host" -v /root/rabbitmq:/etc/rabbitmq --hostname $HOSTNAME -e RABBITMQ_NODENAME=rabbit@"$HOSTNAME" -e NODE_IP_ADDRESS="$ipV4" -e RABBITMQ_USE_LONGNAME=true -e RABBITMQ_DEFAULT_USER=${user} -e RABBITMQ_ERLANG_COOKIE=CLOUDGEEKSCA -e RABBITMQ_DEFAULT_PASS=${password} -e RABBITMQ_DEFAULT_VHOST=cloudgeeks --log-opt max-size=1m --log-opt max-file=1 quickbooks2018/rabbitmq:latest
 while ! nc -vz 127.0.0.1 5672;do echo "Waiting for port" && sleep 5;done
 
 
