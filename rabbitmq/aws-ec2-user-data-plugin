@@ -76,7 +76,7 @@ sleep 30
 
 
 # https://www.rabbitmq.com/parameters.html
-# Note -p is VHOST ---> -e RABBITMQ_DEFAULT_VHOST=cloudgeeks
+# Note -p is VHOST ---> -e RABBITMQ_DEFAULT_VHOST=cloudgeeks  <<< if you do not set this environment variable RABBITMQ_DEFAULT_VHOST by default it is /
 #docker exec -it rabbit rabbitmq-plugins enable rabbitmq_federation
 
 sleep 30
