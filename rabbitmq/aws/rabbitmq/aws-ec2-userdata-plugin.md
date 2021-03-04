@@ -78,6 +78,7 @@ sleep 30
 # https://www.rabbitmq.com/parameters.html
 docker exec -it rabbit rabbitmq-plugins enable rabbitmq_federation
 
+# https://www.rabbitmq.com/vhosts.html
 docker exec -it rabbit bash <<'EOF'
 rabbitmqctl set_policy ha-fed ".*" '{"federation-upstream-set":"all", "ha-sync-mode":"automatic","ha-mode":"nodes", "ha-params":["rabbit@${RABBITMQ_NODENAME}"]}' --priority 1 --apply-to queues
 EOF
