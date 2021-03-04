@@ -49,7 +49,7 @@ vm_memory_high_watermark.relative = 0.8
 
 
 echo "
-NODENAME=rabbit@"$hostName"
+NODENAME=rabbit@"$HOSTNAME"
 NODE_IP_ADDRESS="$ipV4"
 USE_LONGNAME=true
 " > /root/rabbitmq/rabbitmq-env.conf
