@@ -74,6 +74,8 @@ while ! nc -vz 127.0.0.1 5672;do echo "Waiting for port" && sleep 5;done
 
 sleep 30
 
+
+# https://www.rabbitmq.com/parameters.html
 docker exec -it rabbit rabbitmq-plugins enable rabbitmq_federation
 
 docker exec -it rabbit bash <<'EOF'
