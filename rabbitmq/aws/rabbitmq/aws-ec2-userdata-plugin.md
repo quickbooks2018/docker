@@ -80,6 +80,8 @@ docker exec -it rabbit rabbitmq-plugins enable rabbitmq_federation
 
 sleep 30
 # https://www.rabbitmq.com/vhosts.html
+# Note -p is VHOST ---> -e RABBITMQ_DEFAULT_VHOST=cloudgeeks
+
 docker exec -it rabbit bash <<'EOF'
 rabbitmqctl set_policy -p cloudgeeks ha-fed ".*" '{"federation-upstream-set":"all", "ha-sync-mode":"automatic","ha-mode":"all"}' --priority 1 --apply-to queues
 EOF
