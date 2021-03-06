@@ -1,0 +1,48 @@
+version: '3.7'
+
+services:
+  elasticsearch:
+    image: bitnami/elasticsearch:latest
+    networks:
+      - elk
+    restart: unless-stopped
+    container_name: elasticsearch
+    ports:
+      - '9200:9200'
+    volumes:
+      - elasticsearch:/bitnami/elasticsearch/data
+
+  kibana:
+    image: bitnami/kibana:latest
+    networks:
+      - elk
+    restart: unless-stopped
+    container_name: kibana
+    ports:
+      - '5601:5601'
+    depends_on: 
+      - elasticsearch
+    environment:
+        - KIBANA_ELASTICSEARCH_URL=elasticsearch
+    volumes:
+        - kibana:/bitnami
+
+  logstash:
+    image: bitnami/logstash:latest
+    networks:
+      - elk
+    restart: unless-stopped
+    container_name: logstash
+    ports:
+      - '8080:8080'
+    volumes:
+        - logstash:/bitnami
+
+
+volumes:
+  kibana:
+  elasticsearch:
+  logstash:
+networks:
+  elk:
+   external: true
