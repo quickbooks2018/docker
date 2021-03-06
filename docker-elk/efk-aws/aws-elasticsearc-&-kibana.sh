@@ -26,7 +26,7 @@ docker-compose --version
 
 # Update me
 
-hostedzoneid="Z04774661NU5T78WAZ72J"
+hostedzoneid="Z03934572G71TQI3ISVJR"
 domain="elasticsearch.cloudgeeks.ca"
 
 
@@ -56,7 +56,7 @@ services:
     networks:
       - efk
     environment:
-      - node.name=$domain
+      - node.name=elasticsearch
       - discovery.seed_hosts=elasticsearch
       - cluster.initial_master_nodes=elasticsearch
       - cluster.name=docker-cluster
@@ -80,7 +80,7 @@ services:
       - efk
     container_name: kibana
     environment:
-      ELASTICSEARCH_URL: "http://$domain:9200"
+      ELASTICSEARCH_URL: "http://elasticsearch:9200"
     ports:
       - 5601:5601
     depends_on:
