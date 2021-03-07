@@ -37,6 +37,13 @@
 
 # always check that your app should not write to docker file system, because the size of that container is going to grow
 
+https://hub.docker.com/r/mvpjava/java-docker-logging
+
+docker container run -d --rm --name java-docker-log-demo-to-file mvpjava/java-docker-logging:to-file
+
+docker container run -d --rm --name java-docker-log-demo-sym-links mvpjava/java-docker-logging:symbolic-links
+
+
 _______________________
 watch docker ps -as
 _______________________
