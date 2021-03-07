@@ -1,0 +1,6 @@
+# https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/iam-identity-based-access-control-cwl.html
+# https://docs.docker.com/config/containers/logging/awslogs/
+
+# https://d1.awsstatic.com/events/reinvent/2019/Container_logging_Best_practices_for_consistency_GPSTEC329.pdf
+
+# https://stackoverflow.com/questions/60828280/set-awslogs-log-driver-on-docker-container
