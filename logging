@@ -35,6 +35,11 @@
 
 3. Dockerfile best practices for logs
 
+# always check that your app should not write to docker file system, because the size of that container is going to grow
+
+_______________________
+watch docker ps -as
+_______________________
 ---> Simply create Symbolic Links
 
 RUN ln -sf /dev/stdout /log/server.log \
