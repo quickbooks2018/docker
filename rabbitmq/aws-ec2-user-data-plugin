@@ -27,7 +27,6 @@ environment="dev"
 region=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | grep -oP '\"region\"[[:space:]]*:[[:space:]]*\"\K[^\"]+')
 export AWS_DEFAULT_REGION=$region
 instance_id=$(curl http://169.254.169.254/latest/meta-data/instance-id)
-export hostName
 user="asim"
 password="asim"
 ipV4=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
