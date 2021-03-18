@@ -1,0 +1,15 @@
+  
+# Simply rename the ---> config.xml in jenkins_home jenkins will auto-create a new & then do the login configurations.
+
+# https://www.jenkins.io/doc/book/system-administration/security/
+
+# https://stackoverflow.com/questions/57107524/migrated-jenkins-keeps-redirecting-to-original-domain
+
+# https://stackoverflow.com/questions/46483609/jenkins-slack-notification-shows-unconfigured-jenkins-location
+
+jenkins.model.JenkinsLocationConfiguration.xml
+
+
+# Jenkins Backup
+# Backup Home Directory
+# https://www.youtube.com/watch?v=grQ4cAcj81U&ab_channel=Thetips4you
