@@ -73,4 +73,6 @@ ExecStart=/root/jenkins-slave-1/jenkins-slave-1.sh
 WantedBy=multi-user.target
 
 
+https://www.youtube.com/watch?v=jaaMNK0Df8U
+
 # END
