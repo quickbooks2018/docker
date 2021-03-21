@@ -60,4 +60,17 @@ curl -# -LO file.jar
 copy the provided command in Jenkins master & run in background ---> &
 
 
+# Amazonlinux2 & Centos7
+cd /etc/systemd/system/jenkins-service-1.service
+
+[Unit]
+Description=jenkins-slave-1 service
+
+[Service]
+ExecStart=/root/jenkins-slave-1/jenkins-slave-1.sh
+
+[Install]
+WantedBy=multi-user.target
+
+
 # END
