@@ -59,11 +59,20 @@ java -version
 
 # Jenkins Slave Dir
 
-/root/jenkins-slave-1
+cd /root/jenkins-slave-1
 
 curl -# -LO file.jar 
 
-copy the provided command in Jenkins master & run in background ---> &
+# copy the provided command in Jenkins master & run in background ---> &
+
+# or Create a service
+
+#!/bin/bash
+
+
+/bin/java -jar /root/jenkins-slave-1/agent.jar -jnlpUrl http://jenkins.cloudgeeks.ca:8085/computer/jenkins-slave-1/jenkins-agent.jnlp -secret pakaksjjsjshdhhdhdhhdgdggsgsgvdvdggssvsvvsgaggagaga -workDir "/root/jenkins-slave-1"
+
+#END
 
 
 # Ubuntu, Amazonlinux2 & Centos7
