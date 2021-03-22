@@ -1,4 +1,10 @@
 # Docker Jenkins Master
+
+yum update -y
+yum install -y docker
+systemctl start docker
+systemctl enable docker
+
 docker run --name jenkins-master -d --user=root -v /root:/root -v /root/jenkins-master:/var/jenkins_home -p 8085:8080 -p 50000:50000 -v $(which docker):/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock --restart unless-stopped jenkins/jenkins:lts
 
 # Docker Slave (Note: No containers required)
