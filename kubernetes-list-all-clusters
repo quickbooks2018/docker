@@ -1,0 +1,9 @@
+# https://stackoverflow.com/questions/38242062/how-to-get-kubernetes-cluster-name-from-k8s-api
+
+# kubectl config current-context
+
+# kubectl config view --minify -o jsonpath='{.clusters[].name}'
+
+# This command will Check all possible clusters, as you know .KUBECONFIG may have multiple contexts
+
+kubectl config view -o jsonpath='{"Cluster name\tServer\n"}{range .clusters[*]}{.name}{"\t"}{.cluster.server}{"\n"}{end}'
