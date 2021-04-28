@@ -1,0 +1,42 @@
+# https://stackoverflow.com/questions/59611606/jenkins-pipeline-passing-parameter-as-shell-script-argument
+
+pipeline{
+    agent any
+    
+    parameters {
+    string(defaultValue: '', description: '', name: 'AMI')
+  }
+
+    environment {
+    TF_VAR_rds_postgres_username = credentials('TF_VAR_rds_postgres_username')
+    TF_VAR_rds_postgres_password = credentials('TF_VAR_rds_postgres_password')
+    }
+
+    stages{
+        stage('SCM Checkout'){
+            steps{
+                git branch: 'staging-deployment', url: 'ssh://git-codecommit.us-east-1.amazonaws.com/v1/repos/cloudgeeksca'
+
+            }
+        }
+       
+        stage('Deploy BackEnd With Existing AMI'){
+            steps{
+                sh '''
+                   cd sentimeter/environment/staging/Build-Deploy/
+                   
+                    echo 'Deploy Backend with Existing AMI'
+                    
+                    export TF_VAR_rds_postgres_username
+                    
+                    export TF_VAR_rds_postgres_password
+                   
+                    bash ./DeployBackEnd.sh "$AMI"
+                    '''
+            }
+        }
+        
+    }
+    
+}
+        
