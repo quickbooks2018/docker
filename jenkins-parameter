@@ -41,3 +41,16 @@ pipeline{
     
 }
         
+        
+        
+        
+        
+# Code Commit Configurations
+
+cd ~/.ssh
+
+vim config
+
+Host git-codecommit.*.amazonaws.com
+User PABCDEFGHI
+IdentityFile ~/.ssh/id_rsa
