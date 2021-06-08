@@ -18,6 +18,8 @@ chmod +x /usr/local/bin/docker-compose
 ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 docker-compose --version
 
+# Docker Network
+docker network create zabbix --attachable
 
 # Start empty MySQL server instance
 docker volume create zabbix-mysql
@@ -28,6 +30,7 @@ docker run --name mysql-server -t  --restart unless-stopped \
       -e MYSQL_PASSWORD="123456789" \
       -v zabbix-mysql:/var/lib/mysql \
       -v zabbix-mysql-conf:/etc/mysql/conf.d \
+      --network "zabbix" \
       -e MYSQL_ROOT_PASSWORD="root_pwd" \
       -id mysql:8.0 \
       --character-set-server=utf8 --collation-server=utf8_bin \
@@ -36,6 +39,7 @@ docker run --name mysql-server -t  --restart unless-stopped \
 # Start Zabbix Java gateway instance
 docker run --name zabbix-java-gateway -t \
       --restart unless-stopped \
+      --network "zabbix" \
       -d zabbix/zabbix-java-gateway:latest
 
 # Start Zabbix server instance and link the instance with created MySQL server instance
@@ -48,6 +52,7 @@ docker run --name zabbix-server-mysql -t \
       -e MYSQL_ROOT_PASSWORD="root_pwd" \
       -e ZBX_JAVAGATEWAY="zabbix-java-gateway" \
       -v zabbix-conf:/etc/zabbix \
+      --network "zabbix" \
       --link mysql-server:mysql \
       --link zabbix-java-gateway:zabbix-java-gateway \
       -p 10051:10051 \
@@ -61,6 +66,7 @@ docker run --name zabbix-web-nginx-mysql -t \
       -e MYSQL_USER="zabbix" \
       -e MYSQL_PASSWORD="123456789" \
       -e MYSQL_ROOT_PASSWORD="root_pwd" \
+      --network "zabbix" \
       --link mysql-server:mysql \
       --link zabbix-server-mysql:zabbix-server \
       -p 80:8080 \
