@@ -18,6 +18,11 @@ chmod +x /usr/local/bin/docker-compose
 ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 docker-compose --version
 
+# Zabbix Default Password
+Admin
+zabbix
+
+
 # Docker Network
 docker network create zabbix --attachable
 
@@ -44,7 +49,7 @@ docker run --name zabbix-java-gateway -t \
 
 # Start Zabbix server instance and link the instance with created MySQL server instance
 docker volume create zabbix-conf
-docker run --name zabbix-server-mysql -t \
+docker run --name zabbix-server -t \
       -e DB_SERVER_HOST="mysql-server" \
       -e MYSQL_DATABASE="zabbix" \
       -e MYSQL_USER="zabbix" \
@@ -52,6 +57,7 @@ docker run --name zabbix-server-mysql -t \
       -e MYSQL_ROOT_PASSWORD="root_pwd" \
       -e ZBX_JAVAGATEWAY="zabbix-java-gateway" \
       -v zabbix-conf:/etc/zabbix \
+      -h zabbix-server \
       --network "zabbix" \
       --link mysql-server:mysql \
       --link zabbix-java-gateway:zabbix-java-gateway \
@@ -72,6 +78,10 @@ docker run --name zabbix-web-nginx-mysql -t \
       -p 80:8080 \
       --restart unless-stopped \
       -d zabbix/zabbix-web-nginx-mysql:latest
+
+
+# Zabbix-Agent
+docker run --name zabbix-agent --network="zabbix" -id zabbix/zabbix-agent:latest
 
 # Docker remove all containers
 # docker rm -f $(docker ps -aq)
