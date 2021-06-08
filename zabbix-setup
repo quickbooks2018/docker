@@ -90,7 +90,7 @@ docker run --name zabbix-web-nginx-mysql -t \
 
 sleep 10
 # Zabbix-Agent
-docker run --name zabbix-agent --network="zabbix" -id zabbix/zabbix-agent:latest
+docker run --name zabbix-agent --network="zabbix" --restart unless-stopped -id zabbix/zabbix-agent:latest
 
 # Docker remove all containers
 # docker rm -f $(docker ps -aq)
