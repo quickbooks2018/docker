@@ -89,8 +89,6 @@ docker restart grafana
 
 docker exec -u root -it zabbix-agent apk add openssl whois
 
-docker exec -u root -it zabbix-agent apk add openssl whois
-
 
 
 
