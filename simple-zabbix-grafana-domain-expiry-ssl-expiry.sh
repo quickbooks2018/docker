@@ -87,7 +87,12 @@ docker restart grafana
 
 # Configurations
 
-docker exec -u root -it zabbix-agent apk add openssl
+docker exec -u root -it zabbix-agent apk add openssl whois
+
+docker exec -u root -it zabbix-agent apk add openssl whois
+
+
+
 
 # Domain SSL Expiry
 
@@ -110,10 +115,13 @@ docker run --name tmp-container -id quickbooks2018/zabbix-agent
 docker cp tmp-container:/var/lib/zabbix/checkdomain.sh .
 chmod +x checkdomain.sh
 mv checkdomain.sh domain_expiry.sh
-docker rm -f tmp-container
 docker cp domain_expiry.sh zabbix-agent:/var/lib/zabbix/domain_expiry.sh
 
-
+# Zabbix-Agent Configurations
+docker cp tmp-container:/etc/zabbix/zabbix_agentd.conf .
+docker cp zabbix_agentd.conf zabbix-agent:/etc/zabbix/zabbix_agentd.conf
+docker rm -f tmp-container
+docker restart zabbix-agent
 #END
 
 # Addtional Notes
