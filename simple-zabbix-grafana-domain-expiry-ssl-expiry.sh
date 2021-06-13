@@ -120,6 +120,7 @@ docker cp tmp-container:/etc/zabbix/zabbix_agentd.conf .
 docker cp zabbix_agentd.conf zabbix-agent:/etc/zabbix/zabbix_agentd.conf
 docker rm -f tmp-container
 docker restart zabbix-agent
+rm -f domain_ssl_expiry.sh domain_expiry.sh zabbix_agentd.conf
 #END
 
 # Addtional Notes
