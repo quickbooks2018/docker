@@ -1,0 +1,63 @@
+# Step 1
+------------
+# Install tmux
+
+yum install -y tmux
+
+
+# Step 2
+----------
+
+vim backup.sh
+
+!/bin/bash
+
+while true
+do
+bash /root/kuzzle-elasticsearch-dev-backups.sh
+bash /root/kuzzle-redis-dev-backups.sh
+
+# 30 min backup setup
+ sleep 1800
+done
+
+# End
+
+
+# Step 3
+---------
+# https://superuser.com/questions/440015/restore-tmux-session-after-reboot
+# https://sysadminxpert.com/how-to-execute-script-or-command-on-reboot-or-startup-in-linux/
+
+vim while.sh
+
+
+
+#!/bin/bash
+
+
+SESSIONNAME="backup"
+tmux has-session -t $SESSIONNAME &> /dev/null
+
+if [ $? != 0 ]
+ then
+    tmux new-session -s $SESSIONNAME -n $SESSIONNAME -d
+    tmux send-keys -t $SESSIONNAME "/root/backup.sh" C-m
+fi
+exit 0
+
+# End
+
+
+# Ubuntu ---> https://askubuntu.com/questions/814/how-to-run-scripts-on-start-up  ---> vim /etc/rc.local
+
+cd /etc/rc.d
+
+chmod +x rc.local
+
+vim rc.local
+
+/bin/sh /root/while.sh &
+
+
+# Note: After Every Reboot your script will run in Shell (tmux Shell)
