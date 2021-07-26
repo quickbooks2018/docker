@@ -1,0 +1,21 @@
+
+# https://serverfault.com/questions/955255/multiple-cors-origins-should-i-use-if-statement-nginx/955263
+
+map $http_origin $origin_allowed {
+   default 0;
+   https://api.saqlainmushtaq.com 1;
+   http://store-web.cloudgeeks.ca 1;
+   # ... add more allowed origins here
+}  
+server {
+    listen       80;
+    add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS' always;
+    add_header 'Access-Control-Allow-Headers' 'X-Requested-With, Range, Content-Range, X-Chunked-Output, X-Stream-Output' always;
+    add_header 'Access-Control-Expose-Headers' 'Content-Range, X-Chunked-Output, X-Stream-Output' always;
+    proxy_pass_header Server;
+    location / {
+        # change http://...:PORT below
+        proxy_pass http://api-service:8081;
+    }
+
+}
