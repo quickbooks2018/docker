@@ -12,10 +12,11 @@ echo ""$dns_name""$health_check_path""
 
 
 # Wait Time For Application Up & Running
-wait=600
-echo "Wait Time For Application Up & Running, Please wait $wait sec than Application Health Checks will begin ..."
+wait="600"
+echo "Wait Time For Application Up & Running, Please wait "$wait" sec than Application Health Checks will begin ..."
 # bash while loop
-while [ $wait -gt 0 ]; do
+while [ $wait -gt 0 ]
+do
         sleep 1
         echo $wait
         let wait=wait-1
