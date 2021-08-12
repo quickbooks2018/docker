@@ -5,22 +5,36 @@ dns_name="localhost"
 health_check_path="/api/v1/users/"
 
 # This IPV4 Address of machine
-echo ""$dns_name""
+echo "domain name is "$dns_name""
 
 # DNS+HealthCheck PAth combined
-echo ""$dns_name""$health_check_path""
+echo "health check path is "$dns_name""$health_check_path""
 
+
+
+# Services Status
+echo "Restarting UWSGI"
+systemctl restart uwsgi
+sleep 10
+echo "UWSGI STATUS" && systemctl is-active uwsgi
+
+sleep 5
+echo "Restarting SUPERVISOR"
+systemctl restart supervisor
+sleep 5
+echo "SUPERVISOR STATUS" && systemctl is-active supervisor
+
+sleep 10
+echo "Restarting NGINX"
+systemctl restart nginx
+sleep 5
+echo "NGINX STATUS" && systemctl is-active nginx
 
 # Wait Time For Application Up & Running
-wait="600"
+wait="60"
 echo "Wait Time For Application Up & Running, Please wait "$wait" sec than Application Health Checks will begin ..."
 # bash while loop
-while [ $wait -gt 0 ]
-do
-        sleep 1
-        echo $wait
-        let wait=wait-1
-done
+sleep "$wait"
 echo "Checking Health Checks with curl let's see!"
 
 
