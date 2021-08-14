@@ -1,0 +1,5 @@
+# https://ao.ms/non-interactive-git-clone-ssh-fingerprint-prompt/
+
+ssh-keygen -F github.com || ssh-keyscan github.com > ~/.ssh/known_hosts
+
+ssh-keygen -F github.com || ssh-keyscan github.com >> ~/.ssh/known_hosts
