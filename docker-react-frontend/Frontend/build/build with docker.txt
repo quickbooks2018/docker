@@ -1,0 +1,122 @@
+###########
+# React APP
+###########
+docker run --name node -v $PWD/react-app:/react-app -w /react-app -p 3000:3000 -id node:latest
+
+
+# Manual Application Creation With Docker
+
+###################
+# Build Run & Test
+###################
+
+docker exec -it node bash
+
+npx create-react-app app
+cd app
+npm start
+
+#######
+## OR
+#######
+
+#############
+# Just Build
+#############
+docker exec -it node npx create-react-app app   # or use this command
+
+docker rm -f $(docker ps -aq)
+
+cp -rv $PWD/react-app/app .
+
+rm -rf react-app
+
+######################
+# Dockerfile Creation
+######################
+
+cat << EOF > Dockerfile
+FROM node:latest as build 
+
+WORKDIR /react-app
+
+#1 Install OS Libraries dependencies, if needed
+# PUT HERE
+
+
+
+#2 Install App Dependencies
+
+# COPY package.json .
+
+
+COPY app .
+
+
+RUN npm install
+
+
+
+#3 Compile/transpile & package
+
+
+
+RUN npm run build 
+
+RUN yarn
+
+
+
+
+FROM nginx:latest as runtime
+
+WORKDIR /usr/share/nginx/html
+
+#COPY nginx/ /etc/nginx/conf.d/
+
+#4 Copy artifact - static website
+
+COPY --from=build /react-app/build .
+
+#5 entrypoint/cmd already comes with base image (nginx or apache)
+EOF
+
+
+##################################
+docker build -t react-app:v1 .
+##################################
+
+
+######
+# RUN
+######
+
+docker run --name react-with-nginx -p 80:80 -id react-app:v1
+
+######################################################
+# Nginx Configuration For SPA Single Page Application
+######################################################
+server {
+        listen 80;
+        
+
+        location / {
+                root /usr/share/nginx/html;
+                index index.html index.html;
+                try_files $uri $uri /index.html;
+                expires -1; # Set to different value depanding on your standard requirements
+        }
+
+        error_page 500 502 503 504 /50x.html;
+        location = /50x.html {
+            root /usr/share/nginx/html;
+        }
+
+
+}
+
+
+
+
+
+
