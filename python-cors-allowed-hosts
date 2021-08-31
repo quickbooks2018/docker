@@ -1,0 +1,6 @@
+ALLOWED_HOSTS = ['.yourdomain.com', ]
+try:
+    EC2_IP = requests.get('http://169.254.169.254/latest/meta-data/local-ipv4').text
+    ALLOWED_HOSTS.append(EC2_IP)
+except requests.exceptions.RequestException:
+    pas
