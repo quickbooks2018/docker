@@ -1,0 +1,14 @@
+https://hub.docker.com/r/jordi/ab
+
+docker run --rm jordi/ab -k -c 100 -n 100000 http://172.17.0.1:8080/ 
+
+
+docker run --rm jordi/ab -k -c 100 -n 100000 http://your-domain.com/
+
+
+
+
+If you get this error, probably you forgot to end your URL with a slash (/). ab is picky about that:
+
+Wrong: docker run --rm jordi/ab https://www.docker.com
+Right: docker run --rm jordi/ab https://www.docker.com/
