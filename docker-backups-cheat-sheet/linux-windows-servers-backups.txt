@@ -1,0 +1,6 @@
+# https://docs.linuxserver.io/images/docker-duplicati
+
+# https://www.duplicati.com/
+
+# https://www.youtube.com/watch?v=JoA6Bezgk1c&t=0s&ab_channel=TheDigitalLife
+
