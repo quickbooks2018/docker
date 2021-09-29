@@ -7,17 +7,12 @@ mkdir -p ~/nginx/conf.d
 #2
 cd ~/nginx/conf.d
 
-
+# https://towardsdatascience.com/sample-load-balancing-solution-with-docker-and-nginx-cf1ffc60e644
 #3
 echo '
-upstream all {
-server asim_cloudgeeksapp_1:4001;
-server asim_cloudgeeksapp_2:4001;
-server asim_cloudgeeksapp_3:4001;
-server asim_cloudgeeksapp_4:4001;
-server asim_cloudgeeksapp_5:4001;
-server asim_cloudgeeksapp_6:4001;
-    }
+upstream loadbalancer {
+server cloudgeeksapp:4001;
+}
 
 server {
   listen 80;
@@ -42,7 +37,7 @@ location / {
     proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header        X-Forwarded-Proto $scheme;
     proxy_redirect http:// https://;
-    proxy_pass              http://cloudgeeksapp:4001;
+    proxy_pass              http://loadbalancer;
     # Required for new HTTP-based CLI
     proxy_http_version 1.1;
     proxy_request_buffering off;
