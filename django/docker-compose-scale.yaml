@@ -35,7 +35,11 @@ volumes:
   pgdata:
   
   
+  # Nginx Configurations
   
+upstream loadbalancer {
+server cloudgeeksapp:4001;
+}
   
   
   
