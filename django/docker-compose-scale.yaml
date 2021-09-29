@@ -59,7 +59,14 @@ server {
   
   
   # Command
+  # https://docs.docker.com/compose/cli-command-compatibility/
+  
   docker-compose --compatibility up -d --build
+  
+  docker-compose up -d --scale app=6 --no-recreate --build
+ 
+ # Sample
+ # docker-compose --env-file docker.env up -d --scale app=6 --no-recreate
   
   
   
