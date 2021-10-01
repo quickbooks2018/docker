@@ -1,4 +1,6 @@
-https://stackoverflow.com/questions/59568111/how-to-make-docker-build-run-python-manage-py-migrate
+# https://stackoverflow.com/questions/59568111/how-to-make-docker-build-run-python-manage-py-migrate
+
+# https://www.youtube.com/watch?v=vJAfq6Ku4cI&ab_channel=DotJA
 
 First of all you should not run migrations in your custom Dockerfile. A good practice is creating entrypoint.sh.
 
