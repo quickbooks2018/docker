@@ -1,0 +1,66 @@
+https://stackoverflow.com/questions/59568111/how-to-make-docker-build-run-python-manage-py-migrate
+
+First of all you should not run migrations in your custom Dockerfile. A good practice is creating entrypoint.sh.
+
+This is example entrypoint file:
+
+#!/bin/bash
+
+set -e
+
+echo "${0}: running migrations."
+python manage.py makemigrations --merge
+python manage.py migrate --noinput
+
+echo "${0}: collecting statics."
+
+python manage.py collectstatic --noinput
+
+cp -rv static/* static_shared/
+
+gunicorn yourapp.wsgi:application \
+    --env DJANGO_SETTINGS_MODULE=yourapp.production_settings \
+    --name yourapp \
+    --bind 0.0.0.0:8000 \
+    --timeout 600 \
+    --workers 4 \
+    --log-level=info \
+    --reload
+Additionally I recommend using docker-compose, which helps to organize your deployment in one place.
+
+Example:
+
+version: '3'
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command:
+      - /bin/sh
+      - '-c'
+      - '/code/entrypoint.sh'
+    ports:
+      - '8000:8000'
+    volumes:
+      - '.:/code'
+      - 'media_volume:/media'
+And example Dockerfile
+
+FROM python:3.6.8
+
+RUN apt-get update;
+
+ENV PYTHONUNBUFFERED 1
+RUN mkdir /code
+
+ADD requirements.txt /code
+ADD entrypoint.sh /code
+
+WORKDIR /code
+
+RUN chmod +x *.sh
+
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+ADD . /code
+
