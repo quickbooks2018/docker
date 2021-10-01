@@ -1,0 +1,11 @@
+# Docker Secure USer
+# https://dev.to/nownabe/secure-user-in-docker-1b5m
+
+# docker User
+RUN groupadd -g 61000 docker
+RUN useradd -g 61000 -l -M -s /bin/false -u 61000 docker
+
+RUN chown -R docker:docker /staging
+
+USER docker
+EXPOSE 8080
