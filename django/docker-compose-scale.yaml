@@ -118,7 +118,6 @@ volumes:
 services:
   app:
     image: cloudgeeks:ca
-    container_name: django
     build:
       context: .
     restart: unless-stopped
