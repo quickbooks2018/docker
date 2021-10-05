@@ -90,7 +90,7 @@ docker network create jenkins --attachable
 docker volume create jenkins
 
 # Jenkins
-docker run --name jenkins -u root --network jenkins -id -v jenkins:/var/jenkins_home -p 80:8080 -v $(which docker):/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock --restart unless-stopped jenkins/jenkins:lts
+docker run --name jenkins --network jenkins -id -v jenkins:/var/jenkins_home -p 80:8080 -v $(which docker):/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock --restart unless-stopped jenkins/jenkins:lts
 
 
 # End
