@@ -1,0 +1,15 @@
+# Example
+###########
+
+docker network create jenkins --attcahable
+
+docker volume create jenkins
+
+docker run --name jenkins -v jenkins:/var/jenkins_home -p 80:8080 --restart unless-stopped -id jenkins/jenkins:lts
+
+
+# BackUps Jenkins
+docker run --rm --volumes-from jenkins -v $(pwd):/backup busybox tar cvfz /backup/backup.tar /var/jenkins_home
+
+# Restore Jenkins container from backup, restore the volume with a tarball archive. 
+docker run --rm --volumes-from CONTAINER -v $(pwd):/backup busybox bash -c "cd CONTAINERPATH && tar xvf /backup/backup.tar --strip 1"
