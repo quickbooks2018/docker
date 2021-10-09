@@ -15,6 +15,7 @@ docker run --rm --volumes-from jenkins -v $(pwd):/backup busybox tar cvfz /backu
 
 # Restore Jenkins container from backup, restore the volume with a tarball archive. 
 
-docker run --rm --volumes-from jenkins -v $(pwd):/backup busybox bash -c "cd /var/jenkins_home && tar xvf $(pwd)/backup.tar --strip 1"
+docker exec -it jenkins bash -c "cd /var/jenkins_home && tar xvf $(pwd)/backup.tar --strip 1"
 
-docker run --rm --volumes-from CONTAINER -v $(pwd):/backup busybox bash -c "cd CONTAINERPATH && tar xvf /backup/backup.tar --strip 1"
+
+# docker run --rm --volumes-from CONTAINER -v $(pwd):/backup busybox bash -c "cd CONTAINERPATH && tar xvf /backup/backup.tar --strip 1"
