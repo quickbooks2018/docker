@@ -19,13 +19,15 @@ docker run --rm --volumes-from jenkins -v $(pwd):/backup busybox tar cvfz /backu
 docker exec -u root -it jenkins bash -c "cd /var/jenkins_home && rm -rf *" && 
 
 
-docker exec -u root -it jenkins bash -c "cd /var/jenkins_home && rm -rf *" && docker cp $PWD/backup.tar jenkins:/var/jenkins_home && docker exec -u root -it jenkins bash -c "cd /var/jenkins_home && tar -xzvf backup.tar && rm -rf backup.tar" && docker exec -u root jenkins bash -c "cd /var/jenkins_home && rm -f config.xml"
+docker exec -u root -it jenkins bash -c "cd /var/jenkins_home && rm -rf *" && docker cp $PWD/backup.tar jenkins:/var/jenkins_home && docker exec -u root -it jenkins bash -c "cd /var/jenkins_home && tar -xzvf backup.tar && rm -rf backup.tar" && docker exec -u root jenkins bash -c "cd /var/jenkins_home && rm -f config.xml" && docker restart jenkins
 
 docker cp $PWD/backup.tar jenkins:/var/jenkins_home
 
 docker exec -u root -it jenkins bash -c "cd /var/jenkins_home && tar -xzvf backup.tar && rm -rf backup.tar"
 
 docker exec -u root jenkins bash -c "cd /var/jenkins_home && rm -f config.xml"
+
+docker restart jenkins
 
 
 # docker run --rm --volumes-from CONTAINER -v $(pwd):/backup busybox bash -c "cd CONTAINERPATH && tar xvf /backup/backup.tar --strip 1"
