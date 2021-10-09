@@ -51,7 +51,7 @@ docker restart jenkins
 # Single Command
 #################
 
-docker exec -u root -it jenkins bash -c "rm -rf *" && docker cp $PWD/backup.tar jenkins:/var/jenkins_home && docker exec -u root -it jenkins bash -c "tar -xzvf backup.tar"
+docker exec -u root -it jenkins bash -c "rm -rf *" && docker cp $PWD/backup.tar jenkins:/var/jenkins_home && docker exec -u root -it jenkins bash -c "tar -xzvf backup.tar" && docker exec -u root -it jenkins bash -c "cd var/jenkins_home && mv * /var/jenkins_home"
 
 
 # docker run --rm --volumes-from CONTAINER -v $(pwd):/backup busybox bash -c "cd CONTAINERPATH && tar xvf /backup/backup.tar --strip 1"
