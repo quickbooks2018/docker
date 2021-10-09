@@ -17,7 +17,7 @@ docker run --rm --volumes-from jenkins -v $(pwd):/backup busybox tar cvfz /backu
 
 docker cp $PWD/backup.tar jenkins:/var/jenkins_home
 
-docker exec -it jenkins bash -c "cd /var/jenkins_home && tar -xzvf backup.tar"
+docker exec -it jenkins bash -c "cd /var/jenkins_home && tar -xzvf backup.tar && mv /var/jenkins_home/* ."
 
 
 # docker run --rm --volumes-from CONTAINER -v $(pwd):/backup busybox bash -c "cd CONTAINERPATH && tar xvf /backup/backup.tar --strip 1"
