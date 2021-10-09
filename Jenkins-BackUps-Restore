@@ -1,7 +1,7 @@
 # Example
 ###########
 
-docker network create jenkins --attcahable
+docker network create jenkins --attachable
 
 docker volume create jenkins
 
