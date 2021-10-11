@@ -1,3 +1,5 @@
+# https://github.com/tiangolo/uwsgi-nginx-docker
+
 # https://github.com/tiangolo/uwsgi-nginx-docker/blob/master/docker-images/supervisord-debian.conf
 [supervisord]
 nodaemon=true
