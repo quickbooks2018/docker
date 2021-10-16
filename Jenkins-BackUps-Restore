@@ -13,7 +13,13 @@ docker run --name jenkins --network jenkins -w /var/jenkins_home -id -v jenkins:
 ###################################
 docker run --name jenkins --network jenkins -w /var/jenkins_home -id -v jenkins:/var/jenkins_home -p 80:8080 -v $(which docker):/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock --restart unless-stopped jenkins/jenkins:lts
 
-docker exec -u root -it jenkins sh -c "chown -R jenkins:jenkins /var/run/docker.sock"
+if ( nc -zv localhost 80 2>&1 >/dev/null ); then
+    echo 'Jenkins is Online'
+    docker exec -u root -it jenkins sh -c "chown -R jenkins:jenkins /var/run/docker.sock"
+else
+    echo 'JEnkins if Offline'
+fi
+
 
 yes | docker image prune
 
