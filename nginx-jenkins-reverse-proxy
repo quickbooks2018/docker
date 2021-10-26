@@ -1,3 +1,4 @@
+# https://www.jenkins.io/doc/book/system-administration/reverse-proxy-configuration-nginx/
 upstream jenkins {
   keepalive 32; # keepalive connections
   server your-ip-address:8080; # jenkins ip and port
