@@ -1,0 +1,43 @@
+#!/bin/bash
+# Purpose: Docker alternative
+# AmazonLinux
+# ubuntu
+
+# https://github.com/containerd/nerdctl/releases
+
+curl -LO -# https://github.com/containerd/nerdctl/releases/download/v0.13.0/nerdctl-full-0.13.0-linux-amd64.tar.gz
+
+##############
+# Amazonlinux
+##############
+tar Cxzvvf /usr/ nerdctl-full-0.13.0-linux-amd64.tar.gz
+
+#########
+# Ubuntu
+#########
+tar Cxzvvf /usr/local nerdctl-full-0.13.0-linux-amd64.tar.gz
+
+systemctl enable --now containerd
+
+
+#################################
+# Docker Compose V2 Installation
+#################################
+#########################################################################################
+# 1 Run the following command to download the current stable release of Docker Compose
+#########################################################################################
+
+mkdir -p ~/.docker/cli-plugins/
+curl -SL https://github.com/docker/compose/releases/download/v2.0.1/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
+
+ ###############################################
+ # 2 Apply executable permissions to the binary
+ ###############################################
+
+chmod +x ~/.docker/cli-plugins/docker-compose
+
+  ###############################################
+  # 3 Apply executable permissions to the binary
+  ###############################################
+
+docker compose version
