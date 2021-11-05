@@ -37,7 +37,7 @@ curl -SL https://github.com/docker/compose/releases/download/v2.0.1/docker-compo
 chmod +x ~/.docker/cli-plugins/docker-compose
 
   ###############################################
-  # 3 Apply executable permissions to the binary
+  # 3 nerdctl compose
   ###############################################
 
-docker compose version
+nerdctl compose up -d --build
