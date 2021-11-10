@@ -2,10 +2,20 @@
 
 # https://hub.docker.com/r/kasmweb/core-ubuntu-bionic?__hstc=50686966.54d5f0769915d5bdbe2878880262b21f.1636525288956.1636525288956.1636525288956.1&__hssc=50686966.1.1636525288959&__hsfp=3968550890&hsCtaTracking=5b5de6c7-515a-46b2-a291-88142384c2a6%7C23e7ba96-2797-4cd6-89c9-b97da7acf31b
 
-
+#########################################
 # Run this command in Windows Powershell
+#########################################
 
-docker run --name kasmweb -u root --shm-size=2048m -p 6901:6901 -e VNC_PW=password -id kasmweb/ubuntu-bionic-desktop:1.9.0
+docker run --name kasmweb-desktop -u root --shm-size=2048m -p 6901:6901 -e VNC_PW=password -id kasmweb/ubuntu-bionic-desktop:1.9.0
+
+###########
+# Mounting
+###########
+docker run --name kasmweb-desktop -u root --shm-size=2048m -v "c:/users/Muhammad Asim/Desktop/ubuntu:/root" -p 6901:6901 -e VNC_PW=password -id kasmweb/ubuntu-bionic-desktop:1.9.0
+
+
+https://localhost:6901/
+
 
 su --> to become root
 
