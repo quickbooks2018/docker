@@ -26,7 +26,7 @@ docker run --name kasmweb-desktop -u root --shm-size=2048m -v "c:/users/Muhammad
 docker run --name kasmweb-desktop -u root --shm-size=2048m -v /root/ubuntu:/root -p 6901:6901 -e VNC_PW=password -id kasmweb/ubuntu-bionic-desktop:1.9.0
 
 #########################################################################################################################################################################
-docker run --name kasmweb-desktop -u root --shm-size=2048m -v /root/ubuntu:/root -p 6901:6901 -e VNC_PW=password -id quickbooks2018/kasmweb-ubuntu-bionic-desktop:latest
+docker run --name kasmweb-desktop -u root --shm-size=2048m -v /root/ubuntu:/root -p 6901:6901 -e VNC_PW=password -id quickbooks2018/kasmweb-ubuntu-bionic-desktop:1.9.0
 #########################################################################################################################################################################
 
 https://localhost:6901/
