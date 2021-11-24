@@ -9,6 +9,12 @@
 
 
 
+# https://jira.atlassian.com/browse/JRASERVER-70071
+
+docker run -v jiraVolume:/var/atlassian/application-data/jira --name="jira" -d -p 8080:8080 -e "ATL_JDBC_URL=jdbc:mysql://192.168.1.0:3306/jiradb" -e "ATL_JDBC_USER=username" -e "ATL_JDBC_PASSWORD=password" -e "ATL_DB_DRIVER=com.mysql.jdbc.Driver" -e "ATL_DB_TYPE=mysql" atlassian/jira-software:8.4.2
+
+# https://confluence.atlassian.com/adminjiraserver/connecting-jira-applications-to-mysql-5-7-966063305.html#ConnectingJiraapplicationstoMySQL5.7-configuringmysql
+
 
 
 
