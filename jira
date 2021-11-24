@@ -2,7 +2,7 @@
 
 # https://hub.docker.com/r/cptactionhank/atlassian-jira/
 
-
+# https://github.com/EugenMayer/docker-image-atlassian-jira/blob/master/docker-compose.yml
 
 docker run --name jira --detach --publish 8080:8080 --user root -v /root/jira:/var/atlassian/jira --restart unless-stopped cptactionhank/atlassian-jira:latest
 
