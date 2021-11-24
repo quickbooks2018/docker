@@ -89,8 +89,11 @@ location / {
        }
 }
 
+########
+# Nginx
+########
 
-
+docker run --name nginx --network=atlassian --restart unless-stopped -v ~/ssl/certs:/etc/ssl/certs -v ~/nginx/conf.d:/etc/nginx/conf.d -p 443:443 -p 80:80 -id nginx:latest
 
 
 
