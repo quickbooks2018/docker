@@ -1,7 +1,13 @@
+# https://github.com/teamatldocker/jira
+
+# https://hub.docker.com/r/cptactionhank/atlassian-jira/
+
+
+
 docker run --name jira --detach --publish 8080:8080 --user root -v /root/jira:/var/atlassian/jira --restart unless-stopped cptactionhank/atlassian-jira:latest
 
 
-# https://hub.docker.com/r/cptactionhank/atlassian-jira/
+
 
 docker run --name jira -p 8000:8080 --user=root -v /jira:/var/atlassian/jira --restart unless-stopped  --env X_PROXY_NAME="jira.cloudgeeks-ca" --env X_PROXY_PORT="443" --env X_PROXY_SCHEME="https" --env X_PROXY_SECURE="true" -d cptactionhank/atlassian-jira:latest
 
@@ -15,11 +21,35 @@ docker run --name jira -p 8000:8080 -v jira:/var/atlassian/jira --restart unless
 ########
 
 
+server {
+  listen 80;
+  server_name jira.cloudgeeks.ca;
+  return 301 $scheme://jira.cloudgeeks.ca$request_uri;
+}
+server {
+  server_name jira.cloudgeeks.ca;
+#   listen 443 ssl;
+#   ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
+#   ssl_certificate_key /etc/ssl/certs/nginx-selfsigned.key;
+#
+#     ssl_protocols       TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
+#     ssl_ciphers    TLS-CHACHA20-POLY1305-SHA256:TLS-AES-256-GCM-SHA384:TLS-AES-128-GCM-SHA256:HIGH:!aNULL:!MD5;
+location / {
+    proxy_set_header        Host $host:$server_port;
+    proxy_set_header        X-Real-IP $remote_addr;
+    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header        X-Forwarded-Proto $scheme;
+    proxy_redirect http:// https://;
+    proxy_pass              http://jira:8000;
+    # Required for new HTTP-based CLI
+    proxy_http_version 1.1;
+    proxy_request_buffering off;
+       }
+}
 
 
 
 
 
-# https://github.com/teamatldocker/jira
 
 
