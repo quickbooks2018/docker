@@ -1,6 +1,6 @@
 docker run --name jira --detach --publish 8080:8080 --user root -v /root/jira:/var/atlassian/jira --restart unless-stopped cptactionhank/atlassian-jira:latest
 
 
-#https://hub.docker.com/r/cptactionhank/atlassian-jira/
+# https://hub.docker.com/r/cptactionhank/atlassian-jira/
 
-docker run --name jira -p 8000:8080 --user=root -v /jira:/var/atlassian/jira --restart unless-stopped  --env X_PROXY_NAME="jira.cloudgeeks-ca.com" --env X_PROXY_PORT="443" --env X_PROXY_SCHEME="https" --env X_PROXY_SECURE="true" -d cptactionhank/atlassian-jira:latest
+docker run --name jira -p 8000:8080 --user=root -v /jira:/var/atlassian/jira --restart unless-stopped  --env X_PROXY_NAME="jira.cloudgeeks-ca" --env X_PROXY_PORT="443" --env X_PROXY_SCHEME="https" --env X_PROXY_SECURE="true" -d cptactionhank/atlassian-jira:latest
