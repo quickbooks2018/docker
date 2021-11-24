@@ -14,3 +14,12 @@ docker run --name jira -p 8000:8080 -v jira:/var/atlassian/jira --restart unless
 # Nginx
 ########
 
+
+
+
+
+
+
+# https://github.com/teamatldocker/jira
+
+
