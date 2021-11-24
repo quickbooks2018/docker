@@ -8,7 +8,9 @@
 ##########################################################
 
 
-
+##############
+# External DB
+###############
 # https://jira.atlassian.com/browse/JRASERVER-70071
 
 docker run -v jiraVolume:/var/atlassian/application-data/jira --name="jira" -d -p 8080:8080 -e "ATL_JDBC_URL=jdbc:mysql://192.168.1.0:3306/jiradb" -e "ATL_JDBC_USER=username" -e "ATL_JDBC_PASSWORD=password" -e "ATL_DB_DRIVER=com.mysql.jdbc.Driver" -e "ATL_DB_TYPE=mysql" atlassian/jira-software:8.4.2
@@ -17,6 +19,9 @@ docker run -v jiraVolume:/var/atlassian/application-data/jira --name="jira" -d -
 
 
 
+##########
+# BuiltIN           # Simply use this
+##########
 
 
 
@@ -26,17 +31,32 @@ docker run -v jiraVolume:/var/atlassian/application-data/jira --name="jira" -d -
 
 # https://github.com/EugenMayer/docker-image-atlassian-jira/blob/master/docker-compose.yml
 
-docker run --name jira --detach --publish 8080:8080 --user root -v /root/jira:/var/atlassian/jira --restart unless-stopped cptactionhank/atlassian-jira:latest
+  # ENVIRONMET_VARIABLE_NAME: "environment variable value"
+      X_PROXY_NAME: "jira.cloudgeeks.ca"
+      X_PROXY_PORT: "443"
+      X_PROXY_SCHEME: "https"
+      X_PROXY_SECURE: "false"
 
 
+##########
+# Use this
+###########
 
-
-docker run --name jira -p 8000:8080 --user=root -v /jira:/var/atlassian/jira --restart unless-stopped  --env X_PROXY_NAME="jira.cloudgeeks-ca" --env X_PROXY_PORT="443" --env X_PROXY_SCHEME="https" --env X_PROXY_SECURE="true" -d cptactionhank/atlassian-jira:latest
-
-##############
+###############
 # Named Volumes
 ################
-docker run --name jira -p 8000:8080 -v jira:/var/atlassian/jira --restart unless-stopped  --env X_PROXY_NAME="jira.cloudgeeks.ca" --env X_PROXY_PORT="443" --env X_PROXY_SCHEME="https" --env X_PROXY_SECURE="true" -d cptactionhank/atlassian-jira:latest
+
+docker volume create jira
+
+##########
+# Network
+##########
+
+docker network create atlassian
+
+docker run --name jira -p 8000:8080 --network  atlassian -v jira:/var/atlassian/jira --restart unless-stopped  --env X_PROXY_NAME="jira.cloudgeeks-ca" --env X_PROXY_PORT="443" --env X_PROXY_SCHEME="https" --env X_PROXY_SECURE="true" -d cptactionhank/atlassian-jira:latest
+
+
 
 ########
 # Nginx
@@ -50,12 +70,12 @@ server {
 }
 server {
   server_name jira.cloudgeeks.ca;
-#   listen 443 ssl;
-#   ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
-#   ssl_certificate_key /etc/ssl/certs/nginx-selfsigned.key;
-#
-#     ssl_protocols       TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
-#     ssl_ciphers    TLS-CHACHA20-POLY1305-SHA256:TLS-AES-256-GCM-SHA384:TLS-AES-128-GCM-SHA256:HIGH:!aNULL:!MD5;
+   listen 443 ssl;
+   ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
+   ssl_certificate_key /etc/ssl/certs/nginx-selfsigned.key;
+
+     ssl_protocols       TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
+     ssl_ciphers    TLS-CHACHA20-POLY1305-SHA256:TLS-AES-256-GCM-SHA384:TLS-AES-128-GCM-SHA256:HIGH:!aNULL:!MD5;
 location / {
     proxy_set_header        Host $host:$server_port;
     proxy_set_header        X-Real-IP $remote_addr;
