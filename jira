@@ -54,7 +54,7 @@ docker volume create jira
 
 docker network create atlassian
 
-docker run --name jira -p 8000:8080 --network  atlassian -v jira:/var/atlassian/jira --restart unless-stopped  --env X_PROXY_NAME="jira.cloudgeeks-ca" --env X_PROXY_PORT="443" --env X_PROXY_SCHEME="https" --env X_PROXY_SECURE="true" -d cptactionhank/atlassian-jira:latest
+docker run --name jira --network  atlassian -v jira:/var/atlassian/jira --restart unless-stopped  --env X_PROXY_NAME="jira.cloudgeeks-ca" --env X_PROXY_PORT="443" --env X_PROXY_SCHEME="https" --env X_PROXY_SECURE="true" -d cptactionhank/atlassian-jira:latest
 
 
 
