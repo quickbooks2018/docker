@@ -74,3 +74,85 @@ docker exec -u root -it jenkins bash -c "rm -rf *" && docker cp $PWD/backup.tar 
 
 
 # docker run --rm --volumes-from CONTAINER -v $(pwd):/backup busybox bash -c "cd CONTAINERPATH && tar xvf /backup/backup.tar --strip 1"
+
+
+
+
+
+########
+# Script
+########
+
+
+#!/bin/bash
+# Purpose: Jenkins Setup
+# OS AmazonLinux2 (kernel 5.10)
+# Maintainer DevOps Muhammad Asim
+
+#####################
+# Docker Installation
+#####################
+
+yum update -y
+yum install -y docker || amazon-linux-extras install docker -y
+
+yum install -y nc jq tmux
+systemctl start docker
+systemctl enable docker
+
+################################
+# Docker Compose v1 installation
+################################
+curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+docker-compose --version
+
+
+#################################
+# Docker Compose V2 Installation
+#################################
+#########################################################################################
+# 1 Run the following command to download the current stable release of Docker Compose
+#########################################################################################
+
+mkdir -p ~/.docker/cli-plugins/
+curl -SL https://github.com/docker/compose/releases/download/v2.0.1/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
+
+ ###############################################
+ # 2 Apply executable permissions to the binary
+ ###############################################
+
+chmod +x ~/.docker/cli-plugins/docker-compose
+
+##############################################
+# 3 Apply executable permissions to the binary
+##############################################
+
+docker compose version
+
+####################
+# Jenkins Deployment
+####################
+docker network create jenkins --attachable
+docker volume create jenkins
+
+##################################
+# Build docker images with jenkins
+##################################
+
+docker run --name jenkins --network jenkins -w /var/jenkins_home -id -v jenkins:/var/jenkins_home -p 80:8080 -v $(which docker):/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock --restart unless-stopped jenkins/jenkins:lts
+
+echo "Waiting jenkins to launch on 80.."
+
+while ! nc -vz localhost 80; do
+
+  sleep 0.1 # wait for 1/10 of the second before check again
+
+done
+
+echo "Jenkins launched"
+
+docker exec -u root -it jenkins sh -c "chown -R jenkins:jenkins /var/run/docker.sock"
+
+# End
