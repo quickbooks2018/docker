@@ -6,7 +6,9 @@ docker network create jenkins --attachable
 
 docker volume create jenkins
 
-docker run --name jenkins --network jenkins -w /var/jenkins_home -id -v jenkins:/var/jenkins_home -p 80:8080 --restart unless-stopped jenkins/jenkins:lts
+###########################################################################################################################################################
+# docker run --name jenkins --network jenkins -w /var/jenkins_home -id -v jenkins:/var/jenkins_home -p 80:8080 --restart unless-stopped jenkins/jenkins:lts
+###########################################################################################################################################################
 
 ###################################
 # Build docker images with jenkins
