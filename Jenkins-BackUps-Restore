@@ -170,7 +170,7 @@ docker exec -u root -it jenkins sh -c "chown -R jenkins:jenkins /var/run/docker.
 # Purpose: S3 Automated Backups for OS Windows/Linux
 # Set LifeCycle in S3 for backup retention
 
-CONTAINER_NAME="jenkins"
+export CONTAINER_NAME="jenkins"
 
 #######################
 # Daily Backup Jenkins
