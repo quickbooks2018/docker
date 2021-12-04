@@ -35,6 +35,8 @@ yes | docker container prune
 ##################
 docker run --rm --volumes-from jenkins -v $(pwd):/backup busybox tar cvfz /backup/backup.tar /var/jenkins_home
 
+docker run --rm --volumes-from jenkins -v $(pwd):/backup busybox tar cvfz /backup/backup-$(date +'%d-%m-%Y-%T').tar /var/jenkins_home
+
 ##################
 # Restore Jenkins 
 ##################
