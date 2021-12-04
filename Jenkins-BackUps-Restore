@@ -170,14 +170,13 @@ docker exec -u root -it jenkins sh -c "chown -R jenkins:jenkins /var/run/docker.
 # Purpose: S3 Automated Backups for OS Windows/Linux
 # Set LifeCycle in S3 for backup retention
 
+CONTAINER_NAME="jenkins"
 
 #######################
 # Daily Backup Jenkins
 #######################
-docker run --rm --volumes-from jenkins -v $(pwd):/backup busybox tar cvfz /backup/jenkins-backup-$(date +'%d-%m-%Y-%T').tar /var/jenkins_home
+docker run --rm --volumes-from ${CONTAINER_NAME} -v $(pwd):/backup busybox tar cvfz /backup/jenkins-backup-$(date +'%d-%m-%Y-%T').tar /var/jenkins_home
 
-
-CONTAINER_NAME="jenkins"
 
 # TAG For Retention
 # aws s3api create-bucket --bucket cloudgeeksca-cicd-artifacts --region us-east-1
