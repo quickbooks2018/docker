@@ -159,4 +159,76 @@ echo "Jenkins launched"
 
 docker exec -u root -it jenkins sh -c "chown -R jenkins:jenkins /var/run/docker.sock"
 
+
+
+# S3 Automated Backups & Retention Set
+# Note: For Retention Period Please SET S3 Life Cycle Rules
+
+#!/bin/bash
+# Aurthor: Muhammad Asim
+# Purpose: S3 Automated Backups for OS Windows/Linux
+# Set LifeCycle in S3 for backup retention
+
+
+################
+# Backup Jenkins
+################
+docker run --rm --volumes-from jenkins -v $(pwd):/backup busybox tar cvfz /backup/jenkins-backup-$(date +'%d-%m-%Y-%T').tar /var/jenkins_home
+
+
+CONTAINER_NAME="jenkins"
+
+# TAG For Retention
+# aws s3api create-bucket --bucket cloudgeeksca-cicd-artifacts --region us-east-1
+
+export BUCKET="cloudgeeksca-cicd-artifacts"
+
+export BACKUP=$(ls -lthr | grep -i jenkins-backups* | tail -n1 | awk '{print $9}')
+
+export BUCKET_PATH="s3://cloudgeeksca-cicd-artifacts/jenkins-backups/$BACKUP"
+
+export KEY="jenkins-backups/${BACKUP}"
+
+
+##############
+# Upload to s3
+##############
+
+if [[ "$BACKUP" == "$BACKUP" ]]
+then
+echo "starting upload "$BACKUP" to s3 bucket "$BUCKET_PATH" at $(date +'%d-%m-%Y-%T')"
+aws s3 cp "$BACKUP" "$BUCKET_PATH"
+echo "finished uploading "$BACKUP" to "$BUCKET_PATH" "
+else
+echo "Backup failed"
+fi
+
+
+# ##########
+# Taggging
+# ##########
+aws s3api put-object-tagging --bucket "$BUCKET" --key "$KEY" --tagging '{"TagSet": [{ "Key": "retention", "Value": "10" }]}'
+
+echo "Clean Up"
+rm -rf $BACKUP
+
+
+
+# https://aws.amazon.com/premiumsupport/knowledge-center/cron-job-elastic-beanstalk/
+cat << EOF > /etc/cron.d/jenkins-backups
+files:
+    "/etc/cron.d/jenkins-backups":
+        mode: "000644"
+        owner: root
+        group: root
+        content: |
+            * * * * * root chmod +x /root/jenkins-backup.sh && /root/jenkins-backup.sh
+
+
+EOF
+
+
+exit 0
+# END
+
 # End
