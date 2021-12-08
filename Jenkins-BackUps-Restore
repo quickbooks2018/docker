@@ -172,9 +172,9 @@ docker exec -u root -it jenkins sh -c "chown -R jenkins:jenkins /var/run/docker.
 
 export CONTAINER_NAME="jenkins"
 
-#######################
-# Daily Backup Jenkins
-#######################
+#############################
+# Daily Backup Jenkins at 5AM
+##############################
 docker run --rm --volumes-from ${CONTAINER_NAME} -v $(pwd):/backup busybox tar cvfz /backup/jenkins-backup-$(date +'%d-%m-%Y-%T').tar /var/jenkins_home
 
 
@@ -222,7 +222,7 @@ files:
         owner: root
         group: root
         content: |
-            * 1 * * * root chmod +x /root/jenkins-backup.sh && /root/jenkins-backup.sh
+            * 5 * * * root chmod +x /root/jenkins-backup.sh && /root/jenkins-backup.sh
 
 
 EOF
