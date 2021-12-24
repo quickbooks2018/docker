@@ -235,6 +235,10 @@ exit 0
 
 
 
+#############################################################
+# S3 Automated Backups & Retention Set
+# Note: For Retention Period Please SET S3 Life Cycle Rules
+#############################################################
 
 
 
