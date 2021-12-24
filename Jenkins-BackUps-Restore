@@ -232,3 +232,74 @@ exit 0
 
 
 # End
+
+
+
+
+
+
+#!/bin/bash
+# Aurthor: Muhammad Asim
+# Purpose: S3 Automated Backups for OS Windows/Linux
+# Set LifeCycle in S3 for backup retention
+
+export CONTAINER_NAME="kuzzle-elasticsearch-dev"
+export CONTAINER_MOUNT_PATH="/usr/share/elasticsearch"
+
+########################################
+# Daily Backup elasticsearch-dev at 5AM
+########################################
+docker run --rm --volumes-from ${CONTAINER_NAME} -v $(pwd):/backup busybox tar cvfz /backup/${CONTAINER_NAME}-backup-$(date +'%d-%m-%Y-%T').tar "$CONTAINER_MOUNT_PATH"
+
+
+export BUCKET="cloudgeeks-backups"
+
+export BACKUP=$(ls -lthr | grep -i kuzzle-elasticsearch-dev-backup* | tail -n1 | awk '{print $9}')
+
+export BUCKET_PATH="s3://cloudgeeks-backups/elasticseach-dev/$BACKUP"
+
+export KEY="elasticseach-dev/${BACKUP}"           # Make sure to provide the Right S3 Key
+
+
+##############
+# Upload to s3
+##############
+
+if [[ "$BACKUP" == "$BACKUP" ]]
+then
+echo "starting upload "$BACKUP" to s3 bucket "$BUCKET_PATH" at $(date +'%d-%m-%Y-%T')"
+aws s3 cp "$BACKUP" "$BUCKET_PATH"
+echo "finished uploading "$BACKUP" to "$BUCKET_PATH" "
+else
+echo "Backup failed"
+fi
+
+
+# ##########
+# Taggging
+# ##########
+aws s3api put-object-tagging --bucket "$BUCKET" --key "$KEY" --tagging '{"TagSet": [{ "Key": "retention", "Value": "10" }]}'
+
+echo "Clean Up"
+rm -rf $BACKUP
+
+
+
+# https://aws.amazon.com/premiumsupport/knowledge-center/cron-job-elastic-beanstalk/
+cat << EOF > /etc/cron.d/elasticsearch-dev-backups
+files:
+    "/etc/cron.d/elasticsearch-dev-backups":
+        mode: "000644"
+        owner: root
+        group: root
+        content: |
+            * 5 * * * root chmod +x /root/elasticsearch-dev-backup.sh && /root/elasticsearch-dev-backup.sh
+
+
+EOF
+
+
+exit 0
+
+
+# End
