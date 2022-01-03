@@ -297,7 +297,7 @@ files:
         owner: root
         group: root
         content: |
-            * 5 * * * root chmod +x /root/elasticsearch-dev-backup.sh && /root/elasticsearch-dev-backup.sh
+            0 5 * * * root chmod +x /root/elasticsearch-dev-backup.sh && /root/elasticsearch-dev-backup.sh
 
 
 EOF
