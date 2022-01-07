@@ -1,0 +1,5 @@
+# Logging
+RUN mkdir -p /var/logs
+RUN touch /var/logs/celery-worker.log
+RUN touch /var/logs/celery-worker.err.log
+RUN "/bin/bash" "-c" "ln -sf /dev/stdout /var/logs/celery-worker.log && ln -sf /dev/stderr /var/logs/celery-worker.err.log"
