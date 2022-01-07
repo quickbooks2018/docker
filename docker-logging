@@ -3,3 +3,12 @@ RUN mkdir -p /var/logs
 RUN touch /var/logs/celery-worker.log
 RUN touch /var/logs/celery-worker.err.log
 RUN "/bin/bash" "-c" "ln -sf /dev/stdout /var/logs/celery-worker.log && ln -sf /dev/stderr /var/logs/celery-worker.err.log"
+
+#####################
+# Supervisor Logging
+#####################
+
+# https://newbedev.com/docker-supervisord-and-logging-how-to-consolidate-logs-in-docker-logs
+
+stdout_logfile=/dev/stdout
+stdout_logfile_maxbytes=0
