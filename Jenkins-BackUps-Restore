@@ -22,8 +22,10 @@ while ! nc -vz localhost 80; do
 done
 echo "Jenkins launched"
 
+# Jenkins User Permissions Set
+#####################################################################################
 docker exec -u root -it jenkins sh -c "chown -R jenkins:jenkins /var/run/docker.sock"
-
+#####################################################################################
 
 
 yes | docker image prune
