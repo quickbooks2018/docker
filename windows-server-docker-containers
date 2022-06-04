@@ -1,0 +1,31 @@
+# docker installation
+
+Windows Update is must
+
+
+# docker desktop for Windows10/11
+https://www.docker.com/products/docker-desktop/
+
+
+# cli
+https://docs.microsoft.com/en-us/virtualization/windowscontainers/quick-start/set-up-environment?tabs=Windows-Server
+
+
+# Images
+# Microspft
+https://docs.microsoft.com/en-us/virtualization/windowscontainers/manage-containers/container-base-images
+
+# DockerHub
+https://hub.docker.com/publishers/microsoftowner
+
+# Windows IIS Server
+https://hub.docker.com/_/microsoft-windows-servercore-iis
+
+
+# Windwows 2019 Server
+docker run --name windows-iis -p 80:80 --restart unless-stopped -id mcr.microsoft.com/windows/servercore/iis:windowsservercore-ltsc2019
+
+
+
+# Windwows 2022 Server
+docker run --name windows-iis -p 80:80 --restart unless-stopped -id mcr.microsoft.com/windows/servercore/iis:windowsservercore-ltsc2022
