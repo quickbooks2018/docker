@@ -22,8 +22,8 @@ ReloadPropagatedFrom=docker.service
 
 [Service]
 Type=oneshot
-ExecStart=~/docker-socket.sh
-ExecReload=~/docker-socket.sh
+ExecStart=${HOME}/docker-socket.sh
+ExecReload=${HOME}/docker-socket.sh
 RemainAfterExit=yes
 
 [Install]
@@ -49,6 +49,6 @@ cat << EOF > /etc/docker/daemon.json
 
 EOF
 
-systemctl restart docker
+shutdown -r now
 
 # End
