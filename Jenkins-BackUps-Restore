@@ -26,6 +26,47 @@ echo "Jenkins launched"
 #####################################################################################
 docker exec -u root -it jenkins sh -c "chown -R jenkins:jenkins /var/run/docker.sock"
 #####################################################################################
+or
+chmod 666 /var/run/docker.sock
+or
+after reboot permissions changed, so best is to create a service
+
+#!/bin/bash
+# Purpose: Set Docker Socket Permissions after reboot & Docker Logging
+
+###########################
+# Docker Socket Permissions
+###########################
+cat <<EOF > ~/docker-socket.sh
+#!/bin/bash
+chmod 666 /var/run/docker.sock
+#End
+EOF
+
+cat <<EOF > /etc/systemd/system/docker-socket.service
+[Unit]
+Description=Docker Socket Permissions
+After=docker.service
+BindsTo=docker.service
+ReloadPropagatedFrom=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=${HOME}/docker-socket.sh
+ExecReload=${HOME}/docker-socket.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl start docker-socket.service
+
+systemctl enable docker-socket.service
+
+# END
+
+
 
 
 yes | docker image prune
