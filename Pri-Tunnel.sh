@@ -23,7 +23,7 @@ docker run --name pritunl --network pritunl --privileged -v mondodb:/var/lib/mon
 
 # docker pull jippi/pritunl:1.30.3157.70-minimal
 
-# docker run --name pritunl --privileged --network pritunl -v ~/pritunl/mondodb:/var/lib/mongodb -v ~/pritunl/pritunl:/var/lib/pritunl -v pritunl-conf:/etc -p 12323:1194/udp -p 12323:1194/tcp -p 80:80/tcp -p 443:443/tcp --restart unless-stopped -d jippi/pritunl
+# docker run --name pritunl --privileged -v ~/pritunl/mondodb:/var/lib/mongodb -v ~/pritunl/pritunl:/var/lib/pritunl -v pritunl-conf:/etc -p 12323:1194/udp -p 12323:1194/tcp -p 80:80/tcp -p 443:443/tcp --restart unless-stopped -d jippi/pritunl
 
 
 # https://hub.docker.com/u/pritunl
