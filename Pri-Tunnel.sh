@@ -68,8 +68,6 @@ services:
   mongo:
     image: mongo:latest
     container_name: pritunldb
-    hostname: pritunldb
-    network_mode: bridge
     environment:
      - MONGO_INITDB_ROOT_USERNAME='mongoadmin'
      - MONGO_INITDB_ROOT_PASSWORD='secret'
@@ -79,10 +77,8 @@ services:
   pritunl:
     image: goofball222/pritunl:latest
     container_name: pritunl
-    hostname: pritunl
     depends_on:
         - mongo
-    network_mode: bridge
     privileged: true
     sysctls:
       - net.ipv6.conf.all.disable_ipv6=0
