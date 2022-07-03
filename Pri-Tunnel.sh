@@ -69,8 +69,8 @@ services:
     image: mongo:latest
     container_name: pritunldb
     environment:
-     - MONGO_INITDB_ROOT_USERNAME='mongoadmin'
-     - MONGO_INITDB_ROOT_PASSWORD='secret'
+     - MONGO_INITDB_ROOT_USERNAME=mongoadmin
+     - MONGO_INITDB_ROOT_PASSWORD=secret
     volumes:
       - mongodb:/data/db
 
