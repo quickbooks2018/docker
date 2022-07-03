@@ -6,7 +6,9 @@
 apt update -y
 apt install -y curl
 
-
+#####################
+# Docker Installation
+#####################
 mkdir docker
 cd docker
 curl -fsSL https://get.docker.com -o get-docker.sh
@@ -14,6 +16,52 @@ sh get-docker.sh
 systemctl start docker
 systemctl enable docker
 rm -rf get-docker.sh
+
+##############################
+# Docker Compose Instaalation
+##############################
+
+# https://docs.docker.com/compose/cli-command/
+# https://docs.docker.com/compose/profiles/
+# https://github.com/EugenMayer/docker-image-atlassian-jira/blob/master/docker-compose.yml
+
+#########################################################################################
+# 1 Run the following command to download the current stable release of Docker Compose
+#########################################################################################
+
+ mkdir -p ~/.docker/cli-plugins/
+ curl -SL https://github.com/docker/compose/releases/download/v2.0.1/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
+ 
+ ###############################################
+ # 2 Apply executable permissions to the binary
+ ###############################################
+ 
+  chmod +x ~/.docker/cli-plugins/docker-compose
+  
+  ###############################################
+  # 3 Apply executable permissions to the binary
+  ###############################################
+  
+  docker compose version
+  
+  
+  
+  
+  # Commands
+  # Build a Specific Profile
+ #  docker compose -p app up -d --build
+
+###########################
+# Docker Compose Version 1
+###########################
+# https://docs.docker.com/compose/install/
+
+curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+docker-compose --version
+
+
 
 cat <<EOF > docker-compose.yaml
 services:
@@ -74,48 +122,5 @@ https://docs.pritunl.com/docs/pritunl-zero-service
 # Username & Password ---> Start
 # Username: pritunl Password: pritunl
 
-##############################
-# Docker Compose Instaalation
-##############################
-
-# https://docs.docker.com/compose/cli-command/
-# https://docs.docker.com/compose/profiles/
-# https://github.com/EugenMayer/docker-image-atlassian-jira/blob/master/docker-compose.yml
-
-#########################################################################################
-# 1 Run the following command to download the current stable release of Docker Compose
-#########################################################################################
-
- mkdir -p ~/.docker/cli-plugins/
- curl -SL https://github.com/docker/compose/releases/download/v2.0.1/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
- 
- ###############################################
- # 2 Apply executable permissions to the binary
- ###############################################
- 
-  chmod +x ~/.docker/cli-plugins/docker-compose
-  
-  ###############################################
-  # 3 Apply executable permissions to the binary
-  ###############################################
-  
-  docker compose version
-  
-  
-  
-  
-  # Commands
-  # Build a Specific Profile
- #  docker compose -p app up -d --build
-
-###########################
-# Docker Compose Version 1
-###########################
-# https://docs.docker.com/compose/install/
-
-curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-chmod +x /usr/local/bin/docker-compose
-ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-docker-compose --version
 
 #END
