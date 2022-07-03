@@ -97,7 +97,26 @@ EOF
 
   # Commands
   # Build a Specific Profile
+  
  docker compose -p pritunl up -d
+ 
+ docker exec -it pritunl pritunl default-password
+ 
+ 
+ 
+ 
+ 
+ # End
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  
  
 # https://hub.docker.com/u/pritunl
