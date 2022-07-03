@@ -23,7 +23,7 @@ services:
     hostname: pritunldb
     network_mode: bridge
     volumes:
-      - ./db:/data/db
+      - mongodb:/data/db
 
   pritunl:
     image: goofball222/pritunl:latest
@@ -35,8 +35,6 @@ services:
     privileged: true
     sysctls:
       - net.ipv6.conf.all.disable_ipv6=0
-    links:
-      - mongo
     volumes:
       - /etc/localtime:/etc/localtime:ro
     ports:
@@ -47,7 +45,11 @@ services:
       - TZ=UTC
 EOF
 
-
+  # Commands
+  # Build a Specific Profile
+ docker compose -p pritunl up -d
+ 
+ 
 # https://hub.docker.com/u/pritunl
 
 # docker network create pritunl --attachable
