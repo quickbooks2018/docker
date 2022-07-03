@@ -1,7 +1,8 @@
 #!/bin/bash
-# OS: Ubuntu16/18-LTS
+# OS: Ubuntu16/18/20/22-LTS
 # Purpose:Automated deployment of Pritunl
 # Maintainer: Muhammad Asim
+# https://hub.docker.com/r/goofball222/pritunl
 
 apt update -y
 apt install -y curl
