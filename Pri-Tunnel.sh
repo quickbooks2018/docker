@@ -19,9 +19,7 @@ docker network create pritunl --attachable
 
 docker run --name mongodb -e MONGO_INITDB_ROOT_USERNAME=mongoadmin -e MONGO_INITDB_ROOT_PASSWORD=secret -e MONGO_INITDB_DATABASE=pritunl --network pritunl -v mongodb:/data/db --restart unless-stopped -id mongo:latest
 
-docker run --name pritunl --network pritunl --privileged -v mondodb:/var/lib/mongodb -e PRITUNL_MONGODB_URI="mongodb://mongoadmin:secret@mongodb:27017/admin" -v pritunl:/var/lib/pritunl -v pritunl-conf:/etc -p 12323:1194/tcp -p 443:443/tcp --restart unless-stopped -id jippi/pritunl:latest
-
-# docker run --name pritunl --network pritunl --privileged -v mondodb:/var/lib/mongodb -e PRITUNL_MONGODB_URI="mongodb://mongoadmin:secret@mongodb:27017/admin" -v pritunl:/var/lib/pritunl -v pritunl-conf:/etc -p 12323:1194/tcp -p 443:443/tcp --restart unless-stopped -id jippi/pritunl:1.30.3157.70-minimal
+docker run --name pritunl --network pritunl --privileged -v mondodb:/var/lib/mongodb -e PRITUNL_MONGODB_URI="mongodb://mongoadmin:secret@mongodb:27017/admin" -v pritunl:/var/lib/pritunl -v pritunl-conf:/etc -p 12323:1194/tcp -p 80:80/tcp -p 443:443/tcp --restart unless-stopped -id jippi/pritunl:latest
 
 # docker pull jippi/pritunl:1.30.3157.70-minimal
 
