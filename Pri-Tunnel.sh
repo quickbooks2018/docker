@@ -43,6 +43,9 @@ services:
       - 8090:1194/tcp
     environment:
       - TZ=UTC
+volumes:
+  mongodb:
+    external: true      
 EOF
 
   # Commands
