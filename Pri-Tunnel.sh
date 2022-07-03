@@ -70,6 +70,9 @@ services:
     container_name: pritunldb
     hostname: pritunldb
     network_mode: bridge
+    environment:
+     - MONGO_INITDB_ROOT_USERNAME='mongoadmin'
+     - MONGO_INITDB_ROOT_PASSWORD='secret'
     volumes:
       - mongodb:/data/db
 
@@ -90,7 +93,7 @@ services:
       - 443:443
       - 8090:1194/tcp
     environment:
-      - TZ=UTC
+      - MONGODB_URI=mongodb://mongoadmin:secret@mongodb:27017/admin
 volumes:
   mongodb:
     external: true      
