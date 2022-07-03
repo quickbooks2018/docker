@@ -93,7 +93,7 @@ services:
       - 443:443
       - 8090:1194/tcp
     environment:
-      - MONGODB_URI=mongodb://mongoadmin:secret@mongodb:27017/admin
+      - MONGODB_URI=mongodb://mongoadmin:secret@mongo:27017/admin
 volumes:
   mongodb:
     external: true      
