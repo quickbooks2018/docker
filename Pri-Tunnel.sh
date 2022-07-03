@@ -4,6 +4,8 @@
 # Maintainer: Muhammad Asim
 # https://hub.docker.com/r/goofball222/pritunl
 # https://github.com/goofball222/pritunl
+# https://github.com/goofball222/pritunl/tree/main/stable
+
 
 apt update -y
 apt install -y curl
