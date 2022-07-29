@@ -31,18 +31,28 @@ chmod 666 /var/run/docker.sock
 or
 after reboot permissions changed, so best is to create a service
 
-cat <<EOF > jenkins-permissions.sh
+
+
+
+
+
+
+
+#!/bin/bash
+cat <<JENkINS > jenkins-permissions.sh
 #!/bin/bash
 # Purpose: Set Docker Socket Permissions after reboot & Docker Logging
 
 ###########################
 # Docker Socket Permissions
 ###########################
-cat <<EOF > ~/docker-socket.sh
+cat <<EOF > ${HOME}/docker-socket.sh
 #!/bin/bash
 chmod 666 /var/run/docker.sock
 #End
 EOF
+
+chmod +x ${HOME}/docker-socket.sh
 
 cat <<EOF > /etc/systemd/system/docker-socket.service
 [Unit]
@@ -61,12 +71,41 @@ RemainAfterExit=yes
 WantedBy=multi-user.target
 EOF
 
-systemctl start docker-socket.service
+systemctl daemon-reload
+
+systemctl restart docker-socket.service
 
 systemctl enable docker-socket.service
 
+JENkINS
 # END
-EOF
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
