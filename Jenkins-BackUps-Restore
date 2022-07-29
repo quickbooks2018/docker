@@ -38,7 +38,7 @@ after reboot permissions changed, so best is to create a service
 
 
 
-#!/bin/bash
+
 cat <<JENkINS > jenkins-permissions.sh
 #!/bin/bash
 # Purpose: Set Docker Socket Permissions after reboot & Docker Logging
