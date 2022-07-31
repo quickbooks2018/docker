@@ -398,8 +398,6 @@ docker run --name jenkins -w /var/jenkins_home -id -v jenkins:/var/jenkins_home 
 
 # jar as a service in windows
 
-# https://www.youtube.com/watch?v=JeXl60PbXXw
-
 https://github.com/winsw/winsw
 
 download this ---> WinSW.NET4.exe & sample-minimal.xml from releases
