@@ -400,5 +400,5 @@ docker run --name jenkins -w /var/jenkins_home -id -v jenkins:/var/jenkins_home 
 
 https://github.com/winsw/winsw
 
-download this ---> WinSW.NET4.exe  from releases
+download this ---> WinSW.NET4.exe & sample-minimal.xml from releases
 
