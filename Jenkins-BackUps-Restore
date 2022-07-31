@@ -400,4 +400,5 @@ docker run --name jenkins -w /var/jenkins_home -id -v jenkins:/var/jenkins_home 
 
 https://github.com/winsw/winsw
 
-https://github.com/winsw/winsw/releases/tag/v2.11.0
+download this ---> WinSW.NET4.exe  from releases
+
