@@ -428,6 +428,11 @@ docker run --name jenkins -w /var/jenkins_home -id -v jenkins:/var/jenkins_home 
 
 docker restart jenkins
 
+###############################################################
+# https://www.youtube.com/watch?v=ymI02j-hqpU&feature=youtu.be
+# https://github.com/darinpope/jenkins-example-docker
+################################################################
+
 ###########################
 # Sample Projects/Pipelines
 ###########################
