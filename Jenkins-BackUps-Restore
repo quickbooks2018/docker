@@ -425,6 +425,8 @@ docker run --name jenkins -w /var/jenkins_home -id -v jenkins:/var/jenkins_home 
 
 docker restart jenkins
 
+# https://www.jenkins.io/doc/book/pipeline/docker/
+
 # Note: Do not use ubuntu22 lts
 
 download this ---> WinSW.NET4.exe & sample-minimal.xml from releases
