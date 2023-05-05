@@ -403,6 +403,18 @@ https://github.com/winsw/winsw
 ########################
 # Jenkins Dynamic Slaves (Host Network)
 ########################
+# Step1
+ vim /lib/systemd/system/docker.service
+ 
+ # Step2
+You can replace with below line:
+ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:8443 -H unix:///var/run/docker.sock
+
+# Step3
+systemctl daemon-reload
+systemctl restart docker
+systemctl status docker
+ 
 docker run --name jenkins -w /var/jenkins_home -id -v jenkins:/var/jenkins_home --network host -v $(which docker):/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock --restart unless-stopped jenkins/jenkins:lts
 
 
