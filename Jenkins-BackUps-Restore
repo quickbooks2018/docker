@@ -433,6 +433,7 @@ docker restart jenkins
 ###########################
 # https://www.jenkins.io/doc/book/pipeline/docker/
 # https://github.com/jenkins-docs/simple-node-js-react-npm-app
+# https://github.com/twuni/jenkins-nodejs-example/blob/master/Jenkinsfile
 
 # Note: Do not use ubuntu22 lts
 
