@@ -420,12 +420,19 @@ curl http://172.31.31.86:8443/version
  
 docker run --name jenkins -w /var/jenkins_home -id -v jenkins:/var/jenkins_home --network host -v $(which docker):/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock --restart unless-stopped jenkins/jenkins:lts
 
+###########################
+# Docker Agent as pipleline
+###########################
 # Plugins required
 # Docker + Docker Pipeline Plugin
 
 docker restart jenkins
 
+###########################
+# Sample Projects/Pipelines
+###########################
 # https://www.jenkins.io/doc/book/pipeline/docker/
+# https://github.com/jenkins-docs/simple-node-js-react-npm-app
 
 # Note: Do not use ubuntu22 lts
 
