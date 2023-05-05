@@ -414,6 +414,9 @@ ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:8443 -H unix:///var/run/docker.sock
 systemctl daemon-reload
 systemctl restart docker
 systemctl status docker
+
+# Test
+curl http://172.31.31.86:8443/version
  
 docker run --name jenkins -w /var/jenkins_home -id -v jenkins:/var/jenkins_home --network host -v $(which docker):/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock --restart unless-stopped jenkins/jenkins:lts
 
